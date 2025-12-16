@@ -14,6 +14,7 @@ interface GitHubRepo {
   stargazers_count: number;
   forks_count: number;
   topics: string[];
+  fork: boolean;
 }
 
 export default function Projects() {
