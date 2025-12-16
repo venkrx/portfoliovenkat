@@ -21,16 +21,30 @@ export default function Projects() {
   const isInView = useInView(ref, { once: false, amount: 0.2 });
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchRepos = async () => {
       try {
-        const response = await fetch('https://api.github.com/users/venkatramks/repos?sort=updated&per_page=6');
+        const response = await fetch('https://api.github.com/users/venkatramks/repos?sort=updated&per_page=6', {
+          headers: {
+            'Accept': 'application/vnd.github.v3+json',
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error(`GitHub API returned ${response.status}`);
+        }
+        
         const data = await response.json();
-        setRepos(data);
-        setLoading(false);
+        // Filter out forks and only show original repos
+        const originalRepos = data.filter((repo: GitHubRepo) => !repo.fork);
+        setRepos(originalRepos);
+        setError(null);
       } catch (error) {
         console.error('Error fetching repos:', error);
+        setError('Unable to load projects');
+      } finally {
         setLoading(false);
       }
     };
@@ -46,6 +60,26 @@ export default function Projects() {
     'from-primary to-accent-purple',
     'from-accent to-accent-pink',
   ];
+
+  if (error) {
+    return (
+      <section id="projects" className="min-h-screen flex items-center justify-center py-20 px-4">
+        <div className="text-center">
+          <p className="text-red-400 mb-4 text-xl">{error}</p>
+          <p className="text-gray-400 mb-6">Check out my GitHub profile directly</p>
+          <a 
+            href="https://github.com/venkatramks" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-black rounded-lg hover:bg-primary/80 transition-all"
+          >
+            <FaGithub className="w-5 h-5" />
+            Visit GitHub Profile
+          </a>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="projects" className="relative py-20 md:py-32" ref={ref}>

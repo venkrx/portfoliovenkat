@@ -26,8 +26,8 @@ export default function CustomCursor() {
       setTrails((prev) => {
         const newTrail = { x: e.clientX, y: e.clientY, id: trailId++ };
         const updatedTrails = [...prev, newTrail];
-        // Keep only last 15 trail points
-        return updatedTrails.slice(-15);
+        // Keep only last 6 trail points for better performance
+        return updatedTrails.slice(-6);
       });
 
       clearTimeout(moveTimeout);

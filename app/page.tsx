@@ -7,7 +7,6 @@ import Projects from "@/components/Projects";
 import Experience from "@/components/Experience";
 import Contact from "@/components/Contact";
 import Navbar from "@/components/Navbar";
-import FloatingLogo from "@/components/FloatingLogo";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
@@ -27,7 +26,6 @@ export default function Home() {
   return (
     <main ref={containerRef} className="relative">
       <Navbar />
-      <FloatingLogo />
       <Hero />
       
       {/* Black section - About */}
