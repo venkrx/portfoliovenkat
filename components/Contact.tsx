@@ -20,23 +20,19 @@ export default function Contact() {
     setStatus('loading');
     
     try {
-      const response = await fetch('https://api.web3forms.com/submit', {
+      const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          access_key: 'YOUR_WEB3FORMS_ACCESS_KEY', // Replace with your key from web3forms.com
           name: formData.name,
           email: formData.email,
           message: formData.message,
-          subject: `New Portfolio Contact from ${formData.name}`,
         }),
       });
 
-      const result = await response.json();
-
-      if (result.success) {
+      if (response.ok) {
         setStatus('success');
         setStatusMessage('Message sent successfully! I\'ll get back to you soon.');
         setFormData({ name: '', email: '', message: '' });
