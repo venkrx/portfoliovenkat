@@ -12,11 +12,48 @@ export default function Contact() {
     email: '',
     message: '',
   });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [statusMessage, setStatusMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add your form submission logic here
-    console.log('Form submitted:', formData);
+    setStatus('loading');
+    
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: 'YOUR_WEB3FORMS_ACCESS_KEY', // Replace with your key from web3forms.com
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          subject: `New Portfolio Contact from ${formData.name}`,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setStatus('success');
+        setStatusMessage('Message sent successfully! I\'ll get back to you soon.');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        setStatus('error');
+        setStatusMessage('Failed to send message. Please try emailing me directly.');
+      }
+    } catch (error) {
+      setStatus('error');
+      setStatusMessage('Failed to send message. Please try emailing me directly.');
+    }
+
+    // Reset status after 5 seconds
+    setTimeout(() => {
+      setStatus('idle');
+      setStatusMessage('');
+    }, 5000);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -114,12 +151,32 @@ export default function Contact() {
                 </div>
                 <motion.button
                   type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full px-8 py-4 bg-primary text-black font-semibold rounded-lg hover:bg-primary-dark transition-all duration-300 glow-box"
+                  disabled={status === 'loading'}
+                  whileHover={{ scale: status === 'loading' ? 1 : 1.02 }}
+                  whileTap={{ scale: status === 'loading' ? 1 : 0.98 }}
+                  className={`w-full px-8 py-4 font-semibold rounded-lg transition-all duration-300 glow-box ${
+                    status === 'loading'
+                      ? 'bg-gray-600 cursor-not-allowed'
+                      : 'bg-primary text-black hover:bg-primary-dark'
+                  }`}
                 >
-                  Send Message
+                  {status === 'loading' ? 'Sending...' : 'Send Message'}
                 </motion.button>
+                
+                {/* Status Messages */}
+                {statusMessage && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`p-4 rounded-lg text-center ${
+                      status === 'success'
+                        ? 'bg-green-500/20 border border-green-500/50 text-green-400'
+                        : 'bg-red-500/20 border border-red-500/50 text-red-400'
+                    }`}
+                  >
+                    {statusMessage}
+                  </motion.div>
+                )}
               </form>
             </motion.div>
 
