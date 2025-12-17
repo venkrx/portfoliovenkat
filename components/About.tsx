@@ -31,18 +31,18 @@ export default function About() {
   const features = [
     {
       icon: FaCode,
-      title: 'UI & Animations',
-      description: 'Flashy, responsive interfaces with Framer Motion and Tailwind CSS',
+      title: 'AI & Machine Learning',
+      description: 'Passionate about developing intelligent systems and exploring deep learning algorithms',
     },
     {
-      icon: FaRunning,
-      title: 'Tennis',
-      description: 'I play tennis whenever I can — it keeps me sharp',
+      icon: FaCode,
+      title: 'Full Stack Development',
+      description: 'Building scalable applications with modern frameworks and technologies',
     },
     {
       icon: FaMusic,
-      title: 'Singing & Gaming',
-      description: 'I love singing and squad up on Valorant with friends',
+      title: 'Beyond Tech',
+      description: 'Tennis player, singer, and Valorant enthusiast',
     },
   ];
 
@@ -69,19 +69,21 @@ export default function About() {
             {/* Text Content */}
             <motion.div variants={itemVariants} className="space-y-6">
               <p className="text-lg text-gray-300 leading-relaxed">
-                I'm <span className="text-primary font-semibold">K S Venkatram</span>, a 
-                <span className="text-primary font-semibold"> 3rd-year AI Engineering student</span> from 
-                <span className="text-accent font-semibold">Chennai, India</span>. I enjoy building smooth, flashy UIs,
-                shipping projects fast, and keeping everything responsive.
+                I'm a <span className="text-primary font-semibold">3rd-year AI Engineering student</span> at{' '}
+                <span className="text-accent font-semibold">Amrita Vishwa Vidyapeetham, Coimbatore</span>, 
+                driven by a passion for artificial intelligence and innovative technology solutions.
               </p>
               <p className="text-lg text-gray-300 leading-relaxed">
-                Lately, I'm focused on web animations and interactive design with 
-                <span className="text-primary"> Framer Motion</span> and <span className="text-primary">Tailwind CSS</span>,
-                along with the basics of full‑stack development.
+                My journey in tech has been fueled by curiosity and a desire to create impactful solutions. 
+                I specialize in <span className="text-primary">machine learning</span>, 
+                <span className="text-primary"> deep learning</span>, 
+                <span className="text-primary"> LLMs</span>, and 
+                <span className="text-primary"> full-stack development</span>, constantly pushing the boundaries 
+                of what's possible with AI.
               </p>
               <p className="text-lg text-gray-300 leading-relaxed">
-                Outside tech, I play <span className="text-primary">tennis</span>, I love 
-                <span className="text-primary"> singing</span>, and I squad up on 
+                When I'm not coding, I play <span className="text-primary">tennis</span>, love 
+                <span className="text-primary"> singing</span>, and play 
                 <span className="text-primary"> Valorant</span> with friends.
               </p>
             </motion.div>
