@@ -3,97 +3,83 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-interface TrailPoint {
-  x: number;
-  y: number;
-  id: number;
-}
-
 export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [trails, setTrails] = useState<TrailPoint[]>([]);
-  const [isMoving, setIsMoving] = useState(false);
+  const [isClicking, setIsClicking] = useState(false);
 
   useEffect(() => {
-    let trailId = 0;
-    let moveTimeout: NodeJS.Timeout;
-
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
-      setIsMoving(true);
-
-      // Add trail point
-      setTrails((prev) => {
-        const newTrail = { x: e.clientX, y: e.clientY, id: trailId++ };
-        const updatedTrails = [...prev, newTrail];
-        // Keep only last 6 trail points for better performance
-        return updatedTrails.slice(-6);
-      });
-
-      clearTimeout(moveTimeout);
-      moveTimeout = setTimeout(() => {
-        setIsMoving(false);
-      }, 100);
     };
 
+    const handleMouseDown = () => setIsClicking(true);
+    const handleMouseUp = () => setIsClicking(false);
+
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mouseup', handleMouseUp);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      clearTimeout(moveTimeout);
+      window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mouseup', handleMouseUp);
     };
   }, []);
 
   return (
     <>
-      {/* Trail circles */}
-      {trails.map((trail, index) => (
-        <motion.div
-          key={trail.id}
-          className="fixed pointer-events-none z-[9999] rounded-full bg-primary"
-          style={{
-            left: trail.x,
-            top: trail.y,
-            width: 8,
-            height: 8,
-            transform: 'translate(-50%, -50%)',
-          }}
-          initial={{ scale: 1, opacity: 0.6 }}
-          animate={{
-            scale: 0,
-            opacity: 0,
-          }}
-          transition={{
-            duration: 0.6,
-            ease: 'easeOut',
-          }}
-        />
-      ))}
-
-      {/* Main cursor */}
+      {/* Outer ring - transparent with green border */}
       <motion.div
-        className="fixed pointer-events-none z-[10000] mix-blend-screen"
+        className="fixed pointer-events-none z-[10000]"
         style={{
           left: mousePosition.x,
           top: mousePosition.y,
         }}
         animate={{
-          scale: isMoving ? 1.2 : 1,
+          scale: isClicking ? 0.8 : 1,
+        }}
+        transition={{
+          type: 'spring',
+          stiffness: 400,
+          damping: 25,
+        }}
+      >
+        <div
+          className="absolute rounded-full border-2 border-primary"
+          style={{
+            width: 32,
+            height: 32,
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'rgba(0, 255, 65, 0.05)',
+            boxShadow: '0 0 15px rgba(0, 255, 65, 0.3)',
+          }}
+        />
+      </motion.div>
+
+      {/* Inner dot - semi-transparent green */}
+      <motion.div
+        className="fixed pointer-events-none z-[10001]"
+        style={{
+          left: mousePosition.x,
+          top: mousePosition.y,
+        }}
+        animate={{
+          scale: isClicking ? 0.5 : 1,
         }}
         transition={{
           type: 'spring',
           stiffness: 500,
-          damping: 28,
+          damping: 30,
         }}
       >
-        {/* Single cursor circle */}
         <div
-          className="absolute rounded-full bg-primary"
+          className="absolute rounded-full"
           style={{
-            width: 12,
-            height: 12,
+            width: 6,
+            height: 6,
             transform: 'translate(-50%, -50%)',
-            boxShadow: '0 0 10px rgba(0, 255, 65, 1), 0 0 20px rgba(0, 255, 65, 0.8), 0 0 30px rgba(0, 255, 65, 0.6)',
+            backgroundColor: 'rgba(0, 255, 65, 0.8)',
+            boxShadow: '0 0 8px rgba(0, 255, 65, 0.6)',
           }}
         />
       </motion.div>
