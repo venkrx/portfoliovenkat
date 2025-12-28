@@ -17,6 +17,13 @@ interface GitHubRepo {
   fork: boolean;
 }
 
+// Format repo name: "my-cool-project" -> "My Cool Project"
+function formatRepoName(name: string): string {
+  return name
+    .replace(/[-_]/g, ' ')
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
 export default function Projects() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.2 });
@@ -27,10 +34,11 @@ export default function Projects() {
   useEffect(() => {
     const fetchRepos = async () => {
       try {
-        const response = await fetch('https://api.github.com/users/venkatramks/repos?sort=updated&per_page=6', {
+        const response = await fetch('https://api.github.com/users/venkatramks/repos?sort=updated&per_page=10', {
           headers: {
             'Accept': 'application/vnd.github.v3+json',
           },
+          cache: 'no-store',
         });
         
         if (!response.ok) {
@@ -38,8 +46,8 @@ export default function Projects() {
         }
         
         const data = await response.json();
-        // Filter out forks and only show original repos
-        const originalRepos = data.filter((repo: GitHubRepo) => !repo.fork);
+        // Filter out forks and only show original repos, limit to 6
+        const originalRepos = data.filter((repo: GitHubRepo) => !repo.fork).slice(0, 6);
         setRepos(originalRepos);
         setError(null);
       } catch (error) {
@@ -130,7 +138,7 @@ export default function Projects() {
                 <div className="relative z-10">
                   {/* Project Title */}
                   <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-primary transition-colors duration-300">
-                    {project.name}
+                    {formatRepoName(project.name)}
                   </h3>
 
                   {/* Description */}
