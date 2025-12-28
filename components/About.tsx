@@ -42,7 +42,7 @@ export default function About() {
     {
       icon: FaMusic,
       title: 'Beyond Tech',
-      description: 'Tennis player, singer, and Valorant enthusiast',
+      description: 'Tennis player and singer',
     },
   ];
 
@@ -82,9 +82,8 @@ export default function About() {
                 of what's possible with AI.
               </p>
               <p className="text-lg text-gray-300 leading-relaxed">
-                When I'm not coding, I play <span className="text-primary">tennis</span>, love 
-                <span className="text-primary"> singing</span>, and play 
-                <span className="text-primary"> Valorant</span> with friends.
+                When I'm not coding, I play <span className="text-primary">tennis</span> and love 
+                <span className="text-primary"> singing</span>.
               </p>
             </motion.div>
 
