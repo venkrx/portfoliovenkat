@@ -256,7 +256,7 @@ export default function Hero() {
                 style={{ opacity: contentOpacity }}
               >
                 <span>3rd Year AI Engineering Student at </span>
-                <span className="text-accent">Amrita Vishwa Vidyapeetham, Chennai</span>
+                <span className="text-accent">Amrita Vishwa Vidyapeetham, Coimbatore</span>
                 <br />
                 <span>Passionate about Artificial Intelligence, Machine Learning, and cutting-edge technology</span>
               </motion.p>
