@@ -276,7 +276,7 @@ export default function Hero() {
             View My Work
           </motion.a>
           <motion.a
-            href="https://drive.google.com/file/d/1sjCmKupJbkclKJ4l7vlrJ-NOBlvnrO6J/view?usp=sharing"
+            href="/resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
