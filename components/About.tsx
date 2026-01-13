@@ -67,24 +67,39 @@ export default function About() {
           {/* About Content */}
           <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
             {/* Text Content */}
-            <motion.div variants={itemVariants} className="space-y-6">
-              <p className="text-lg text-gray-300 leading-relaxed">
+            <motion.div className="space-y-6">
+              <motion.p 
+                initial={{ opacity: 0, x: -30 }}
+                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-lg text-gray-300 leading-relaxed"
+              >
                 I'm a <span className="text-primary font-semibold">3rd-year AI Engineering student</span> at{' '}
                 <span className="text-accent font-semibold">Amrita Vishwa Vidyapeetham, Coimbatore</span>, 
                 driven by a passion for artificial intelligence and innovative technology solutions.
-              </p>
-              <p className="text-lg text-gray-300 leading-relaxed">
+              </motion.p>
+              <motion.p 
+                initial={{ opacity: 0, x: -30 }}
+                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="text-lg text-gray-300 leading-relaxed"
+              >
                 My journey in tech has been fueled by curiosity and a desire to create impactful solutions. 
                 I specialize in <span className="text-primary">machine learning</span>, 
                 <span className="text-primary"> deep learning</span>, 
                 <span className="text-primary"> LLMs</span>, and 
                 <span className="text-primary"> full-stack development</span>, constantly pushing the boundaries 
                 of what's possible with AI.
-              </p>
-              <p className="text-lg text-gray-300 leading-relaxed">
+              </motion.p>
+              <motion.p 
+                initial={{ opacity: 0, x: -30 }}
+                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="text-lg text-gray-300 leading-relaxed"
+              >
                 When I'm not coding, I play <span className="text-primary">tennis</span> and love 
                 <span className="text-primary"> singing</span>.
-              </p>
+              </motion.p>
             </motion.div>
 
             {/* Stats */}

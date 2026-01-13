@@ -1,65 +1,51 @@
 'use client';
 
 import { motion, useInView } from 'framer-motion';
-import { useRef, useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { FaGithub, FaExternalLinkAlt, FaStar, FaCodeBranch } from 'react-icons/fa';
 
-interface GitHubRepo {
+interface Project {
   id: number;
   name: string;
   description: string;
-  html_url: string;
-  homepage: string;
+  github_url: string;
+  demo_url?: string;
   language: string;
-  stargazers_count: number;
-  forks_count: number;
+  stars: number;
+  forks: number;
   topics: string[];
-  fork: boolean;
 }
 
-// Format repo name: "my-cool-project" -> "My Cool Project"
-function formatRepoName(name: string): string {
-  return name
-    .replace(/[-_]/g, ' ')
-    .replace(/\b\w/g, (char) => char.toUpperCase());
-}
+// Add your projects here - update this array whenever you add new projects
+const projects: Project[] = [
+  {
+    id: 1,
+    name: 'AI Chatbot Assistant',
+    description: 'An intelligent chatbot powered by machine learning and natural language processing',
+    github_url: 'https://github.com/venkatramks',
+    demo_url: '',
+    language: 'Python',
+    stars: 0,
+    forks: 0,
+    topics: ['ai', 'nlp', 'chatbot', 'machine-learning'],
+  },
+  {
+    id: 2,
+    name: 'Portfolio Website',
+    description: 'Modern portfolio with flashy UI, circuit animations, and Terminal Industries-inspired design',
+    github_url: 'https://github.com/venkrx/portfoliovenkat',
+    demo_url: '',
+    language: 'TypeScript',
+    stars: 0,
+    forks: 0,
+    topics: ['nextjs', 'react', 'framer-motion', 'tailwindcss'],
+  },
+  // Add more projects here as you build them
+];
 
 export default function Projects() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.2 });
-  const [repos, setRepos] = useState<GitHubRepo[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchRepos = async () => {
-      try {
-        const response = await fetch('https://api.github.com/users/venkatramks/repos?sort=updated&per_page=10', {
-          headers: {
-            'Accept': 'application/vnd.github.v3+json',
-          },
-          cache: 'no-store',
-        });
-        
-        if (!response.ok) {
-          throw new Error(`GitHub API returned ${response.status}`);
-        }
-        
-        const data = await response.json();
-        // Filter out forks and only show original repos, limit to 6
-        const originalRepos = data.filter((repo: GitHubRepo) => !repo.fork).slice(0, 6);
-        setRepos(originalRepos);
-        setError(null);
-      } catch (error) {
-        console.error('Error fetching repos:', error);
-        setError('Unable to load projects');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchRepos();
-  }, []);
 
   const gradients = [
     'from-primary to-accent',
@@ -70,25 +56,6 @@ export default function Projects() {
     'from-accent to-accent-pink',
   ];
 
-  if (error) {
-    return (
-      <section id="projects" className="min-h-screen flex items-center justify-center py-20 px-4">
-        <div className="text-center">
-          <p className="text-red-400 mb-4 text-xl">{error}</p>
-          <p className="text-gray-400 mb-6">Check out my GitHub profile directly</p>
-          <a 
-            href="https://github.com/venkatramks" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-black rounded-lg hover:bg-primary/80 transition-all"
-          >
-            <FaGithub className="w-5 h-5" />
-            Visit GitHub Profile
-          </a>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section id="projects" className="relative py-20 md:py-32" ref={ref}>
@@ -114,14 +81,8 @@ export default function Projects() {
           </motion.div>
 
           {/* Projects Grid */}
-          {loading ? (
-            <div className="text-center py-20">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-              <p className="mt-4 text-gray-400">Loading projects from GitHub...</p>
-            </div>
-          ) : (
           <div className="grid md:grid-cols-2 gap-8">
-            {repos.map((project, index) => (
+            {projects.map((project, index) => (
               <motion.div
                 key={project.id}
                 initial={{ opacity: 0, y: 30 }}
@@ -138,23 +99,23 @@ export default function Projects() {
                 <div className="relative z-10">
                   {/* Project Title */}
                   <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-primary transition-colors duration-300">
-                    {formatRepoName(project.name)}
+                    {project.name}
                   </h3>
 
                   {/* Description */}
                   <p className="text-gray-400 mb-4 leading-relaxed min-h-[48px]">
-                    {project.description || 'Check out this project on GitHub'}
+                    {project.description}
                   </p>
 
                   {/* Stats */}
                   <div className="flex items-center gap-4 mb-4">
                     <div className="flex items-center gap-1 text-gray-400">
                       <FaStar className="text-yellow-500" />
-                      <span className="text-sm">{project.stargazers_count}</span>
+                      <span className="text-sm">{project.stars}</span>
                     </div>
                     <div className="flex items-center gap-1 text-gray-400">
                       <FaCodeBranch className="text-primary" />
-                      <span className="text-sm">{project.forks_count}</span>
+                      <span className="text-sm">{project.forks}</span>
                     </div>
                     {project.language && (
                       <span className="text-sm text-accent">{project.language}</span>
@@ -176,7 +137,7 @@ export default function Projects() {
                   {/* Links */}
                   <div className="flex gap-4">
                     <motion.a
-                      href={project.html_url}
+                      href={project.github_url}
                       target="_blank"
                       rel="noopener noreferrer"
                       whileHover={{ scale: 1.05 }}
@@ -186,9 +147,9 @@ export default function Projects() {
                       <FaGithub className="text-xl" />
                       <span>Code</span>
                     </motion.a>
-                    {project.homepage && (
+                    {project.demo_url && (
                       <motion.a
-                        href={project.homepage}
+                        href={project.demo_url}
                         target="_blank"
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.05 }}
@@ -204,7 +165,6 @@ export default function Projects() {
               </motion.div>
             ))}
           </div>
-          )}
         </motion.div>
       </div>
     </section>

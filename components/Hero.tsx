@@ -52,41 +52,51 @@ export default function Hero() {
     let accumulatedScroll = 0;
     const scrollThreshold = 1500; // Total scroll needed to complete animations
 
+    const updateProgress = (scrollAmount: number) => {
+      accumulatedScroll = Math.max(0, Math.min(scrollAmount, scrollThreshold));
+      const progress = accumulatedScroll / scrollThreshold;
+      progressValue.set(progress);
+      setAnimationProgress(progress);
+      
+      // Mark complete when reached end
+      if (progress >= 0.99) {
+        setAnimationsComplete(true);
+      }
+      
+      // Reset completion if scrolling back
+      if (progress < 0.95 && animationsComplete) {
+        setAnimationsComplete(false);
+      }
+    };
+
+    // Handle wheel events (for precise control)
     const handleWheel = (e: WheelEvent) => {
-      // Always intercept scroll in Hero section or if scrolled back to top
       const shouldInterceptScroll = !animationsComplete || (animationsComplete && e.deltaY < 0 && window.scrollY === 0);
       
       if (shouldInterceptScroll) {
         e.preventDefault();
-        
-        // Accumulate scroll (can go negative when scrolling up)
         accumulatedScroll += e.deltaY;
-        
-        // Clamp between 0 and scrollThreshold
-        accumulatedScroll = Math.max(0, Math.min(accumulatedScroll, scrollThreshold));
-        
-        // Calculate progress (0 to 1)
-        const progress = accumulatedScroll / scrollThreshold;
-        progressValue.set(progress);
-        setAnimationProgress(progress);
-        
-        // Mark complete when reached end
-        if (progress >= 0.99) {
-          setAnimationsComplete(true);
-        }
-        
-        // Reset completion if scrolling back
-        if (progress < 0.95 && animationsComplete) {
-          setAnimationsComplete(false);
-        }
+        updateProgress(accumulatedScroll);
       }
     };
 
-    // Add passive: false to allow preventDefault
+    // Handle regular scroll events (for auto-scroll and touch devices)
+    const handleScroll = () => {
+      if (!animationsComplete) {
+        // Map page scroll position to animation progress
+        const scrollY = window.scrollY;
+        const maxScroll = window.innerHeight * 0.5; // Half viewport height triggers full animation
+        const scrollProgress = Math.min(scrollY / maxScroll, 1) * scrollThreshold;
+        updateProgress(scrollProgress);
+      }
+    };
+
     window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [animationsComplete]);
 
