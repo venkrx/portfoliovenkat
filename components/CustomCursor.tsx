@@ -9,12 +9,21 @@ interface Ripple {
   id: number;
 }
 
+interface Wave {
+  x: number;
+  y: number;
+  id: number;
+}
+
 export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isClicking, setIsClicking] = useState(false);
   const [ripples, setRipples] = useState<Ripple[]>([]);
+  const [waves, setWaves] = useState<Wave[]>([]);
 
   useEffect(() => {
+    let waveInterval: NodeJS.Timeout;
+
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
@@ -30,11 +39,24 @@ export default function CustomCursor() {
       };
       setRipples((prev) => [...prev, newRipple]);
       
-      // Remove ripple after animation completes
       setTimeout(() => {
         setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
       }, 1000);
     };
+
+    // Create waves continuously following mouse
+    waveInterval = setInterval(() => {
+      const newWave = {
+        x: mousePosition.x,
+        y: mousePosition.y,
+        id: Date.now() + Math.random(),
+      };
+      setWaves((prev) => [...prev, newWave]);
+      
+      setTimeout(() => {
+        setWaves((prev) => prev.filter((w) => w.id !== newWave.id));
+      }, 2000);
+    }, 150); // Create a new wave every 150ms
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mousedown', handleMouseDown);
@@ -46,11 +68,40 @@ export default function CustomCursor() {
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
       window.removeEventListener('click', handleClick);
+      clearInterval(waveInterval);
     };
-  }, []);
+  }, [mousePosition.x, mousePosition.y]);
 
   return (
     <>
+      {/* Continuous Mouse Trail Waves */}
+      <AnimatePresence>
+        {waves.map((wave) => (
+          <motion.div
+            key={wave.id}
+            className="fixed pointer-events-none z-[9998]"
+            style={{
+              left: wave.x,
+              top: wave.y,
+            }}
+            initial={{ scale: 0, opacity: 0.6 }}
+            animate={{ scale: 2.5, opacity: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 2, ease: 'easeOut' }}
+          >
+            <div
+              className="absolute rounded-full border border-primary/40"
+              style={{
+                width: 50,
+                height: 50,
+                transform: 'translate(-50%, -50%)',
+                boxShadow: '0 0 15px rgba(0, 255, 65, 0.3)',
+              }}
+            />
+          </motion.div>
+        ))}
+      </AnimatePresence>
+
       {/* Click Ripple Waves */}
       <AnimatePresence>
         {ripples.map((ripple) => (
