@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import {
   SiPython,
   SiJavascript,
@@ -20,7 +20,6 @@ import {
 export default function Skills() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.2 });
-  const [statsError, setStatsError] = useState<{ [key: string]: boolean }>({});
   
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -112,63 +111,6 @@ export default function Skills() {
             />
           </motion.div>
 
-          {/* GitHub Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mb-12 p-6 border rounded-lg backdrop-blur-sm"
-            style={{ 
-              borderColor: borderColor,
-              backgroundColor: cardBackgroundColor
-            }}
-          >
-            <h3 className="text-2xl font-bold text-primary mb-6 text-center">GitHub Statistics</h3>
-            <div className="grid md:grid-cols-2 gap-6">
-              {!statsError.stats && (
-                <div className="flex justify-center">
-                  <img 
-                    src="https://github-readme-stats.vercel.app/api?username=venkatramks&show_icons=true&theme=radical&hide_border=true&bg_color=00000000&title_color=00ff41&icon_color=00ff41&text_color=ffffff"
-                    alt="GitHub Stats"
-                    className="rounded-lg w-full"
-                    onError={() => setStatsError(prev => ({ ...prev, stats: true }))}
-                  />
-                </div>
-              )}
-              {!statsError.streak && (
-                <div className="flex justify-center">
-                  <img 
-                    src="https://streak-stats.demolab.com?user=venkatramks&theme=dark&hide_border=true&background=00000000&ring=00ff41&fire=00ff41&currStreakLabel=00ff41"
-                    alt="GitHub Streak"
-                    className="rounded-lg w-full"
-                    onError={() => setStatsError(prev => ({ ...prev, streak: true }))}
-                  />
-                </div>
-              )}
-            </div>
-            {!statsError.langs && (
-              <div className="mt-6 flex justify-center">
-                <img 
-                  src="https://github-readme-stats.vercel.app/api/top-langs/?username=venkatramks&layout=compact&theme=radical&hide_border=true&bg_color=00000000&title_color=00ff41&text_color=ffffff"
-                  alt="Top Languages"
-                  className="rounded-lg"
-                  onError={() => setStatsError(prev => ({ ...prev, langs: true }))}
-                />
-              </div>
-            )}
-            {statsError.stats && statsError.streak && statsError.langs && (
-              <div className="text-center text-gray-400 py-4">
-                <p className="mb-2">GitHub stats temporarily unavailable</p>
-                <a 
-                  href="https://github.com/venkatramks" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline"
-                >
-                  View my GitHub profile directly →
-                </a>
-              </div>
-            )}
           </motion.div>
 
           {/* Skills Grid */}
