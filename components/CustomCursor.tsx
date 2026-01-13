@@ -1,11 +1,18 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
+
+interface Ripple {
+  x: number;
+  y: number;
+  id: number;
+}
 
 export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isClicking, setIsClicking] = useState(false);
+  const [ripples, setRipples] = useState<Ripple[]>([]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -15,19 +22,63 @@ export default function CustomCursor() {
     const handleMouseDown = () => setIsClicking(true);
     const handleMouseUp = () => setIsClicking(false);
 
+    const handleClick = (e: MouseEvent) => {
+      const newRipple = {
+        x: e.clientX,
+        y: e.clientY,
+        id: Date.now(),
+      };
+      setRipples((prev) => [...prev, newRipple]);
+      
+      // Remove ripple after animation completes
+      setTimeout(() => {
+        setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
+      }, 1000);
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mousedown', handleMouseDown);
     window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('click', handleClick);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('click', handleClick);
     };
   }, []);
 
   return (
     <>
+      {/* Click Ripple Waves */}
+      <AnimatePresence>
+        {ripples.map((ripple) => (
+          <motion.div
+            key={ripple.id}
+            className="fixed pointer-events-none z-[9999]"
+            style={{
+              left: ripple.x,
+              top: ripple.y,
+            }}
+            initial={{ scale: 0, opacity: 1 }}
+            animate={{ scale: 3, opacity: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+          >
+            <div
+              className="absolute rounded-full border-2 border-primary"
+              style={{
+                width: 40,
+                height: 40,
+                transform: 'translate(-50%, -50%)',
+                boxShadow: '0 0 20px rgba(0, 255, 65, 0.6)',
+              }}
+            />
+          </motion.div>
+        ))}
+      </AnimatePresence>
+
       {/* Outer ring - transparent with green border */}
       <motion.div
         className="fixed pointer-events-none z-[10000]"
