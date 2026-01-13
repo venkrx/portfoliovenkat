@@ -33,7 +33,7 @@ const projects: Project[] = [
     id: 2,
     name: 'Portfolio Website',
     description: 'Modern portfolio with flashy UI, circuit animations, and Terminal Industries-inspired design',
-    github_url: 'https://github.com/venkrx/portfoliovenkat',
+    github_url: 'https://github.com/venkatramks',
     demo_url: '',
     language: 'TypeScript',
     stars: 0,
