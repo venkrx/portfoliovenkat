@@ -111,8 +111,6 @@ export default function Skills() {
             />
           </motion.div>
 
-          </motion.div>
-
           {/* Skills Grid */}
           <div className="grid md:grid-cols-3 gap-8">
             {skillCategories.map((category, categoryIndex) => (
