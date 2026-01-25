@@ -130,7 +130,7 @@ export default function CustomCursor() {
         ))}
       </AnimatePresence>
 
-      {/* Outer ring - transparent with green border */}
+      {/* Shadow-like cursor - irregular blob shape */}
       <motion.div
         className="fixed pointer-events-none z-[10000]"
         style={{
@@ -138,28 +138,30 @@ export default function CustomCursor() {
           top: mousePosition.y,
         }}
         animate={{
-          scale: isClicking ? 0.8 : 1,
+          scale: isClicking ? 1.5 : 1,
+          rotate: isClicking ? 180 : 0,
         }}
         transition={{
           type: 'spring',
-          stiffness: 400,
-          damping: 25,
+          stiffness: 300,
+          damping: 20,
         }}
       >
         <div
-          className="absolute rounded-full border-2 border-primary"
+          className="absolute"
           style={{
-            width: 32,
-            height: 32,
+            width: 20,
+            height: 20,
             transform: 'translate(-50%, -50%)',
-            backgroundColor: 'rgba(0, 255, 65, 0.05)',
-            boxShadow: '0 0 20px 5px rgba(0, 255, 65, 0.4), 0 0 40px 10px rgba(0, 255, 65, 0.2)',
-            filter: 'drop-shadow(0 0 10px rgba(0, 255, 65, 0.5))',
+            background: 'radial-gradient(circle, rgba(0, 255, 65, 0.4) 0%, rgba(0, 255, 65, 0.2) 40%, transparent 70%)',
+            borderRadius: '40% 60% 70% 30% / 40% 50% 60% 50%',
+            filter: 'blur(4px)',
+            boxShadow: '0 0 20px 8px rgba(0, 255, 65, 0.3), 0 0 40px 12px rgba(0, 255, 65, 0.15)',
           }}
         />
       </motion.div>
 
-      {/* Inner dot - semi-transparent green with shadow */}
+      {/* Small glowing core */}
       <motion.div
         className="fixed pointer-events-none z-[10001]"
         style={{
@@ -168,6 +170,7 @@ export default function CustomCursor() {
         }}
         animate={{
           scale: isClicking ? 0.5 : 1,
+          opacity: isClicking ? 0.8 : 1,
         }}
         transition={{
           type: 'spring',
@@ -176,14 +179,15 @@ export default function CustomCursor() {
         }}
       >
         <div
-          className="absolute rounded-full"
+          className="absolute"
           style={{
-            width: 6,
-            height: 6,
+            width: 4,
+            height: 4,
             transform: 'translate(-50%, -50%)',
-            backgroundColor: 'rgba(0, 255, 65, 0.8)',
-            boxShadow: '0 0 15px 3px rgba(0, 255, 65, 0.7), 0 0 25px 5px rgba(0, 255, 65, 0.4)',
-            filter: 'drop-shadow(0 0 8px rgba(0, 255, 65, 0.8))',
+            background: 'rgba(0, 255, 65, 0.9)',
+            borderRadius: '50%',
+            boxShadow: '0 0 10px 2px rgba(0, 255, 65, 0.6)',
+            filter: 'blur(0.5px)',
           }}
         />
       </motion.div>
