@@ -108,7 +108,6 @@ export default function About() {
                 { label: 'Projects Completed', value: '15+' },
                 { label: 'Technologies', value: '20+' },
                 { label: 'Years of Learning', value: '3+' },
-                { label: 'Coffee Consumed', value: '∞' },
               ].map((stat, index) => (
                 <motion.div
                   key={stat.label}
