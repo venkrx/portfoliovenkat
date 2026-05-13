@@ -16,7 +16,6 @@ interface Project {
   topics: string[];
 }
 
-// Add your projects here - update this array whenever you add new projects
 const projects: Project[] = [
   {
     id: 1,
@@ -86,19 +85,15 @@ const projects: Project[] = [
   },
 ];
 
+const accentColors = ['#00ff41', '#0ff', '#a855f7', '#ec4899', '#00ff41', '#0ff'];
+const accentGlows = [
+  'rgba(0,255,65,0.12)', 'rgba(0,255,255,0.12)', 'rgba(168,85,247,0.12)',
+  'rgba(236,72,153,0.12)', 'rgba(0,255,65,0.12)', 'rgba(0,255,255,0.12)',
+];
+
 export default function Projects() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, amount: 0.2 });
-
-  const gradients = [
-    'from-primary to-accent',
-    'from-accent to-accent-purple',
-    'from-accent-purple to-accent-pink',
-    'from-accent-pink to-primary',
-    'from-primary to-accent-purple',
-    'from-accent to-accent-pink',
-  ];
-
+  const isInView = useInView(ref, { once: false, amount: 0.15 });
 
   return (
     <section id="projects" className="relative py-20 md:py-32" ref={ref}>
@@ -115,98 +110,131 @@ export default function Projects() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <h2
+              className="text-4xl md:text-5xl font-bold mb-4"
+              style={{ color: 'var(--text-heading)' }}
+            >
               <span className="text-primary">{'<'}</span>
               Featured Projects
               <span className="text-primary">{' />'}</span>
             </h2>
-            <div className="h-1 w-20 bg-primary mx-auto" />
+            <div className="h-1 w-20 bg-primary mx-auto rounded-full" />
           </motion.div>
 
           {/* Projects Grid */}
-          <div className="grid md:grid-cols-2 gap-8">
-            {projects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
-                className="group relative p-6 border border-primary/20 rounded-lg bg-black/30 backdrop-blur-sm hover:border-primary transition-all duration-300 overflow-hidden"
-              >
-                {/* Gradient Background */}
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${gradients[index % gradients.length]} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
-                />
+          <div className="grid md:grid-cols-2 gap-7">
+            {projects.map((project, index) => {
+              const accent = accentColors[index % accentColors.length];
+              const glow = accentGlows[index % accentGlows.length];
+              return (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                  transition={{ duration: 0.6, delay: index * 0.08 }}
+                  whileHover={{ y: -8 }}
+                  className="group relative p-6 rounded-2xl backdrop-blur-sm overflow-hidden transition-all duration-300"
+                  style={{
+                    border: '1px solid var(--border-primary)',
+                    backgroundColor: 'var(--bg-card)',
+                    boxShadow: 'var(--shadow-card)',
+                  }}
+                  onMouseEnter={e => {
+                    const el = e.currentTarget as HTMLElement;
+                    el.style.borderColor = accent;
+                    el.style.boxShadow = `0 12px 40px ${glow}`;
+                  }}
+                  onMouseLeave={e => {
+                    const el = e.currentTarget as HTMLElement;
+                    el.style.borderColor = 'var(--border-primary)';
+                    el.style.boxShadow = 'var(--shadow-card)';
+                  }}
+                >
+                  {/* Gradient hover overlay */}
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none"
+                    style={{ background: `radial-gradient(ellipse at top right, ${glow} 0%, transparent 70%)` }}
+                  />
 
-                <div className="relative z-10">
-                  {/* Project Title */}
-                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-primary transition-colors duration-300">
-                    {project.name}
-                  </h3>
+                  <div className="relative z-10">
+                    {/* Top accent bar */}
+                    <div className="w-8 h-1 rounded-full mb-4" style={{ backgroundColor: accent }} />
 
-                  {/* Description */}
-                  <p className="text-gray-400 mb-4 leading-relaxed min-h-[48px]">
-                    {project.description}
-                  </p>
-
-                  {/* Stats */}
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="flex items-center gap-1 text-gray-400">
-                      <FaStar className="text-yellow-500" />
-                      <span className="text-sm">{project.stars}</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-gray-400">
-                      <FaCodeBranch className="text-primary" />
-                      <span className="text-sm">{project.forks}</span>
-                    </div>
-                    {project.language && (
-                      <span className="text-sm text-accent">{project.language}</span>
-                    )}
-                  </div>
-
-                  {/* Topics/Technologies */}
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.topics.slice(0, 5).map((topic) => (
-                      <span
-                        key={topic}
-                        className="px-3 py-1 text-sm bg-primary/10 text-primary border border-primary/30 rounded-full"
-                      >
-                        {topic}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Links */}
-                  <div className="flex gap-4">
-                    <motion.a
-                      href={project.github_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-2 text-gray-300 hover:text-primary transition-colors duration-300"
+                    <h3
+                      className="text-xl font-bold mb-2 transition-colors duration-300"
+                      style={{ color: 'var(--text-heading)' }}
+                      onMouseEnter={e => ((e.target as HTMLElement).style.color = accent)}
+                      onMouseLeave={e => ((e.target as HTMLElement).style.color = 'var(--text-heading)')}
                     >
-                      <FaGithub className="text-xl" />
-                      <span>Code</span>
-                    </motion.a>
-                    {project.demo_url && (
+                      {project.name}
+                    </h3>
+
+                    <p className="mb-4 leading-relaxed min-h-[48px] text-sm" style={{ color: 'var(--text-muted)' }}>
+                      {project.description}
+                    </p>
+
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="flex items-center gap-1.5" style={{ color: 'var(--text-muted)' }}>
+                        <FaStar className="text-yellow-500" size={12} />
+                        <span className="text-xs">{project.stars}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5" style={{ color: 'var(--text-muted)' }}>
+                        <FaCodeBranch className="text-primary" size={12} />
+                        <span className="text-xs">{project.forks}</span>
+                      </div>
+                      {project.language && (
+                        <span className="text-xs font-medium text-accent">{project.language}</span>
+                      )}
+                    </div>
+
+                    <div className="flex flex-wrap gap-2 mb-5">
+                      {project.topics.slice(0, 5).map(topic => (
+                        <span
+                          key={topic}
+                          className="px-2.5 py-0.5 text-xs rounded-full font-medium"
+                          style={{
+                            backgroundColor: `${accent}12`,
+                            color: accent,
+                            border: `1px solid ${accent}30`,
+                          }}
+                        >
+                          {topic}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="flex gap-4">
                       <motion.a
-                        href={project.demo_url}
+                        href={project.github_url}
                         target="_blank"
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="flex items-center gap-2 text-gray-300 hover:text-primary transition-colors duration-300"
+                        className="flex items-center gap-2 text-sm transition-colors duration-200 hover:text-primary"
+                        style={{ color: 'var(--text-muted)' }}
                       >
-                        <FaExternalLinkAlt className="text-lg" />
-                        <span>Demo</span>
+                        <FaGithub className="text-lg" />
+                        Code
                       </motion.a>
-                    )}
+                      {project.demo_url && (
+                        <motion.a
+                          href={project.demo_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="flex items-center gap-2 text-sm transition-colors duration-200 hover:text-primary"
+                          style={{ color: 'var(--text-muted)' }}
+                        >
+                          <FaExternalLinkAlt className="text-base" />
+                          Demo
+                        </motion.a>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
         </motion.div>
       </div>

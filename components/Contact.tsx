@@ -7,67 +7,57 @@ import { FaEnvelope, FaLinkedin, FaGithub, FaInstagram } from 'react-icons/fa';
 export default function Contact() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.3 });
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  });
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [statusMessage, setStatusMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
-    
     try {
       const response = await fetch('https://formspree.io/f/xkgddaav', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
-
       if (response.ok) {
         setStatus('success');
-        setStatusMessage('Message sent successfully! I\'ll get back to you soon.');
+        setStatusMessage("Message sent! I'll get back to you soon.");
         setFormData({ name: '', email: '', message: '' });
       } else {
-        setStatus('error');
-        setStatusMessage('Failed to send message. Please try emailing me directly.');
+        throw new Error();
       }
-    } catch (error) {
+    } catch {
       setStatus('error');
-      setStatusMessage('Failed to send message. Please try emailing me directly.');
+      setStatusMessage('Failed to send. Please email me directly.');
     }
-
-    // Reset status after 5 seconds
-    setTimeout(() => {
-      setStatus('idle');
-      setStatusMessage('');
-    }, 5000);
+    setTimeout(() => { setStatus('idle'); setStatusMessage(''); }, 5000);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const inputStyle = {
+    backgroundColor: 'var(--bg-input)',
+    border: '1px solid var(--border-primary)',
+    color: 'var(--text-body)',
+    borderRadius: '0.75rem',
+    padding: '0.75rem 1rem',
+    width: '100%',
+    outline: 'none',
+    transition: 'border-color 0.2s',
+  } as React.CSSProperties;
+
   const socialLinks = [
-    { icon: FaGithub, href: 'https://github.com/venkatramks', label: 'GitHub', color: 'hover:text-primary' },
-    { icon: FaLinkedin, href: 'https://www.linkedin.com/in/venkatram-krishnapuram/', label: 'LinkedIn', color: 'hover:text-blue-500' },
-    { icon: FaInstagram, href: 'https://www.instagram.com/_ks_venkatram_/', label: 'Instagram', color: 'hover:text-pink-500' },
-    { icon: FaEnvelope, href: 'mailto:venkatram.ks@gmail.com', label: 'Email', color: 'hover:text-accent' },
+    { icon: FaGithub, href: 'https://github.com/venkatramks', label: 'GitHub', color: '#00ff41' },
+    { icon: FaLinkedin, href: 'https://www.linkedin.com/in/venkatram-krishnapuram/', label: 'LinkedIn', color: '#0A66C2' },
+    { icon: FaInstagram, href: 'https://www.instagram.com/_ks_venkatram_/', label: 'Instagram', color: '#E1306C' },
+    { icon: FaEnvelope, href: 'mailto:venkatram.ks@gmail.com', label: 'Email', color: '#0ff' },
   ];
 
   return (
-    <section id="contact" className="relative py-20 md:py-32 bg-black/30" ref={ref}>
+    <section id="contact" className="relative py-20 md:py-32" ref={ref}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0 }}
@@ -81,13 +71,16 @@ export default function Contact() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <h2
+              className="text-4xl md:text-5xl font-bold mb-4"
+              style={{ color: 'var(--text-heading)' }}
+            >
               <span className="text-primary">{'<'}</span>
               Get In Touch
               <span className="text-primary">{' />'}</span>
             </h2>
-            <div className="h-1 w-20 bg-primary mx-auto mb-6" />
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            <div className="h-1 w-20 bg-primary mx-auto mb-6 rounded-full" />
+            <p className="text-xl max-w-2xl mx-auto" style={{ color: 'var(--text-muted)' }}>
               Have a project in mind or want to collaborate? Feel free to reach out!
             </p>
           </motion.div>
@@ -99,50 +92,53 @@ export default function Contact() {
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-body)' }}>
                     Name
                   </label>
                   <input
                     type="text"
-                    id="name"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/50 border border-primary/30 rounded-lg focus:outline-none focus:border-primary transition-colors duration-300 text-white"
                     placeholder="Your Name"
+                    style={inputStyle}
+                    onFocus={e => (e.target.style.borderColor = '#00ff41')}
+                    onBlur={e => (e.target.style.borderColor = 'var(--border-primary)')}
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-body)' }}>
                     Email
                   </label>
                   <input
                     type="email"
-                    id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/50 border border-primary/30 rounded-lg focus:outline-none focus:border-primary transition-colors duration-300 text-white"
                     placeholder="your.email@example.com"
+                    style={inputStyle}
+                    onFocus={e => (e.target.style.borderColor = '#00ff41')}
+                    onBlur={e => (e.target.style.borderColor = 'var(--border-primary)')}
                   />
                 </div>
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-body)' }}>
                     Message
                   </label>
                   <textarea
-                    id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     required
                     rows={5}
-                    className="w-full px-4 py-3 bg-black/50 border border-primary/30 rounded-lg focus:outline-none focus:border-primary transition-colors duration-300 text-white resize-none"
                     placeholder="Your message..."
+                    style={{ ...inputStyle, resize: 'none' }}
+                    onFocus={e => (e.target.style.borderColor = '#00ff41')}
+                    onBlur={e => (e.target.style.borderColor = 'var(--border-primary)')}
                   />
                 </div>
                 <motion.button
@@ -150,25 +146,26 @@ export default function Contact() {
                   disabled={status === 'loading'}
                   whileHover={{ scale: status === 'loading' ? 1 : 1.02 }}
                   whileTap={{ scale: status === 'loading' ? 1 : 0.98 }}
-                  className={`w-full px-8 py-4 font-semibold rounded-lg transition-all duration-300 glow-box ${
-                    status === 'loading'
-                      ? 'bg-gray-600 cursor-not-allowed'
-                      : 'bg-primary text-black hover:bg-primary-dark'
-                  }`}
+                  className="w-full py-3.5 font-semibold rounded-xl transition-all duration-300 glow-box"
+                  style={{
+                    backgroundColor: status === 'loading' ? 'rgba(100,100,100,0.5)' : '#00ff41',
+                    color: '#000',
+                    cursor: status === 'loading' ? 'not-allowed' : 'none',
+                  }}
                 >
-                  {status === 'loading' ? 'Sending...' : 'Send Message'}
+                  {status === 'loading' ? 'Sending…' : 'Send Message'}
                 </motion.button>
-                
-                {/* Status Messages */}
+
                 {statusMessage && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className={`p-4 rounded-lg text-center ${
-                      status === 'success'
-                        ? 'bg-green-500/20 border border-green-500/50 text-green-400'
-                        : 'bg-red-500/20 border border-red-500/50 text-red-400'
-                    }`}
+                    className="p-4 rounded-xl text-center text-sm"
+                    style={{
+                      backgroundColor: status === 'success' ? 'rgba(0,255,65,0.1)' : 'rgba(239,68,68,0.1)',
+                      border: `1px solid ${status === 'success' ? 'rgba(0,255,65,0.4)' : 'rgba(239,68,68,0.4)'}`,
+                      color: status === 'success' ? '#00ff41' : '#f87171',
+                    }}
                   >
                     {statusMessage}
                   </motion.div>
@@ -181,42 +178,62 @@ export default function Contact() {
               initial={{ opacity: 0, x: 30 }}
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="space-y-8"
+              className="space-y-6"
             >
-              <div className="p-6 border border-primary/20 rounded-lg bg-black/30 backdrop-blur-sm">
-                <h3 className="text-2xl font-bold text-primary mb-4">Let's Connect!</h3>
-                <p className="text-gray-400 leading-relaxed mb-6">
-                  I'm always interested in hearing about new projects, collaboration opportunities, 
-                  or just having a chat about AI and technology. Don't hesitate to reach out!
+              <div
+                className="p-6 rounded-2xl backdrop-blur-sm"
+                style={{ border: '1px solid var(--border-primary)', backgroundColor: 'var(--bg-card)' }}
+              >
+                <h3 className="text-xl font-bold text-primary mb-3">Let's Connect!</h3>
+                <p className="leading-relaxed mb-5 text-sm" style={{ color: 'var(--text-muted)' }}>
+                  I'm always open to new projects, collaboration opportunities, or just a chat about AI and
+                  technology. Don't hesitate to reach out!
                 </p>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3 text-gray-300">
-                    <FaEnvelope className="text-primary text-xl" />
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 text-sm" style={{ color: 'var(--text-body)' }}>
+                    <FaEnvelope className="text-primary" />
                     <span>venkatram.ks@gmail.com</span>
                   </div>
-                  <div className="flex items-center gap-3 text-gray-300">
-                    <span className="text-primary text-xl">📍</span>
+                  <div className="flex items-center gap-3 text-sm" style={{ color: 'var(--text-body)' }}>
+                    <span className="text-primary">📍</span>
                     <span>Chennai, Tamil Nadu, India</span>
                   </div>
                 </div>
               </div>
 
-              {/* Social Links */}
-              <div className="p-6 border border-primary/20 rounded-lg bg-black/30 backdrop-blur-sm">
-                <h3 className="text-xl font-bold text-white mb-4">Follow Me</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  {socialLinks.map((social) => (
+              <div
+                className="p-6 rounded-2xl backdrop-blur-sm"
+                style={{ border: '1px solid var(--border-primary)', backgroundColor: 'var(--bg-card)' }}
+              >
+                <h3 className="text-lg font-bold mb-4" style={{ color: 'var(--text-heading)' }}>Follow Me</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {socialLinks.map(social => (
                     <motion.a
                       key={social.label}
                       href={social.href}
                       target={social.label !== 'Email' ? '_blank' : undefined}
                       rel={social.label !== 'Email' ? 'noopener noreferrer' : undefined}
-                      whileHover={{ scale: 1.05, y: -5 }}
+                      whileHover={{ scale: 1.05, y: -4 }}
                       whileTap={{ scale: 0.95 }}
-                      className={`flex items-center gap-3 p-3 border border-primary/20 rounded-lg bg-black/20 text-gray-300 ${social.color} transition-all duration-300`}
+                      className="flex items-center gap-2.5 p-3 rounded-xl text-sm transition-all duration-200"
+                      style={{
+                        border: '1px solid var(--border-primary)',
+                        backgroundColor: 'var(--bg-card)',
+                        color: 'var(--text-muted)',
+                      }}
+                      onMouseEnter={e => {
+                        const el = e.currentTarget as HTMLElement;
+                        el.style.borderColor = social.color;
+                        el.style.color = social.color;
+                      }}
+                      onMouseLeave={e => {
+                        const el = e.currentTarget as HTMLElement;
+                        el.style.borderColor = 'var(--border-primary)';
+                        el.style.color = 'var(--text-muted)';
+                      }}
                     >
-                      <social.icon className="text-2xl" />
-                      <span className="text-sm">{social.label}</span>
+                      <social.icon className="text-xl flex-shrink-0" />
+                      <span>{social.label}</span>
                     </motion.a>
                   ))}
                 </div>
@@ -229,14 +246,13 @@ export default function Contact() {
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-16 pt-8 border-t border-primary/20 text-center"
+            className="mt-16 pt-8 text-center text-sm"
+            style={{ borderTop: '1px solid var(--border-primary)', color: 'var(--text-muted)' }}
           >
-            <p className="text-gray-400">
-              © 2025 K S Venkatram. Built with{' '}
-              <span className="text-primary">Next.js</span>,{' '}
-              <span className="text-primary">TypeScript</span>, and{' '}
-              <span className="text-primary">Framer Motion</span>
-            </p>
+            © 2025 K S Venkatram. Built with{' '}
+            <span className="text-primary">Next.js</span>,{' '}
+            <span className="text-primary">TypeScript</span>, and{' '}
+            <span className="text-primary">Framer Motion</span>
           </motion.div>
         </motion.div>
       </div>
