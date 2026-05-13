@@ -4,42 +4,48 @@
 
 /* ── Dark theme (default) ── */
 html, html.dark {
-  --bg-base: #000000;
-  --bg-card: rgba(0, 0, 0, 0.35);
-  --bg-card-solid: #0a0a0a;
-  --bg-input: rgba(0, 0, 0, 0.5);
-  --text-heading: #ffffff;
-  --text-body: #d1d5db;
-  --text-muted: #9ca3af;
-  --border-primary: rgba(0, 255, 65, 0.2);
-  --border-hover: rgba(0, 255, 65, 0.9);
-  --grid-color: rgba(0, 255, 65, 0.1);
-  --scrollbar-track: #0a0a0a;
-  --scrollbar-thumb: rgba(0, 255, 65, 0.3);
-  --nav-bg: rgba(0, 0, 0, 0.8);
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
-  --background: #000000;
-  --foreground: #ffffff;
+  --bg-base: #0d1117;
+  --bg-card: rgba(22, 27, 34, 0.92);
+  --bg-card-solid: #161b22;
+  --bg-input: rgba(22, 27, 34, 0.85);
+  --text-heading: #f0f6fc;
+  --text-body: #c9d1d9;
+  --text-muted: #8b949e;
+  --border-primary: rgba(0, 255, 65, 0.16);
+  --border-hover: rgba(0, 255, 65, 0.8);
+  --grid-color: rgba(0, 255, 65, 0.055);
+  --scrollbar-track: #161b22;
+  --scrollbar-thumb: rgba(0, 255, 65, 0.25);
+  --nav-bg: rgba(13, 17, 23, 0.92);
+  --shadow-card: 0 2px 20px rgba(0, 0, 0, 0.45);
+  --background: #0d1117;
+  --foreground: #f0f6fc;
+  /* Semantic color tokens */
+  --color-primary: #00ff41;
+  --color-accent: #00e5ff;
 }
 
 /* ── Light theme ── */
 html.light {
-  --bg-base: #f2faf2;
-  --bg-card: rgba(255, 255, 255, 0.7);
+  --bg-base: #f6f8fa;
+  --bg-card: rgba(255, 255, 255, 0.9);
   --bg-card-solid: #ffffff;
-  --bg-input: rgba(255, 255, 255, 0.8);
-  --text-heading: #0d1f0d;
-  --text-body: #374151;
-  --text-muted: #6b7280;
-  --border-primary: rgba(0, 180, 60, 0.3);
-  --border-hover: rgba(0, 160, 50, 0.9);
-  --grid-color: rgba(0, 200, 65, 0.12);
-  --scrollbar-track: #e8f5e8;
-  --scrollbar-thumb: rgba(0, 200, 65, 0.4);
-  --nav-bg: rgba(242, 250, 242, 0.85);
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.1);
-  --background: #f2faf2;
-  --foreground: #0d1f0d;
+  --bg-input: rgba(255, 255, 255, 0.95);
+  --text-heading: #0d1117;
+  --text-body: #24292f;
+  --text-muted: #57606a;
+  --border-primary: rgba(0, 140, 50, 0.2);
+  --border-hover: rgba(0, 140, 50, 0.7);
+  --grid-color: rgba(0, 140, 50, 0.065);
+  --scrollbar-track: #e8eceb;
+  --scrollbar-thumb: rgba(0, 140, 50, 0.28);
+  --nav-bg: rgba(246, 248, 250, 0.94);
+  --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.07);
+  --background: #f6f8fa;
+  --foreground: #0d1117;
+  /* Semantic color tokens — richer, readable on light bg */
+  --color-primary: #008f43;
+  --color-accent: #0077a8;
 }
 
 * {
@@ -72,6 +78,9 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 255, 65, 0.6);
 }
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 148, 50, 0.55);
+}
 body {
   -ms-overflow-style: none;
   scrollbar-width: thin;
@@ -80,20 +89,27 @@ body {
 
 /* ── Glow effects ── */
 .glow-text {
-  text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41, 0 0 30px #00ff41;
+  text-shadow: 0 0 8px var(--color-primary), 0 0 20px var(--color-primary);
 }
-
 html.light .glow-text {
-  text-shadow: 0 0 8px rgba(0, 200, 65, 0.7), 0 0 16px rgba(0, 200, 65, 0.4);
+  text-shadow: 0 0 6px rgba(0, 143, 67, 0.55), 0 0 16px rgba(0, 143, 67, 0.28);
 }
 
 .glow-box {
-  box-shadow: 0 0 10px rgba(0, 255, 65, 0.5), 0 0 20px rgba(0, 255, 65, 0.3);
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.45), 0 0 22px rgba(0, 255, 65, 0.22);
+}
+html.light .glow-box {
+  box-shadow: 0 0 8px rgba(0, 143, 67, 0.28), 0 0 18px rgba(0, 143, 67, 0.14);
 }
 
-html.light .glow-box {
-  box-shadow: 0 0 8px rgba(0, 200, 65, 0.4), 0 0 16px rgba(0, 200, 65, 0.2);
-}
+/* ── Theme-aware overrides for Tailwind color utilities ── */
+/* These let text-primary / bg-primary / text-accent adapt per theme */
+.text-primary                { color: var(--color-primary)            !important; }
+.hover\:text-primary:hover   { color: var(--color-primary)            !important; }
+.bg-primary                  { background-color: var(--color-primary) !important; }
+.border-primary              { border-color: var(--color-primary)     !important; }
+.text-accent                 { color: var(--color-accent)             !important; }
+.border-accent               { border-color: var(--color-accent)      !important; }
 
 /* ── Theme-aware text utilities ── */
 .text-theme-heading  { color: var(--text-heading); }

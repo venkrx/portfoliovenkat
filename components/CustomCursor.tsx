@@ -9,19 +9,20 @@ interface Ripple {
   y: number;
 }
 
+// The bracket-corner "targeting scope" cursor
+// Four L-shaped corners that expand on hover, compress on click
 export default function CustomCursor() {
   const [isPointer, setIsPointer] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [ripples, setRipples] = useState<Ripple[]>([]);
 
-  // Raw cursor position — dot follows this exactly
-  const dotX = useMotionValue(-100);
-  const dotY = useMotionValue(-100);
+  const rawX = useMotionValue(-100);
+  const rawY = useMotionValue(-100);
 
-  // Ring follows with spring lag for magnetic feel
-  const ringX = useSpring(dotX, { stiffness: 120, damping: 16, mass: 0.6 });
-  const ringY = useSpring(dotY, { stiffness: 120, damping: 16, mass: 0.6 });
+  // Corners follow with a very slight spring lag for tactile feel
+  const cx = useSpring(rawX, { stiffness: 280, damping: 22, mass: 0.4 });
+  const cy = useSpring(rawY, { stiffness: 280, damping: 22, mass: 0.4 });
 
   const removeRipple = useCallback((id: number) => {
     setRipples(prev => prev.filter(r => r.id !== id));
@@ -29,25 +30,18 @@ export default function CustomCursor() {
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
-      dotX.set(e.clientX);
-      dotY.set(e.clientY);
-
+      rawX.set(e.clientX);
+      rawY.set(e.clientY);
       const el = e.target as HTMLElement;
-      const style = window.getComputedStyle(el);
       setIsPointer(
-        style.cursor === 'pointer' ||
+        window.getComputedStyle(el).cursor === 'pointer' ||
         !!el.closest('a, button, [role="button"], [tabindex]')
       );
     };
-
     const onDown = (e: MouseEvent) => {
       setIsClicking(true);
-      setRipples(prev => [
-        ...prev.slice(-4), // keep last 4 max
-        { id: Date.now(), x: e.clientX, y: e.clientY },
-      ]);
+      setRipples(prev => [...prev.slice(-3), { id: Date.now(), x: e.clientX, y: e.clientY }]);
     };
-
     const onUp = () => setIsClicking(false);
     const onLeave = () => setIsHidden(true);
     const onEnter = () => setIsHidden(false);
@@ -57,7 +51,6 @@ export default function CustomCursor() {
     window.addEventListener('mouseup', onUp);
     document.addEventListener('mouseleave', onLeave);
     document.addEventListener('mouseenter', onEnter);
-
     return () => {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mousedown', onDown);
@@ -65,91 +58,92 @@ export default function CustomCursor() {
       document.removeEventListener('mouseleave', onLeave);
       document.removeEventListener('mouseenter', onEnter);
     };
-  }, [dotX, dotY]);
+  }, [rawX, rawY]);
 
   if (isHidden) return null;
 
+  // Corner arm length and gap from center
+  const arm = isClicking ? 5 : isPointer ? 9 : 7;
+  const gap = isClicking ? 3 : isPointer ? 5 : 4;
+  const totalHalf = arm + gap; // distance from center to corner tip
+  const color = '#00ff41';
+  const glow = isPointer
+    ? `0 0 6px ${color}, 0 0 12px rgba(0,255,65,0.4)`
+    : `0 0 4px rgba(0,255,65,0.5)`;
+  const thickness = 1.5;
+
+  const cornerStyle = (top: boolean, left: boolean): React.CSSProperties => ({
+    position: 'absolute' as const,
+    width: arm,
+    height: arm,
+    borderTop: top ? `${thickness}px solid ${color}` : 'none',
+    borderBottom: !top ? `${thickness}px solid ${color}` : 'none',
+    borderLeft: left ? `${thickness}px solid ${color}` : 'none',
+    borderRight: !left ? `${thickness}px solid ${color}` : 'none',
+    ...(top && left ? { top: -totalHalf, left: -totalHalf } : {}),
+    ...(top && !left ? { top: -totalHalf, right: -totalHalf } : {}),
+    ...(!top && left ? { bottom: -totalHalf, left: -totalHalf } : {}),
+    ...(!top && !left ? { bottom: -totalHalf, right: -totalHalf } : {}),
+    filter: `drop-shadow(${glow})`,
+    transition: 'all 0.12s ease',
+  });
+
   return (
     <>
-      {/* ── Outer magnetic ring ── */}
-      <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9998]"
-        style={{
-          x: ringX,
-          y: ringY,
-          translateX: '-50%',
-          translateY: '-50%',
-        }}
-        animate={{
-          scale: isClicking ? 0.75 : isPointer ? 1.55 : 1,
-          opacity: 1,
-        }}
-        transition={{
-          scale: { type: 'spring', stiffness: 300, damping: 22 },
-        }}
-      >
-        <div
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: '50%',
-            border: `1.5px solid ${isPointer ? 'rgba(0,255,65,0.95)' : 'rgba(0,255,65,0.65)'}`,
-            boxShadow: isPointer
-              ? '0 0 18px rgba(0,255,65,0.45), inset 0 0 12px rgba(0,255,65,0.12)'
-              : '0 0 8px rgba(0,255,65,0.2)',
-            background: isPointer ? 'rgba(0,255,65,0.06)' : 'transparent',
-            transition: 'border-color 0.2s, box-shadow 0.2s, background 0.2s',
-          }}
-        />
-      </motion.div>
-
-      {/* ── Inner precision dot (mix-blend-mode for adaptive color) ── */}
+      {/* Scope brackets */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-[10000]"
         style={{
-          x: dotX,
-          y: dotY,
+          x: cx,
+          y: cy,
           translateX: '-50%',
           translateY: '-50%',
-          mixBlendMode: 'difference',
+          position: 'fixed',
         }}
-        animate={{
-          scale: isClicking ? 0.4 : isPointer ? 1.8 : 1,
-        }}
-        transition={{ type: 'spring', stiffness: 700, damping: 28 }}
       >
-        <div
-          style={{
-            width: 8,
-            height: 8,
-            borderRadius: '50%',
-            backgroundColor: '#ffffff',
-          }}
-        />
+        <div style={{ position: 'relative', width: 2, height: 2 }}>
+          {/* Four L-corners */}
+          <div style={cornerStyle(true, true)} />
+          <div style={cornerStyle(true, false)} />
+          <div style={cornerStyle(false, true)} />
+          <div style={cornerStyle(false, false)} />
+
+          {/* Center dot */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: isClicking ? 2 : isPointer ? 4 : 3,
+              height: isClicking ? 2 : isPointer ? 4 : 3,
+              borderRadius: '50%',
+              backgroundColor: color,
+              transform: 'translate(-50%, -50%)',
+              boxShadow: glow,
+              transition: 'all 0.1s ease',
+              mixBlendMode: 'normal',
+            }}
+          />
+        </div>
       </motion.div>
 
-      {/* ── Click ripples ── */}
+      {/* Click ripples */}
       {ripples.map(r => (
         <motion.div
           key={r.id}
-          className="fixed top-0 left-0 pointer-events-none z-[9997]"
-          style={{
-            x: r.x,
-            y: r.y,
-            translateX: '-50%',
-            translateY: '-50%',
-          }}
-          initial={{ scale: 0, opacity: 0.7 }}
-          animate={{ scale: 3.5, opacity: 0 }}
-          transition={{ duration: 0.55, ease: 'easeOut' }}
+          className="fixed top-0 left-0 pointer-events-none z-[9998]"
+          style={{ x: r.x, y: r.y, translateX: '-50%', translateY: '-50%' }}
+          initial={{ scale: 0, opacity: 0.8 }}
+          animate={{ scale: 4, opacity: 0 }}
+          transition={{ duration: 0.45, ease: 'easeOut' }}
           onAnimationComplete={() => removeRipple(r.id)}
         >
           <div
             style={{
-              width: 28,
-              height: 28,
+              width: 20,
+              height: 20,
               borderRadius: '50%',
-              border: '1.5px solid rgba(0,255,65,0.7)',
+              border: `1px solid ${color}`,
             }}
           />
         </motion.div>

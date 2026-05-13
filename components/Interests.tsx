@@ -10,48 +10,48 @@ const interests = [
     title: 'Large Language Models',
     description:
       'Exploring transformer architectures, RLHF, instruction fine-tuning, and building RAG systems that reason across large knowledge bases.',
-    color: '#00ff41',
-    glow: 'rgba(0,255,65,0.25)',
+    color: 'var(--color-primary)',
+    glow: 'rgba(0,200,80,0.18)',
   },
   {
     icon: FaEye,
     title: 'Computer Vision',
     description:
       'Object detection, image segmentation, and visual grounding — understanding the world through pixels with deep neural networks.',
-    color: '#0ff',
-    glow: 'rgba(0,255,255,0.2)',
+    color: 'var(--color-accent)',
+    glow: 'rgba(0,180,220,0.15)',
   },
   {
     icon: FaRobot,
     title: 'Agentic AI Systems',
     description:
       'Designing autonomous agents with tool use, planning, and multi-step reasoning that act intelligently in open-ended environments.',
-    color: '#a855f7',
-    glow: 'rgba(168,85,247,0.2)',
+    color: 'var(--color-primary)',
+    glow: 'rgba(0,200,80,0.18)',
   },
   {
     icon: FaSearch,
     title: 'NLP & Semantic Search',
     description:
       'Text understanding, dense embeddings, knowledge graphs, and retrieval systems that surface meaning — not just keywords.',
-    color: '#ec4899',
-    glow: 'rgba(236,72,153,0.2)',
+    color: 'var(--color-accent)',
+    glow: 'rgba(0,180,220,0.15)',
   },
   {
     icon: FaLayerGroup,
     title: 'Multimodal AI',
     description:
       'Bridging vision and language — building systems that see, read, and reason jointly across images, text, and audio.',
-    color: '#0ff',
-    glow: 'rgba(0,255,255,0.2)',
+    color: 'var(--color-accent)',
+    glow: 'rgba(0,180,220,0.15)',
   },
   {
     icon: FaMicrochip,
     title: 'Edge AI & MLOps',
     description:
       'Quantization, pruning, and efficient deployment of ML models on resource-constrained devices and production pipelines.',
-    color: '#00ff41',
-    glow: 'rgba(0,255,65,0.25)',
+    color: 'var(--color-primary)',
+    glow: 'rgba(0,200,80,0.18)',
   },
 ];
 

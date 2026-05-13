@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import CircuitBackground from './CircuitBackground';
 import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
@@ -35,7 +35,6 @@ function GlowLetter({ letter, index, totalLetters, progress }: any) {
 
 export default function Hero() {
   const sectionRef = useRef(null);
-  const [animationProgress, setAnimationProgress] = useState(0);
   const [animationsComplete, setAnimationsComplete] = useState(false);
   
   const progressValue = useMotionValue(0);
@@ -56,8 +55,7 @@ export default function Hero() {
       accumulatedScroll = Math.max(0, Math.min(scrollAmount, scrollThreshold));
       const progress = accumulatedScroll / scrollThreshold;
       progressValue.set(progress);
-      setAnimationProgress(progress);
-      
+
       // Mark complete when reached end
       if (progress >= 0.99) {
         setAnimationsComplete(true);
@@ -248,13 +246,13 @@ export default function Hero() {
               </motion.h1>
 
               {/* Tagline - fades in with scroll after name glows */}
-              <motion.div 
-                variants={itemVariants} 
+              <motion.div
+                variants={itemVariants}
                 className="mb-8"
                 style={{ opacity: contentOpacity }}
               >
                 <h2 className="text-3xl md:text-4xl font-light">
-                  <span className="text-white">AI Engineer</span>{' '}
+                  <span style={{ color: 'var(--text-heading)' }}>AI Engineer</span>{' '}
                   <span className="text-accent">& Tech Enthusiast</span>
                 </h2>
               </motion.div>
@@ -262,8 +260,8 @@ export default function Hero() {
               {/* Description - fades in with scroll after name glows */}
               <motion.p
                 variants={itemVariants}
-                className="text-lg md:text-xl max-w-3xl mb-12 leading-relaxed text-gray-300"
-                style={{ opacity: contentOpacity }}
+                className="text-lg md:text-xl max-w-3xl mb-12 leading-relaxed"
+                style={{ opacity: contentOpacity, color: 'var(--text-body)' }}
               >
                 <span>3rd Year AI Engineering Student at </span>
                 <span className="text-accent">Amrita Vishwa Vidyapeetham, Coimbatore</span>
@@ -323,7 +321,8 @@ export default function Hero() {
               rel={external ? 'noopener noreferrer' : undefined}
               whileHover={{ scale: 1.2, rotate: 5 }}
               whileTap={{ scale: 0.9 }}
-              className="text-3xl text-gray-400 hover:text-primary transition-colors duration-300"
+              className="text-3xl hover:text-primary transition-colors duration-300"
+              style={{ color: 'var(--text-muted)' }}
               aria-label={label}
             >
                 <Icon />

@@ -15,11 +15,12 @@ export default function Home() {
       <Navbar />
       <Hero />
 
+      {/* Alternating bg-base / bg-card-solid creates subtle visual rhythm */}
       <div style={{ backgroundColor: 'var(--bg-base)' }} className="relative z-10">
         <About />
       </div>
 
-      <div style={{ backgroundColor: 'var(--bg-base)' }} className="relative z-10">
+      <div style={{ backgroundColor: 'var(--bg-card-solid)' }} className="relative z-10">
         <Interests />
       </div>
 
@@ -27,11 +28,11 @@ export default function Home() {
         <Skills />
       </div>
 
-      <div style={{ backgroundColor: 'var(--bg-base)' }} className="relative z-10">
+      <div className="relative z-10">
         <Projects />
       </div>
 
-      <div style={{ backgroundColor: 'var(--bg-base)' }} className="relative z-10">
+      <div style={{ backgroundColor: 'var(--bg-card-solid)' }} className="relative z-10">
         <Experience />
       </div>
 
