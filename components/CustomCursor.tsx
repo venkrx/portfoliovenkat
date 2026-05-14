@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useMotionValue } from 'framer-motion';
 import { useEffect, useState, useCallback } from 'react';
 
 interface Ripple {
@@ -9,22 +9,17 @@ interface Ripple {
   y: number;
 }
 
+// Targeting-scope cursor — zero position lag (useMotionValue, no spring).
+// All visual state changes (size, glow, crosshair) use CSS transitions only.
 export default function CustomCursor() {
   const [isPointer, setIsPointer] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [ripples, setRipples] = useState<Ripple[]>([]);
 
-  const rawX = useMotionValue(-200);
-  const rawY = useMotionValue(-200);
-
-  // Inner dot: near-instant follow
-  const dotX = useSpring(rawX, { stiffness: 900, damping: 44, mass: 0.25 });
-  const dotY = useSpring(rawY, { stiffness: 900, damping: 44, mass: 0.25 });
-
-  // Outer ring: smooth lag — the "premium" parallax delay
-  const ringX = useSpring(rawX, { stiffness: 105, damping: 20, mass: 0.85 });
-  const ringY = useSpring(rawY, { stiffness: 105, damping: 20, mass: 0.85 });
+  // Direct motion values — no spring, follows mouse exactly
+  const x = useMotionValue(-200);
+  const y = useMotionValue(-200);
 
   const removeRipple = useCallback((id: number) => {
     setRipples(prev => prev.filter(r => r.id !== id));
@@ -32,8 +27,8 @@ export default function CustomCursor() {
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
-      rawX.set(e.clientX);
-      rawY.set(e.clientY);
+      x.set(e.clientX);
+      y.set(e.clientY);
       const el = e.target as HTMLElement;
       setIsPointer(
         window.getComputedStyle(el).cursor === 'pointer' ||
@@ -60,59 +55,84 @@ export default function CustomCursor() {
       document.removeEventListener('mouseleave', onLeave);
       document.removeEventListener('mouseenter', onEnter);
     };
-  }, [rawX, rawY]);
+  }, [x, y]);
 
   if (isHidden) return null;
 
+  // All transitions via CSS — no Framer spring on anything visual
+  const scale   = isClicking ? 0.62 : isPointer ? 1.55 : 1;
+  const opacity = isClicking ? 0.4  : isPointer ? 0.88 : 0.62;
+  const glow    = isPointer
+    ? '0 0 14px rgba(0,255,65,0.52), inset 0 0 8px rgba(0,255,65,0.07)'
+    : isClicking
+    ? '0 0 8px rgba(0,255,65,0.65)'
+    : '0 0 5px rgba(0,255,65,0.2)';
+  const innerFill = isPointer ? 'rgba(0,255,65,0.05)' : 'transparent';
+
+  // Crosshair arms retract when hovering interactive elements (ring expands like a lens)
+  const armW = isPointer ? 0 : 15;
+  const armH = isPointer ? 0 : 15;
+  const dotW = isClicking ? 7 : 4;
+
   return (
     <>
-      {/* Outer transparent ring — lags behind cursor, zooms on hover */}
+      {/* Single cursor element — position is exact, visuals use CSS transition */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-[10000]"
-        style={{ x: ringX, y: ringY, translateX: '-50%', translateY: '-50%' }}
-        animate={{
-          scale: isClicking ? 0.65 : isPointer ? 1.7 : 1,
-          opacity: isClicking ? 0.4 : isPointer ? 0.85 : 0.6,
-        }}
-        transition={{ type: 'spring', stiffness: 260, damping: 22, mass: 0.45 }}
+        style={{ x, y, translateX: '-50%', translateY: '-50%' }}
       >
         <div
           style={{
-            width: 38,
-            height: 38,
+            width: 30,
+            height: 30,
             borderRadius: '50%',
             border: '1.5px solid #00ff41',
-            backgroundColor: 'transparent',
-            boxShadow: isPointer
-              ? '0 0 12px rgba(0,255,65,0.5), inset 0 0 8px rgba(0,255,65,0.06)'
-              : '0 0 5px rgba(0,255,65,0.22)',
-            transition: 'box-shadow 0.22s ease',
+            backgroundColor: innerFill,
+            boxShadow: glow,
+            opacity,
+            transform: `scale(${scale})`,
+            transition: [
+              'transform 0.18s cubic-bezier(0.22,1,0.36,1)',
+              'opacity 0.18s ease',
+              'box-shadow 0.2s ease',
+              'background-color 0.2s ease',
+            ].join(', '),
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
-        />
-      </motion.div>
-
-      {/* Inner dot — precise fast follow, shrinks when ring zooms */}
-      <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[10001]"
-        style={{ x: dotX, y: dotY, translateX: '-50%', translateY: '-50%' }}
-        animate={{
-          scale: isClicking ? 2 : isPointer ? 0.3 : 1,
-          opacity: isPointer ? 0.6 : 1,
-        }}
-        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-      >
-        <div
-          style={{
-            width: 5,
-            height: 5,
+        >
+          {/* Horizontal crosshair arm */}
+          <div style={{
+            position: 'absolute',
+            width: armW,
+            height: 1,
+            backgroundColor: 'rgba(0,255,65,0.55)',
+            transition: 'width 0.14s ease',
+          }} />
+          {/* Vertical crosshair arm */}
+          <div style={{
+            position: 'absolute',
+            height: armH,
+            width: 1,
+            backgroundColor: 'rgba(0,255,65,0.55)',
+            transition: 'height 0.14s ease',
+          }} />
+          {/* Center precision dot */}
+          <div style={{
+            position: 'absolute',
+            width: dotW,
+            height: dotW,
             borderRadius: '50%',
             backgroundColor: '#00ff41',
-            boxShadow: '0 0 8px rgba(0,255,65,0.9)',
-          }}
-        />
+            boxShadow: '0 0 6px rgba(0,255,65,0.85)',
+            transition: 'width 0.12s ease, height 0.12s ease',
+          }} />
+        </div>
       </motion.div>
 
-      {/* Click ripple burst */}
+      {/* Click ripple — starts from exact mouse position */}
       {ripples.map(r => (
         <motion.div
           key={r.id}
@@ -120,17 +140,14 @@ export default function CustomCursor() {
           style={{ x: r.x, y: r.y, translateX: '-50%', translateY: '-50%' }}
           initial={{ scale: 0.25, opacity: 0.75 }}
           animate={{ scale: 4.5, opacity: 0 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
+          transition={{ duration: 0.48, ease: 'easeOut' }}
           onAnimationComplete={() => removeRipple(r.id)}
         >
-          <div
-            style={{
-              width: 38,
-              height: 38,
-              borderRadius: '50%',
-              border: '1px solid rgba(0,255,65,0.55)',
-            }}
-          />
+          <div style={{
+            width: 30, height: 30,
+            borderRadius: '50%',
+            border: '1px solid rgba(0,255,65,0.5)',
+          }} />
         </motion.div>
       ))}
     </>
