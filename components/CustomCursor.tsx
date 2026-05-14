@@ -9,20 +9,22 @@ interface Ripple {
   y: number;
 }
 
-// The bracket-corner "targeting scope" cursor
-// Four L-shaped corners that expand on hover, compress on click
 export default function CustomCursor() {
   const [isPointer, setIsPointer] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [ripples, setRipples] = useState<Ripple[]>([]);
 
-  const rawX = useMotionValue(-100);
-  const rawY = useMotionValue(-100);
+  const rawX = useMotionValue(-200);
+  const rawY = useMotionValue(-200);
 
-  // Corners follow with a very slight spring lag for tactile feel
-  const cx = useSpring(rawX, { stiffness: 280, damping: 22, mass: 0.4 });
-  const cy = useSpring(rawY, { stiffness: 280, damping: 22, mass: 0.4 });
+  // Inner dot: near-instant follow
+  const dotX = useSpring(rawX, { stiffness: 900, damping: 44, mass: 0.25 });
+  const dotY = useSpring(rawY, { stiffness: 900, damping: 44, mass: 0.25 });
+
+  // Outer ring: smooth lag — the "premium" parallax delay
+  const ringX = useSpring(rawX, { stiffness: 105, damping: 20, mass: 0.85 });
+  const ringY = useSpring(rawY, { stiffness: 105, damping: 20, mass: 0.85 });
 
   const removeRipple = useCallback((id: number) => {
     setRipples(prev => prev.filter(r => r.id !== id));
@@ -62,88 +64,71 @@ export default function CustomCursor() {
 
   if (isHidden) return null;
 
-  // Corner arm length and gap from center
-  const arm = isClicking ? 5 : isPointer ? 9 : 7;
-  const gap = isClicking ? 3 : isPointer ? 5 : 4;
-  const totalHalf = arm + gap; // distance from center to corner tip
-  const color = '#00ff41';
-  const glow = isPointer
-    ? `0 0 6px ${color}, 0 0 12px rgba(0,255,65,0.4)`
-    : `0 0 4px rgba(0,255,65,0.5)`;
-  const thickness = 1.5;
-
-  const cornerStyle = (top: boolean, left: boolean): React.CSSProperties => ({
-    position: 'absolute' as const,
-    width: arm,
-    height: arm,
-    borderTop: top ? `${thickness}px solid ${color}` : 'none',
-    borderBottom: !top ? `${thickness}px solid ${color}` : 'none',
-    borderLeft: left ? `${thickness}px solid ${color}` : 'none',
-    borderRight: !left ? `${thickness}px solid ${color}` : 'none',
-    ...(top && left ? { top: -totalHalf, left: -totalHalf } : {}),
-    ...(top && !left ? { top: -totalHalf, right: -totalHalf } : {}),
-    ...(!top && left ? { bottom: -totalHalf, left: -totalHalf } : {}),
-    ...(!top && !left ? { bottom: -totalHalf, right: -totalHalf } : {}),
-    filter: `drop-shadow(${glow})`,
-    transition: 'all 0.12s ease',
-  });
-
   return (
     <>
-      {/* Scope brackets */}
+      {/* Outer transparent ring — lags behind cursor, zooms on hover */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-[10000]"
-        style={{
-          x: cx,
-          y: cy,
-          translateX: '-50%',
-          translateY: '-50%',
-          position: 'fixed',
+        style={{ x: ringX, y: ringY, translateX: '-50%', translateY: '-50%' }}
+        animate={{
+          scale: isClicking ? 0.65 : isPointer ? 1.7 : 1,
+          opacity: isClicking ? 0.4 : isPointer ? 0.85 : 0.6,
         }}
+        transition={{ type: 'spring', stiffness: 260, damping: 22, mass: 0.45 }}
       >
-        <div style={{ position: 'relative', width: 2, height: 2 }}>
-          {/* Four L-corners */}
-          <div style={cornerStyle(true, true)} />
-          <div style={cornerStyle(true, false)} />
-          <div style={cornerStyle(false, true)} />
-          <div style={cornerStyle(false, false)} />
-
-          {/* Center dot */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              width: isClicking ? 2 : isPointer ? 4 : 3,
-              height: isClicking ? 2 : isPointer ? 4 : 3,
-              borderRadius: '50%',
-              backgroundColor: color,
-              transform: 'translate(-50%, -50%)',
-              boxShadow: glow,
-              transition: 'all 0.1s ease',
-              mixBlendMode: 'normal',
-            }}
-          />
-        </div>
+        <div
+          style={{
+            width: 38,
+            height: 38,
+            borderRadius: '50%',
+            border: '1.5px solid #00ff41',
+            backgroundColor: 'transparent',
+            boxShadow: isPointer
+              ? '0 0 12px rgba(0,255,65,0.5), inset 0 0 8px rgba(0,255,65,0.06)'
+              : '0 0 5px rgba(0,255,65,0.22)',
+            transition: 'box-shadow 0.22s ease',
+          }}
+        />
       </motion.div>
 
-      {/* Click ripples */}
+      {/* Inner dot — precise fast follow, shrinks when ring zooms */}
+      <motion.div
+        className="fixed top-0 left-0 pointer-events-none z-[10001]"
+        style={{ x: dotX, y: dotY, translateX: '-50%', translateY: '-50%' }}
+        animate={{
+          scale: isClicking ? 2 : isPointer ? 0.3 : 1,
+          opacity: isPointer ? 0.6 : 1,
+        }}
+        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+      >
+        <div
+          style={{
+            width: 5,
+            height: 5,
+            borderRadius: '50%',
+            backgroundColor: '#00ff41',
+            boxShadow: '0 0 8px rgba(0,255,65,0.9)',
+          }}
+        />
+      </motion.div>
+
+      {/* Click ripple burst */}
       {ripples.map(r => (
         <motion.div
           key={r.id}
           className="fixed top-0 left-0 pointer-events-none z-[9998]"
           style={{ x: r.x, y: r.y, translateX: '-50%', translateY: '-50%' }}
-          initial={{ scale: 0, opacity: 0.8 }}
-          animate={{ scale: 4, opacity: 0 }}
-          transition={{ duration: 0.45, ease: 'easeOut' }}
+          initial={{ scale: 0.25, opacity: 0.75 }}
+          animate={{ scale: 4.5, opacity: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
           onAnimationComplete={() => removeRipple(r.id)}
         >
           <div
             style={{
-              width: 20,
-              height: 20,
+              width: 38,
+              height: 38,
               borderRadius: '50%',
-              border: `1px solid ${color}`,
+              border: '1px solid rgba(0,255,65,0.55)',
             }}
           />
         </motion.div>

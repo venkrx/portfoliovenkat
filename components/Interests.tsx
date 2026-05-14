@@ -92,7 +92,7 @@ export default function Interests() {
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="group relative p-6 rounded-2xl backdrop-blur-sm overflow-hidden"
+              className="group relative p-7 rounded-2xl backdrop-blur-sm overflow-hidden"
               style={{
                 backgroundColor: 'var(--bg-card)',
                 border: '1px solid var(--border-primary)',
@@ -102,7 +102,7 @@ export default function Interests() {
               onMouseEnter={e => {
                 const el = e.currentTarget as HTMLElement;
                 el.style.borderColor = item.color;
-                el.style.boxShadow = `0 8px 32px ${item.glow}`;
+                el.style.boxShadow = `0 10px 36px ${item.glow}`;
               }}
               onMouseLeave={e => {
                 const el = e.currentTarget as HTMLElement;
@@ -110,30 +110,38 @@ export default function Interests() {
                 el.style.boxShadow = 'var(--shadow-card)';
               }}
             >
+              {/* Card index */}
+              <div
+                className="absolute top-4 right-4 text-xs font-mono font-bold opacity-20 group-hover:opacity-40 transition-opacity duration-300"
+                style={{ color: item.color }}
+              >
+                {String(index + 1).padStart(2, '0')}
+              </div>
+
               {/* Background glow blob */}
               <div
-                className="absolute -top-6 -right-6 w-24 h-24 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl pointer-events-none"
+                className="absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl pointer-events-none"
                 style={{ backgroundColor: item.glow }}
               />
 
               {/* Icon */}
               <motion.div
-                className="relative mb-5 inline-flex items-center justify-center w-12 h-12 rounded-xl"
+                className="relative mb-5 inline-flex items-center justify-center w-14 h-14 rounded-2xl"
                 style={{
-                  backgroundColor: `${item.color}18`,
-                  border: `1px solid ${item.color}40`,
+                  backgroundColor: `${item.color}15`,
+                  border: `1px solid ${item.color}38`,
                 }}
-                whileHover={{ rotate: [0, -8, 8, 0], scale: 1.1 }}
+                whileHover={{ rotate: [0, -8, 8, 0], scale: 1.12 }}
                 transition={{ duration: 0.4 }}
               >
                 <item.icon
-                  style={{ color: item.color, fontSize: '1.4rem' }}
+                  style={{ color: item.color, fontSize: '1.6rem' }}
                 />
               </motion.div>
 
               {/* Title */}
               <h3
-                className="text-lg font-semibold mb-2 transition-colors duration-300"
+                className="text-xl font-semibold mb-2.5 transition-colors duration-300"
                 style={{ color: 'var(--text-heading)' }}
               >
                 {item.title}
