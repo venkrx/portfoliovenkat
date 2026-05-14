@@ -2,7 +2,6 @@
 
 import { motion, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
-import CircuitBackground from './CircuitBackground';
 import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
 
 // Letter component to avoid hooks inside loops
@@ -127,7 +126,47 @@ export default function Hero() {
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      <CircuitBackground />
+      {/* Floating gradient orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          animate={{ x: [0, 60, -30, 0], y: [0, -50, 30, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute rounded-full"
+          style={{
+            top: '15%', left: '-10%', width: 500, height: 500,
+            background: 'radial-gradient(circle, rgba(0,255,65,0.1) 0%, transparent 65%)',
+            filter: 'blur(48px)',
+          }}
+        />
+        <motion.div
+          animate={{ x: [0, -60, 40, 0], y: [0, 40, -60, 0] }}
+          transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
+          className="absolute rounded-full"
+          style={{
+            top: '30%', right: '-8%', width: 420, height: 420,
+            background: 'radial-gradient(circle, rgba(0,229,255,0.09) 0%, transparent 65%)',
+            filter: 'blur(56px)',
+          }}
+        />
+        <motion.div
+          animate={{ x: [0, 35, -20, 0], y: [0, -30, 50, 0] }}
+          transition={{ duration: 30, repeat: Infinity, ease: 'easeInOut', delay: 9 }}
+          className="absolute rounded-full"
+          style={{
+            bottom: '20%', left: '35%', width: 340, height: 340,
+            background: 'radial-gradient(circle, rgba(0,255,65,0.07) 0%, transparent 65%)',
+            filter: 'blur(64px)',
+          }}
+        />
+        {/* Subtle dot grid */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: 'radial-gradient(circle, var(--grid-color) 1px, transparent 1px)',
+            backgroundSize: '36px 36px',
+          }}
+        />
+      </div>
 
       <div className="h-screen flex items-center justify-center w-full">
         <motion.div

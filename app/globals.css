@@ -4,22 +4,22 @@
 
 /* ── Dark theme (default) ── */
 html, html.dark {
-  --bg-base: #0d1117;
-  --bg-card: rgba(22, 27, 34, 0.92);
-  --bg-card-solid: #161b22;
-  --bg-input: rgba(22, 27, 34, 0.85);
-  --text-heading: #f0f6fc;
-  --text-body: #c9d1d9;
-  --text-muted: #8b949e;
-  --border-primary: rgba(0, 255, 65, 0.16);
+  --bg-base: #070d1a;
+  --bg-card: rgba(10, 20, 40, 0.92);
+  --bg-card-solid: #0a1426;
+  --bg-input: rgba(10, 20, 40, 0.85);
+  --text-heading: #e8f4ff;
+  --text-body: #a8c0d8;
+  --text-muted: #5e7a96;
+  --border-primary: rgba(0, 255, 65, 0.18);
   --border-hover: rgba(0, 255, 65, 0.8);
-  --grid-color: rgba(0, 255, 65, 0.055);
-  --scrollbar-track: #161b22;
+  --grid-color: rgba(0, 255, 65, 0.04);
+  --scrollbar-track: #0a1426;
   --scrollbar-thumb: rgba(0, 255, 65, 0.25);
-  --nav-bg: rgba(13, 17, 23, 0.92);
-  --shadow-card: 0 2px 20px rgba(0, 0, 0, 0.45);
-  --background: #0d1117;
-  --foreground: #f0f6fc;
+  --nav-bg: rgba(7, 13, 26, 0.92);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255,255,255,0.02);
+  --background: #070d1a;
+  --foreground: #e8f4ff;
   /* Semantic color tokens */
   --color-primary: #00ff41;
   --color-accent: #00e5ff;
@@ -118,6 +118,14 @@ html.light .glow-box {
 .bg-theme-card       { background-color: var(--bg-card); }
 .bg-theme-base       { background-color: var(--bg-base); }
 .border-theme        { border-color: var(--border-primary); }
+
+/* ── Gradient text utility ── */
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
 /* ── No transition on first paint ── */
 .no-transition * { transition: none !important; }

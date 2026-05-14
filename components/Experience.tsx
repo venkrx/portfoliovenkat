@@ -57,8 +57,14 @@ export default function Experience() {
 
           {/* Timeline */}
           <div className="relative">
-            {/* Vertical line */}
-            <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-primary via-accent to-primary opacity-20" />
+            {/* Glowing vertical line */}
+            <div
+              className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full"
+              style={{
+                background: 'linear-gradient(180deg, transparent 0%, var(--color-primary) 15%, var(--color-accent) 50%, var(--color-primary) 85%, transparent 100%)',
+                boxShadow: '0 0 10px rgba(0,255,65,0.25), 0 0 4px rgba(0,229,255,0.15)',
+              }}
+            />
 
             <div className="space-y-12">
               {experiences.map((exp, index) => (
@@ -71,16 +77,20 @@ export default function Experience() {
                     index % 2 === 0 ? 'md:flex-row-reverse' : ''
                   }`}
                 >
-                  {/* Timeline dot */}
+                  {/* Gradient timeline dot */}
                   <motion.div
-                    className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full z-10"
-                    style={{ border: '3px solid var(--bg-base)' }}
-                    whileHover={{ scale: 1.5 }}
+                    className="hidden md:block absolute left-1/2 transform -translate-x-1/2 z-10"
+                    style={{
+                      width: 22, height: 22, marginLeft: -11,
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))',
+                      border: '3px solid var(--bg-card-solid)',
+                    }}
                     animate={{
                       boxShadow: [
-                        '0 0 0 0 rgba(0,255,65,0.4)',
-                        '0 0 0 10px rgba(0,255,65,0)',
-                        '0 0 0 0 rgba(0,255,65,0)',
+                        '0 0 6px rgba(0,255,65,0.4), 0 0 2px rgba(0,229,255,0.2)',
+                        '0 0 18px rgba(0,255,65,0.75), 0 0 8px rgba(0,229,255,0.45)',
+                        '0 0 6px rgba(0,255,65,0.4), 0 0 2px rgba(0,229,255,0.2)',
                       ],
                     }}
                     transition={{ duration: 2, repeat: Infinity }}
@@ -89,73 +99,101 @@ export default function Experience() {
                   {/* Content Card */}
                   <div className={`md:w-1/2 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}`}>
                     <motion.div
-                      whileHover={{ y: -5 }}
-                      className="p-6 rounded-2xl backdrop-blur-sm transition-all duration-300 group"
+                      whileHover={{ y: -6 }}
+                      className="rounded-2xl backdrop-blur-sm transition-all duration-300 group relative overflow-hidden"
                       style={{
                         border: '1px solid var(--border-primary)',
+                        borderLeft: '3px solid var(--color-primary)',
                         backgroundColor: 'var(--bg-card)',
                         boxShadow: 'var(--shadow-card)',
                       }}
                       onMouseEnter={e => {
                         const el = e.currentTarget as HTMLElement;
-                        el.style.borderColor = 'rgba(0,255,65,0.7)';
-                        el.style.boxShadow = '0 8px 32px rgba(0,255,65,0.1)';
+                        el.style.borderColor = 'rgba(0,255,65,0.45)';
+                        el.style.borderLeftColor = 'var(--color-accent)';
+                        el.style.boxShadow = '0 10px 40px rgba(0,255,65,0.1)';
                       }}
                       onMouseLeave={e => {
                         const el = e.currentTarget as HTMLElement;
                         el.style.borderColor = 'var(--border-primary)';
+                        el.style.borderLeftColor = 'var(--color-primary)';
                         el.style.boxShadow = 'var(--shadow-card)';
                       }}
                     >
-                      <div className="flex items-start justify-between mb-3">
-                        <div>
+                      {/* Top gradient accent strip */}
+                      <div style={{
+                        height: 2,
+                        background: 'linear-gradient(90deg, var(--color-primary), var(--color-accent))',
+                        opacity: 0.55,
+                      }} />
+
+                      <div className="p-6">
+                        {/* Badges row */}
+                        <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+                          <span
+                            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold"
+                            style={{
+                              backgroundColor: 'rgba(0,255,65,0.1)',
+                              border: '1px solid rgba(0,255,65,0.3)',
+                              color: 'var(--color-primary)',
+                            }}
+                          >
+                            <FaCalendar style={{ fontSize: '0.6rem' }} />
+                            {exp.period}
+                          </span>
+                          <span
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium"
+                            style={{
+                              backgroundColor: 'rgba(0,229,255,0.08)',
+                              border: '1px solid rgba(0,229,255,0.22)',
+                              color: 'var(--color-accent)',
+                            }}
+                          >
+                            <FaMapMarkerAlt style={{ fontSize: '0.6rem' }} />
+                            {exp.location}
+                          </span>
+                        </div>
+
+                        {/* Title & company */}
+                        <div className="mb-4">
                           <h3
-                            className="text-2xl font-bold transition-colors duration-300 group-hover:text-primary"
+                            className="text-2xl font-bold mb-1 group-hover:text-primary transition-colors duration-300"
                             style={{ color: 'var(--text-heading)' }}
                           >
                             {exp.title}
                           </h3>
-                          <p className="text-lg text-accent mt-1 flex items-center gap-2">
-                            <FaBriefcase className="text-primary" />
+                          <p className="text-lg flex items-center gap-2" style={{ color: 'var(--color-accent)' }}>
+                            <FaBriefcase style={{ color: 'var(--color-primary)', fontSize: '0.85rem' }} />
                             {exp.company}
                           </p>
                         </div>
-                      </div>
 
-                      <div className="flex flex-wrap gap-4 mb-4 text-sm" style={{ color: 'var(--text-muted)' }}>
-                        <span className="flex items-center gap-2">
-                          <FaMapMarkerAlt className="text-primary" />
-                          {exp.location}
-                        </span>
-                        <span className="flex items-center gap-2">
-                          <FaCalendar className="text-primary" />
-                          {exp.period}
-                        </span>
-                      </div>
+                        {/* Bullet points */}
+                        <ul className="space-y-2.5 mb-5">
+                          {exp.description.map((item, i) => (
+                            <li key={i} className="flex items-start gap-2" style={{ color: 'var(--text-body)' }}>
+                              <span style={{ color: 'var(--color-primary)', marginTop: 4, flexShrink: 0, fontSize: '0.65rem' }}>▹</span>
+                              <span style={{ fontSize: '0.9rem', lineHeight: 1.65 }}>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
 
-                      <ul className="space-y-2 mb-4">
-                        {exp.description.map((item, i) => (
-                          <li key={i} className="flex items-start" style={{ color: 'var(--text-body)' }}>
-                            <span className="text-primary mr-2 mt-1 flex-shrink-0">▹</span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      <div className="flex flex-wrap gap-2">
-                        {exp.technologies.map(tech => (
-                          <span
-                            key={tech}
-                            className="px-3 py-1 text-xs font-medium rounded-full"
-                            style={{
-                              backgroundColor: 'rgba(0,255,65,0.08)',
-                              color: '#00ff41',
-                              border: '1px solid rgba(0,255,65,0.25)',
-                            }}
-                          >
-                            {tech}
-                          </span>
-                        ))}
+                        {/* Tech tags */}
+                        <div className="flex flex-wrap gap-2">
+                          {exp.technologies.map(tech => (
+                            <span
+                              key={tech}
+                              className="px-3 py-1 text-xs font-medium rounded-full"
+                              style={{
+                                backgroundColor: 'rgba(0,255,65,0.07)',
+                                color: 'var(--color-primary)',
+                                border: '1px solid rgba(0,255,65,0.22)',
+                              }}
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </motion.div>
                   </div>

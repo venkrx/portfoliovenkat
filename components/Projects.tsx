@@ -132,7 +132,6 @@ const orgProjects: Project[] = [
   },
 ];
 
-// Language → title-bar color + label color
 const LANG_META: Record<string, { bar: string; label: string }> = {
   'Python':           { bar: '#3776ab', label: '#ffe873' },
   'TypeScript':       { bar: '#3178c6', label: '#ffffff' },
@@ -140,114 +139,138 @@ const LANG_META: Record<string, { bar: string; label: string }> = {
   'Jupyter Notebook': { bar: '#e87535', label: '#ffffff' },
 };
 
-// Deterministic code-line widths (as %) from project id
 function codeLines(seed: number): number[] {
   return [52, 38, 65, 28, 46, 60].map((base, i) =>
     base + ((seed * (i + 1) * 13) % 24)
   );
 }
 
-// Screen position as % of the viewBox "0 0 300 210"
-// Screen rect in SVG: x=10 y=10 w=280 h=168
+// Screen position as % of viewBox "0 0 320 218"
+// Screen rect: x=14 y=12 w=292 h=150
 const SCREEN_POS: React.CSSProperties = {
   position: 'absolute',
-  top:    '4.762%',   // 10/210
-  left:   '3.333%',  // 10/300
-  width:  '93.333%', // 280/300
-  height: '80%',     // 168/210
+  top:    '5.505%',   // 12/218
+  left:   '4.375%',  // 14/320
+  width:  '91.25%',  // 292/320
+  height: '68.807%', // 150/218
   overflow: 'hidden',
   borderRadius: 3,
 };
 
-// ── Laptop chrome SVG (purely decorative, no screen content) ──────────────────
+// ── Real laptop chrome — Windows/Linux style, no macOS roundness ──────────────
 function LaptopChrome() {
   return (
     <svg
-      viewBox="0 0 300 210"
+      viewBox="0 0 320 218"
       xmlns="http://www.w3.org/2000/svg"
       style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
     >
-      {/* ── LID ── */}
-      {/* Outer body */}
-      <rect x="2" y="1" width="296" height="178" rx="8" fill="#1c2128" />
-      <rect x="2" y="1" width="296" height="178" rx="8"
-        fill="none" stroke="#373e47" strokeWidth="1.5" />
-      {/* Subtle top-edge highlight */}
-      <rect x="3" y="2" width="294" height="2" rx="1" fill="rgba(255,255,255,0.07)" />
-      {/* Screen backing (HTML content will sit on top) */}
-      <rect x="10" y="10" width="280" height="168" rx="2" fill="#090d13" />
-      <rect x="10" y="10" width="280" height="168" rx="2"
-        fill="none" stroke="#1a2030" strokeWidth="1" />
-      {/* Camera */}
-      <circle cx="150" cy="5.5" r="2" fill="#21262d" />
-      <circle cx="150" cy="5.5" r="0.8" fill="#090d13" />
-      {/* Hinge groove */}
-      <rect x="2" y="177" width="296" height="4" rx="1" fill="#0d1117" />
+      {/* LID outer shell — angular corners (rx=4) */}
+      <rect x="1" y="1" width="318" height="170" rx="4" fill="#18253d" />
+      <rect x="1" y="1" width="318" height="170" rx="4"
+        fill="none" stroke="#2e4264" strokeWidth="1.5" />
+      {/* Top highlight edge */}
+      <rect x="2" y="2" width="316" height="2" rx="1" fill="rgba(255,255,255,0.07)" />
+      {/* Side edge accents */}
+      <line x1="1.5" y1="5" x2="1.5" y2="167" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+      <line x1="318.5" y1="5" x2="318.5" y2="167" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+      {/* Lid inner light gradient (top third only) */}
+      <rect x="1" y="1" width="318" height="55" rx="4" fill="rgba(255,255,255,0.025)" />
 
-      {/* ── BASE ── */}
-      <path d="M 0,181 L 300,181 L 312,208 L -12,208 Z" fill="#161b22" />
-      <path d="M 0,181 L 300,181 L 312,208 L -12,208 Z"
-        fill="none" stroke="#373e47" strokeWidth="1" />
-      <line x1="0" y1="181" x2="300" y2="181"
-        stroke="rgba(255,255,255,0.055)" strokeWidth="1" />
+      {/* Screen bezel — tight, boxy */}
+      <rect x="14" y="12" width="292" height="150" rx="3" fill="#060c15" />
+      <rect x="14" y="12" width="292" height="150" rx="3"
+        fill="none" stroke="#1a2840" strokeWidth="0.8" />
 
-      {/* ── KEYBOARD ── */}
-      {/* Number row */}
+      {/* Webcam housing */}
+      <circle cx="160" cy="7" r="3" fill="#131d2d" stroke="#2a3f5a" strokeWidth="0.8" />
+      <circle cx="160" cy="7" r="1.2" fill="#070d18" />
+      <circle cx="160.7" cy="6.3" r="0.5" fill="rgba(255,255,255,0.3)" />
+      {/* Mic dots */}
+      <circle cx="153" cy="7" r="0.6" fill="#1a2840" />
+      <circle cx="167" cy="7" r="0.6" fill="#1a2840" />
+
+      {/* Hinge bar */}
+      <rect x="0" y="170" width="320" height="3" rx="0" fill="#0c1828" />
+      <line x1="0" y1="170" x2="320" y2="170" stroke="rgba(0,229,255,0.1)" strokeWidth="0.7" />
+
+      {/* BASE — trapezoidal */}
+      <path d="M 6,173 L 314,173 L 326,215 L -6,215 Z" fill="#0f1e30" />
+      <path d="M 6,173 L 314,173 L 326,215 L -6,215 Z"
+        fill="none" stroke="#243548" strokeWidth="0.8" />
+      <line x1="6" y1="173" x2="314" y2="173" stroke="rgba(255,255,255,0.04)" strokeWidth="0.7" />
+
+      {/* LED power indicator */}
+      <circle cx="308" cy="175.5" r="2" fill="#00ff41" opacity="0.65" />
+
+      {/* Keyboard row 1 — fn/number keys */}
       {Array.from({ length: 14 }, (_, k) => (
-        <rect key={`r0-${k}`}
-          x={4 + k * 20.7} y={184}
-          width="18.5" height="4" rx="0.8"
-          fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.3" />
+        <rect key={`k0-${k}`}
+          x={8 + k * 21.7} y={176} width="19.5" height="3.5" rx="0.8"
+          fill="rgba(255,255,255,0.09)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.3" />
       ))}
-      {/* QWERTY row */}
+      {/* Keyboard row 2 */}
       {Array.from({ length: 13 }, (_, k) => (
-        <rect key={`r1-${k}`}
-          x={7 + k * 22} y={190}
-          width="20" height="4" rx="0.8"
-          fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.3" />
+        <rect key={`k1-${k}`}
+          x={10 + k * 23} y={181.5} width="21" height="4.5" rx="0.8"
+          fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.05)" strokeWidth="0.3" />
       ))}
-      {/* ASDF row */}
+      {/* Keyboard row 3 */}
       {Array.from({ length: 12 }, (_, k) => (
-        <rect key={`r2-${k}`}
-          x={13 + k * 22} y={196}
-          width="20" height="4" rx="0.8"
-          fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.3" />
+        <rect key={`k2-${k}`}
+          x={18 + k * 23} y={188} width="21" height="4.5" rx="0.8"
+          fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.05)" strokeWidth="0.3" />
+      ))}
+      {/* Keyboard row 4 */}
+      {Array.from({ length: 11 }, (_, k) => (
+        <rect key={`k3-${k}`}
+          x={24 + k * 24.5} y={194.5} width="21" height="4.5" rx="0.8"
+          fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.05)" strokeWidth="0.3" />
       ))}
       {/* Spacebar */}
-      <rect x="82" y="202" width="136" height="3.5" rx="1"
-        fill="rgba(255,255,255,0.075)" />
+      <rect x="90" y="201" width="140" height="4" rx="1.2" fill="rgba(255,255,255,0.07)" />
+      {/* Trackpad */}
+      <rect x="116" y="207" width="88" height="6.5" rx="1.5"
+        fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
     </svg>
   );
 }
 
-// ── Card screen: mini code preview ────────────────────────────────────────────
+// ── Card screen: Windows-style title bar + simulated code ─────────────────────
 function CardScreen({ project }: { project: Project }) {
-  const meta = LANG_META[project.language] ?? { bar: '#00ff41', label: '#000' };
+  const meta = LANG_META[project.language] ?? { bar: '#1a2840', label: '#ffffff' };
   const lines = codeLines(project.id);
-  const title = project.name.length > 16 ? project.name.slice(0, 16) + '…' : project.name;
+  const title = project.name.length > 22 ? project.name.slice(0, 22) + '…' : project.name;
 
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#090d13' }}>
-      {/* Window title bar */}
+    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#06101e' }}>
+      {/* Windows-style title bar */}
       <div style={{
-        display: 'flex', alignItems: 'center', gap: 4,
-        padding: '3px 6px', backgroundColor: meta.bar, flexShrink: 0,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '3px 4px 3px 7px', backgroundColor: meta.bar, flexShrink: 0,
       }}>
-        <div style={{ width: 5, height: 5, borderRadius: '50%', backgroundColor: 'rgba(255,95,86,0.85)', flexShrink: 0 }} />
-        <div style={{ width: 5, height: 5, borderRadius: '50%', backgroundColor: 'rgba(255,189,46,0.85)', flexShrink: 0 }} />
-        <div style={{ width: 5, height: 5, borderRadius: '50%', backgroundColor: 'rgba(39,201,63,0.85)', flexShrink: 0 }} />
-        <span style={{ fontSize: 6, fontFamily: 'ui-monospace,monospace', fontWeight: 600, color: meta.label, marginLeft: 3 }}>
+        <span style={{
+          fontSize: 6, fontFamily: 'ui-monospace,monospace', fontWeight: 600,
+          color: meta.label, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+        }}>
           {title}
         </span>
+        {/* Windows min/close buttons */}
+        <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0, gap: 1 }}>
+          <div style={{ width: 9, height: 7, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: 5, height: 0.8, backgroundColor: meta.label, opacity: 0.75 }} />
+          </div>
+          <div style={{ width: 8, height: 7, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 6.5, color: meta.label, opacity: 0.8, fontWeight: 700, lineHeight: 1 }}>
+            ×
+          </div>
+        </div>
       </div>
       {/* Simulated code lines */}
       <div style={{ flex: 1, padding: '5px 7px', display: 'flex', flexDirection: 'column', gap: 5, overflow: 'hidden' }}>
         {lines.map((w, i) => (
           <div key={i} style={{
-            height: 3,
-            width: `${w}%`,
-            borderRadius: 2,
-            flexShrink: 0,
+            height: 3, width: `${w}%`, borderRadius: 2, flexShrink: 0,
             backgroundColor:
               i === 1 || i === 4 ? meta.bar + '55' :
               i === 3             ? 'rgba(0,255,65,0.3)' :
@@ -259,44 +282,54 @@ function CardScreen({ project }: { project: Project }) {
   );
 }
 
-// ── Modal screen: real project details inside the laptop ──────────────────────
+// ── Modal screen: Windows-style chrome with functional close button ────────────
 function ModalScreen({ project, onClose }: { project: Project; onClose: () => void }) {
-  const meta = LANG_META[project.language] ?? { bar: '#00ff41', label: '#000' };
+  const meta = LANG_META[project.language] ?? { bar: '#1a2840', label: '#ffffff' };
 
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#0d1117' }}>
-      {/* macOS-style window title bar */}
+    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#07111e' }}>
+      {/* Windows-style title bar */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '7px 12px', backgroundColor: meta.bar, flexShrink: 0,
+        backgroundColor: meta.bar, flexShrink: 0, height: 32,
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-          {/* Red dot = close */}
-          <button
-            onClick={onClose}
-            title="Close"
-            style={{
-              width: 12, height: 12, borderRadius: '50%',
-              backgroundColor: '#ff5f56', border: 'none',
-              flexShrink: 0, display: 'block',
-            }}
-          />
-          <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#ffbd2e', flexShrink: 0 }} />
-          <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#27c940', flexShrink: 0 }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingLeft: 14 }}>
           <span style={{
-            fontSize: 12, fontFamily: 'ui-monospace,monospace', fontWeight: 600,
-            color: meta.label, marginLeft: 6,
+            fontSize: 12, fontFamily: 'ui-monospace,monospace', fontWeight: 600, color: meta.label,
           }}>
             {project.name}
           </span>
+          <span style={{ fontSize: 10, color: `${meta.label}88`, fontFamily: 'ui-monospace,monospace' }}>
+            [{project.language}]
+          </span>
         </div>
-        <span style={{ fontSize: 10, color: meta.label, opacity: 0.75, fontFamily: 'ui-monospace,monospace' }}>
-          {project.language}
-        </span>
+        {/* Windows min / max / close */}
+        <div style={{ display: 'flex', alignItems: 'stretch', height: '100%' }}>
+          {['─', '□'].map((sym, i) => (
+            <div key={i} style={{
+              width: 32, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 11, color: `${meta.label}99`, fontFamily: 'monospace',
+            }}>
+              {sym}
+            </div>
+          ))}
+          <button
+            onClick={onClose}
+            style={{
+              width: 36, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 15, color: meta.label, fontFamily: 'monospace', fontWeight: 700,
+              border: 'none', backgroundColor: 'transparent', transition: 'background-color 0.12s',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#e81123'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'; }}
+          >
+            ✕
+          </button>
+        </div>
       </div>
 
       {/* Scrollable project details */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '18px 20px' }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px' }}>
         {project.isOrg && (
           <div style={{ marginBottom: 10 }}>
             <span style={{
@@ -309,11 +342,11 @@ function ModalScreen({ project, onClose }: { project: Project; onClose: () => vo
           </div>
         )}
 
-        <h3 style={{ color: '#f0f6fc', fontSize: 18, fontWeight: 700, marginBottom: 8, lineHeight: 1.3 }}>
+        <h3 style={{ color: '#e8f4ff', fontSize: 18, fontWeight: 700, marginBottom: 8, lineHeight: 1.3 }}>
           {project.name}
         </h3>
 
-        <p style={{ color: '#c9d1d9', fontSize: 13, lineHeight: 1.7, marginBottom: 14 }}>
+        <p style={{ color: '#a8c0d8', fontSize: 13, lineHeight: 1.7, marginBottom: 14 }}>
           {project.description}
         </p>
 
@@ -365,7 +398,7 @@ function ModalScreen({ project, onClose }: { project: Project; onClose: () => vo
   );
 }
 
-// ── Laptop card (grid) ────────────────────────────────────────────────────────
+// ── Laptop card (grid item) ───────────────────────────────────────────────────
 function LaptopCard({
   project, onClick, delay, isInView,
 }: {
@@ -383,10 +416,9 @@ function LaptopCard({
         whileHover={{ y: -10, scale: 1.06 }}
         whileTap={{ scale: 0.97 }}
         transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-        style={{ width: 170, filter: 'drop-shadow(0 6px 20px rgba(0,0,0,0.55))' }}
+        style={{ width: 170, filter: 'drop-shadow(0 6px 24px rgba(0,0,0,0.6))' }}
       >
-        {/* Aspect-ratio container locks the proportions so % positioning works */}
-        <div style={{ position: 'relative', width: '100%', aspectRatio: '300 / 210' }}>
+        <div style={{ position: 'relative', width: '100%', aspectRatio: '320 / 218' }}>
           <LaptopChrome />
           <div style={SCREEN_POS}>
             <CardScreen project={project} />
@@ -414,7 +446,7 @@ function LaptopCard({
   );
 }
 
-// ── Project modal — zooms in as a laptop with details on screen ───────────────
+// ── Project modal — zooms in as a laptop ─────────────────────────────────────
 function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
@@ -443,7 +475,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
           filter: 'drop-shadow(0 24px 60px rgba(0,0,0,0.7)) drop-shadow(0 0 40px rgba(0,255,65,0.06))',
         }}
       >
-        <div style={{ position: 'relative', width: '100%', aspectRatio: '300 / 210' }}>
+        <div style={{ position: 'relative', width: '100%', aspectRatio: '320 / 218' }}>
           <LaptopChrome />
           <div style={SCREEN_POS}>
             <ModalScreen project={project} onClose={onClose} />
@@ -467,7 +499,7 @@ export default function Projects() {
 
   return (
     <section id="projects" ref={ref} className="relative" style={{ backgroundColor: 'var(--bg-base)' }}>
-      {/* Subtle dot grid */}
+      {/* Dot grid */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
