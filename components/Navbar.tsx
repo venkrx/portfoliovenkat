@@ -6,17 +6,10 @@ import Link from 'next/link';
 import { useTheme } from './ThemeProvider';
 import { FaSun, FaMoon, FaBars, FaTimes } from 'react-icons/fa';
 
-const COLOR_SWATCHES = [
-  { value: 'green',  bg: '#00ff41', ring: '#00ff41' },
-  { value: 'yellow', bg: '#f5c400', ring: '#f5c400' },
-  { value: 'red',    bg: '#ff4455', ring: '#ff4455' },
-  { value: 'blue',   bg: '#4499ff', ring: '#4499ff' },
-] as const;
-
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { theme, toggle, color, setColor } = useTheme();
+  const { theme, toggle } = useTheme();
   const { scrollYProgress } = useScroll();
 
   useEffect(() => {
@@ -62,7 +55,7 @@ export default function Navbar() {
             {/* Logo */}
             <Link href="#home" className="font-bold text-primary glow-text tracking-tight flex items-center gap-1 text-xl">
               <span className="opacity-60">{'<'}</span>
-              <span>KSV</span>
+              <span>Venkat</span>
               <span className="opacity-60">{'/>'}</span>
             </Link>
 
@@ -88,35 +81,12 @@ export default function Navbar() {
                 </motion.div>
               ))}
 
-              {/* Color swatches */}
-              <div className="flex items-center gap-1.5">
-                {COLOR_SWATCHES.map(swatch => (
-                  <button
-                    key={swatch.value}
-                    onClick={() => setColor(swatch.value)}
-                    title={swatch.value.charAt(0).toUpperCase() + swatch.value.slice(1)}
-                    style={{
-                      width: 14,
-                      height: 14,
-                      borderRadius: '50%',
-                      backgroundColor: swatch.bg,
-                      border: color === swatch.value ? '2px solid var(--bg-base)' : '2px solid transparent',
-                      outline: color === swatch.value ? `2px solid ${swatch.ring}` : '2px solid transparent',
-                      outlineOffset: 1,
-                      padding: 0,
-                      transition: 'transform 0.15s ease, outline 0.15s ease',
-                      transform: color === swatch.value ? 'scale(1.25)' : 'scale(1)',
-                    }}
-                  />
-                ))}
-              </div>
-
               {/* Theme toggle */}
               <motion.button
                 onClick={toggle}
                 whileHover={{ scale: 1.12, rotate: 15 }}
                 whileTap={{ scale: 0.9 }}
-                className="p-2 rounded-full border transition-all duration-300"
+                className="ml-2 p-2 rounded-full border transition-all duration-300"
                 style={{
                   borderColor: 'var(--border-primary)',
                   backgroundColor: 'var(--bg-card)',
@@ -134,27 +104,6 @@ export default function Navbar() {
 
             {/* Mobile: theme + hamburger */}
             <div className="md:hidden flex items-center gap-3">
-              {/* Mobile color swatches */}
-              <div className="flex items-center gap-1">
-                {COLOR_SWATCHES.map(swatch => (
-                  <button
-                    key={swatch.value}
-                    onClick={() => setColor(swatch.value)}
-                    style={{
-                      width: 12,
-                      height: 12,
-                      borderRadius: '50%',
-                      backgroundColor: swatch.bg,
-                      border: color === swatch.value ? '2px solid var(--bg-base)' : '2px solid transparent',
-                      outline: color === swatch.value ? `2px solid ${swatch.ring}` : '2px solid transparent',
-                      outlineOffset: 1,
-                      padding: 0,
-                      transition: 'transform 0.15s ease',
-                      transform: color === swatch.value ? 'scale(1.2)' : 'scale(1)',
-                    }}
-                  />
-                ))}
-              </div>
               <motion.button
                 onClick={toggle}
                 whileTap={{ scale: 0.9 }}

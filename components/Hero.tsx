@@ -302,7 +302,7 @@ export default function Hero() {
                 className="text-lg md:text-xl max-w-3xl mb-12 leading-relaxed"
                 style={{ opacity: contentOpacity, color: 'var(--text-body)' }}
               >
-                <span>3rd Year AI Engineering Student at </span>
+                <span>4th Year AI Engineering Student at </span>
                 <span className="text-accent">Amrita Vishwa Vidyapeetham, Coimbatore</span>
                 <br />
                 <span>Passionate about Artificial Intelligence, Machine Learning, and cutting-edge technology</span>
