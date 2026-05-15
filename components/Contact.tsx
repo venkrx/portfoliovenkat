@@ -103,6 +103,23 @@ export default function Contact() {
           height: 100%;
           overflow: hidden;
         }
+        .flow-wrap-chat {
+          padding: 1.5px;
+          border-radius: 20px;
+          background: conic-gradient(
+            from var(--flow-a, 0deg),
+            transparent 70%,
+            rgba(0,255,65,0.75) 78%,
+            rgba(0,229,255,0.7) 87%,
+            transparent 93%
+          );
+          animation: contact-flow 6s linear infinite;
+        }
+        .flow-inner-chat {
+          border-radius: 18.5px;
+          height: 100%;
+          overflow: hidden;
+        }
       `}</style>
 
       {/* Background orbs */}
@@ -176,10 +193,9 @@ export default function Contact() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="md:col-span-3"
           >
+            <div className="flow-wrap-chat" style={{ animationDelay: '-2.5s', boxShadow: 'var(--shadow-card)' }}>
+            <div className="flow-inner-chat">
             <div style={{
-              borderRadius: 18, overflow: 'hidden',
-              border: '1px solid var(--border-primary)',
-              boxShadow: 'var(--shadow-card)',
               backgroundColor: 'var(--bg-card)',
               display: 'flex', flexDirection: 'column',
             }}>
@@ -365,6 +381,8 @@ export default function Contact() {
                 )}
               </form>
             </div>
+            </div>
+            </div>
           </motion.div>
 
           {/* ── Right info panel ── */}
@@ -374,26 +392,26 @@ export default function Contact() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="md:col-span-2 flex flex-col gap-5"
           >
-            {/* Status card — flowing border */}
-            <div className="flow-wrap" style={{ animationDelay: '0s' }}>
-              <div className="flow-inner" style={{
-                padding: '20px 22px',
-                background: 'linear-gradient(135deg, rgba(0,255,65,0.06) 0%, rgba(0,255,65,0.02) 100%)',
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-                  <motion.div
-                    style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: 'var(--color-primary)', flexShrink: 0 }}
-                    animate={{ scale: [1, 1.5, 1], opacity: [1, 0.4, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                  <span style={{ color: 'var(--color-primary)', fontWeight: 700, fontSize: '0.92rem' }}>
-                    Online · Open to Work
-                  </span>
-                </div>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', lineHeight: 1.65, paddingLeft: 20 }}>
-                  Computer Vision · AI Agents · Full-Stack
-                </p>
+            {/* Status card — plain */}
+            <div style={{
+              borderRadius: 15,
+              padding: '20px 22px',
+              background: 'linear-gradient(135deg, rgba(0,255,65,0.06) 0%, rgba(0,255,65,0.02) 100%)',
+              border: '1px solid var(--border-primary)',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+                <motion.div
+                  style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: 'var(--color-primary)', flexShrink: 0 }}
+                  animate={{ scale: [1, 1.5, 1], opacity: [1, 0.4, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+                <span style={{ color: 'var(--color-primary)', fontWeight: 700, fontSize: '0.92rem' }}>
+                  Online · Open to Work
+                </span>
               </div>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', lineHeight: 1.65, paddingLeft: 20 }}>
+                Computer Vision · AI Agents · Full-Stack
+              </p>
             </div>
 
             {/* Contact details — flowing border */}
