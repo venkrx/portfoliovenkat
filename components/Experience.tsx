@@ -6,14 +6,30 @@ import { FaBriefcase, FaCalendar, FaMapMarkerAlt } from 'react-icons/fa';
 
 export default function Experience() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, amount: 0.3 });
+  const isInView = useInView(ref, { once: false, amount: 0.15 });
 
   const experiences = [
+    {
+      title: 'Computer Vision Intern',
+      company: 'CloverBridge Technologies Pvt. Limited',
+      location: 'Remote',
+      period: '2025 – Present',
+      badge: 'Active',
+      description: [
+        'Conducting applied research on real-time object detection for hospital surveillance using YOLO-family architectures (YOLOv8/v9) on live camera feeds',
+        'Studied and benchmarked transformer-based detectors — DETR and RT-DETR — analyzing attention mechanisms, encoder-decoder design, and inference speed for clinical-grade deployment',
+        'Developed patient-monitoring pipeline to detect critical events (falls, restricted-zone entry) from multi-camera hospital footage using custom-trained YOLO models',
+        'Compared backbone architectures (ResNet, ViT hybrids) and one-stage vs two-stage detection trade-offs for real-time hospital camera applications',
+        'Building annotated hospital-scenario dataset to fine-tune detection models on domain-specific edge cases and rare clinical events',
+      ],
+      technologies: ['Python', 'YOLOv8', 'PyTorch', 'OpenCV', 'DETR', 'RT-DETR', 'Computer Vision'],
+    },
     {
       title: 'AI Intern',
       company: 'DigiSignals',
       location: 'Remote',
       period: '2024',
+      badge: null,
       description: [
         'Developed an Agentic RAG Framework for Bray to improve chatbot response quality through human-in-the-loop feedback',
         'Implemented intelligent filtering system to identify and extract thumbs-down responses from chatbot interactions',
@@ -59,21 +75,22 @@ export default function Experience() {
           <div className="relative">
             {/* Glowing vertical line */}
             <div
-              className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full"
+              className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-0.5"
               style={{
-                background: 'linear-gradient(180deg, transparent 0%, var(--color-primary) 15%, var(--color-accent) 50%, var(--color-primary) 85%, transparent 100%)',
+                top: 0, bottom: 0,
+                background: 'linear-gradient(180deg, transparent 0%, var(--color-primary) 10%, var(--color-accent) 50%, var(--color-primary) 90%, transparent 100%)',
                 boxShadow: '0 0 10px rgba(0,255,65,0.25), 0 0 4px rgba(0,229,255,0.15)',
               }}
             />
 
-            <div className="space-y-12">
+            <div className="space-y-16">
               {experiences.map((exp, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
                   animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                  transition={{ duration: 0.6, delay: index * 0.2 }}
-                  className={`relative md:flex md:items-center ${
+                  transition={{ duration: 0.65, delay: index * 0.25 }}
+                  className={`relative md:flex md:items-start ${
                     index % 2 === 0 ? 'md:flex-row-reverse' : ''
                   }`}
                 >
@@ -81,7 +98,7 @@ export default function Experience() {
                   <motion.div
                     className="hidden md:block absolute left-1/2 transform -translate-x-1/2 z-10"
                     style={{
-                      width: 22, height: 22, marginLeft: -11,
+                      width: 22, height: 22, marginLeft: -11, marginTop: 28,
                       borderRadius: '50%',
                       background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))',
                       border: '3px solid var(--bg-card-solid)',
@@ -93,11 +110,11 @@ export default function Experience() {
                         '0 0 6px rgba(0,255,65,0.4), 0 0 2px rgba(0,229,255,0.2)',
                       ],
                     }}
-                    transition={{ duration: 2, repeat: Infinity }}
+                    transition={{ duration: 2, repeat: Infinity, delay: index * 0.5 }}
                   />
 
                   {/* Content Card */}
-                  <div className={`md:w-1/2 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}`}>
+                  <div className={`md:w-1/2 ${index % 2 === 0 ? 'md:pr-14' : 'md:pl-14'}`}>
                     <motion.div
                       whileHover={{ y: -6 }}
                       className="rounded-2xl backdrop-blur-sm transition-all duration-300 group relative overflow-hidden"
@@ -120,7 +137,7 @@ export default function Experience() {
                         el.style.boxShadow = 'var(--shadow-card)';
                       }}
                     >
-                      {/* Top gradient accent strip */}
+                      {/* Top gradient strip */}
                       <div style={{
                         height: 2,
                         background: 'linear-gradient(90deg, var(--color-primary), var(--color-accent))',
@@ -130,17 +147,39 @@ export default function Experience() {
                       <div className="p-6">
                         {/* Badges row */}
                         <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-                          <span
-                            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold"
-                            style={{
-                              backgroundColor: 'rgba(0,255,65,0.1)',
-                              border: '1px solid rgba(0,255,65,0.3)',
-                              color: 'var(--color-primary)',
-                            }}
-                          >
-                            <FaCalendar style={{ fontSize: '0.6rem' }} />
-                            {exp.period}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <span
+                              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold"
+                              style={{
+                                backgroundColor: 'rgba(0,255,65,0.1)',
+                                border: '1px solid rgba(0,255,65,0.3)',
+                                color: 'var(--color-primary)',
+                              }}
+                            >
+                              <FaCalendar style={{ fontSize: '0.6rem' }} />
+                              {exp.period}
+                            </span>
+                            {exp.badge && (
+                              <span
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold"
+                                style={{
+                                  backgroundColor: 'rgba(0,255,65,0.15)',
+                                  border: '1px solid rgba(0,255,65,0.4)',
+                                  color: 'var(--color-primary)',
+                                }}
+                              >
+                                <motion.span
+                                  style={{
+                                    display: 'inline-block', width: 5, height: 5,
+                                    borderRadius: '50%', backgroundColor: 'var(--color-primary)',
+                                  }}
+                                  animate={{ opacity: [1, 0.3, 1] }}
+                                  transition={{ duration: 1.4, repeat: Infinity }}
+                                />
+                                {exp.badge}
+                              </span>
+                            )}
+                          </div>
                           <span
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium"
                             style={{
@@ -162,8 +201,8 @@ export default function Experience() {
                           >
                             {exp.title}
                           </h3>
-                          <p className="text-lg flex items-center gap-2" style={{ color: 'var(--color-accent)' }}>
-                            <FaBriefcase style={{ color: 'var(--color-primary)', fontSize: '0.85rem' }} />
+                          <p className="text-base flex items-center gap-2" style={{ color: 'var(--color-accent)' }}>
+                            <FaBriefcase style={{ color: 'var(--color-primary)', fontSize: '0.8rem' }} />
                             {exp.company}
                           </p>
                         </div>

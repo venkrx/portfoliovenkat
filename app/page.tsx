@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Interests from "@/components/Interests";
@@ -9,36 +10,43 @@ import Experience from "@/components/Experience";
 import Contact from "@/components/Contact";
 import Navbar from "@/components/Navbar";
 
+// Each section rises up as it enters the viewport
+const rise = {
+  initial: { opacity: 0, y: 55 },
+  whileInView: { opacity: 1, y: 0 } as const,
+  viewport: { once: true, amount: 0.04 },
+  transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+};
+
 export default function Home() {
   return (
     <main className="relative" style={{ backgroundColor: 'var(--bg-base)' }}>
       <Navbar />
       <Hero />
 
-      {/* Alternating bg-base / bg-card-solid creates subtle visual rhythm */}
-      <div style={{ backgroundColor: 'var(--bg-base)' }} className="relative z-10">
+      <motion.div {...rise} style={{ backgroundColor: 'var(--bg-base)' }} className="relative z-10">
         <About />
-      </div>
+      </motion.div>
 
-      <div style={{ backgroundColor: 'var(--bg-card-solid)' }} className="relative z-10">
+      <motion.div {...rise} style={{ backgroundColor: 'var(--bg-card-solid)' }} className="relative z-10">
         <Interests />
-      </div>
+      </motion.div>
 
-      <div style={{ backgroundColor: 'var(--bg-base)' }} className="relative z-10">
+      <motion.div {...rise} style={{ backgroundColor: 'var(--bg-base)' }} className="relative z-10">
         <Skills />
-      </div>
+      </motion.div>
 
-      <div className="relative z-10">
+      <motion.div {...rise} className="relative z-10">
         <Projects />
-      </div>
+      </motion.div>
 
-      <div style={{ backgroundColor: 'var(--bg-card-solid)' }} className="relative z-10">
+      <motion.div {...rise} style={{ backgroundColor: 'var(--bg-card-solid)' }} className="relative z-10">
         <Experience />
-      </div>
+      </motion.div>
 
-      <div style={{ backgroundColor: 'var(--bg-base)' }} className="relative z-10">
+      <motion.div {...rise} style={{ backgroundColor: 'var(--bg-base)' }} className="relative z-10">
         <Contact />
-      </div>
+      </motion.div>
     </main>
   );
 }
