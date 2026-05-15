@@ -37,15 +37,23 @@ const toolSkills = [
   { name: 'Linux',       icon: SiLinux      },
 ];
 
+// colorVar: 'primary' | 'accent'
 function SkillChip({
-  name, icon: Icon, color, delay, isInView,
+  name, icon: Icon, colorVar, delay, isInView,
 }: {
   name: string;
   icon: React.ElementType;
-  color: string;
+  colorVar: 'primary' | 'accent';
   delay: number;
   isInView: boolean;
 }) {
+  const color    = `var(--color-${colorVar})`;
+  const rgb      = `var(--color-${colorVar}-rgb)`;
+  const bgColor  = `rgba(${rgb}, 0.05)`;
+  const border   = `rgba(${rgb}, 0.16)`;
+  const borderHv = `rgba(${rgb}, 0.4)`;
+  const shadow   = `rgba(${rgb}, 0.12)`;
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.85, y: 10 }}
@@ -55,18 +63,18 @@ function SkillChip({
       whileTap={{ scale: 0.96 }}
       className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl"
       style={{
-        backgroundColor: `${color}0d`,
-        border: `1px solid ${color}28`,
+        backgroundColor: bgColor,
+        border: `1px solid ${border}`,
         transition: 'border-color 0.2s, box-shadow 0.2s',
       }}
       onMouseEnter={e => {
         const el = e.currentTarget as HTMLElement;
-        el.style.borderColor = `${color}60`;
-        el.style.boxShadow = `0 4px 14px ${color}1a`;
+        el.style.borderColor = borderHv;
+        el.style.boxShadow = `0 4px 14px ${shadow}`;
       }}
       onMouseLeave={e => {
         const el = e.currentTarget as HTMLElement;
-        el.style.borderColor = `${color}28`;
+        el.style.borderColor = border;
         el.style.boxShadow = 'none';
       }}
     >
@@ -81,8 +89,6 @@ function SkillChip({
 export default function Skills() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.12 });
-  const green = '#00ff41';
-  const cyan  = '#00e5ff';
 
   return (
     <section id="skills" className="relative py-20 md:py-32" ref={ref}>
@@ -113,29 +119,31 @@ export default function Skills() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="mb-8 p-6 md:p-8 rounded-2xl backdrop-blur-sm relative overflow-hidden"
           style={{
-            border: `1px solid rgba(0,255,65,0.4)`,
+            border: '1px solid rgba(var(--color-primary-rgb), 0.4)',
             backgroundColor: 'var(--bg-card)',
-            boxShadow: '0 0 36px rgba(0,255,65,0.07)',
+            boxShadow: '0 0 36px rgba(var(--color-primary-rgb), 0.07)',
           }}
         >
           {/* Corner glow */}
           <div style={{
             position: 'absolute', top: 0, left: 0, width: 180, height: 120,
-            background: 'radial-gradient(ellipse at top left, rgba(0,255,65,0.07) 0%, transparent 70%)',
+            background: 'radial-gradient(ellipse at top left, rgba(var(--color-primary-rgb), 0.07) 0%, transparent 70%)',
             pointerEvents: 'none',
           }} />
 
           {/* Featured badge */}
-          <div className="absolute top-4 right-4 px-2.5 py-1 rounded-full text-xs font-semibold"
+          <div
+            className="absolute top-4 right-4 px-2.5 py-1 rounded-full text-xs font-semibold"
             style={{
-              backgroundColor: 'rgba(0,255,65,0.1)',
-              border: '1px solid rgba(0,255,65,0.3)',
-              color: green,
-            }}>
+              backgroundColor: 'rgba(var(--color-primary-rgb), 0.1)',
+              border: '1px solid rgba(var(--color-primary-rgb), 0.3)',
+              color: 'var(--color-primary)',
+            }}
+          >
             Core Focus
           </div>
 
-          <h3 className="text-xl font-bold mb-5 flex items-center gap-2" style={{ color: green }}>
+          <h3 className="text-xl font-bold mb-5" style={{ color: 'var(--color-primary)' }}>
             AI &amp; Machine Learning
           </h3>
 
@@ -144,7 +152,7 @@ export default function Skills() {
               <SkillChip
                 key={skill.name}
                 {...skill}
-                color={green}
+                colorVar="primary"
                 delay={0.15 + i * 0.06}
                 isInView={isInView}
               />
@@ -169,10 +177,10 @@ export default function Skills() {
           >
             <div style={{
               position: 'absolute', top: 0, right: 0, width: 120, height: 100,
-              background: `radial-gradient(ellipse at top right, ${cyan}0a 0%, transparent 70%)`,
+              background: 'radial-gradient(ellipse at top right, rgba(var(--color-accent-rgb), 0.06) 0%, transparent 70%)',
               pointerEvents: 'none',
             }} />
-            <h3 className="text-xl font-bold mb-5" style={{ color: cyan }}>
+            <h3 className="text-xl font-bold mb-5" style={{ color: 'var(--color-accent)' }}>
               Web Development
             </h3>
             <div className="flex flex-wrap gap-3">
@@ -180,7 +188,7 @@ export default function Skills() {
                 <SkillChip
                   key={skill.name}
                   {...skill}
-                  color={cyan}
+                  colorVar="accent"
                   delay={0.3 + i * 0.06}
                   isInView={isInView}
                 />
@@ -202,10 +210,10 @@ export default function Skills() {
           >
             <div style={{
               position: 'absolute', bottom: 0, left: 0, width: 120, height: 100,
-              background: `radial-gradient(ellipse at bottom left, ${green}09 0%, transparent 70%)`,
+              background: 'radial-gradient(ellipse at bottom left, rgba(var(--color-primary-rgb), 0.05) 0%, transparent 70%)',
               pointerEvents: 'none',
             }} />
-            <h3 className="text-xl font-bold mb-5" style={{ color: green }}>
+            <h3 className="text-xl font-bold mb-5" style={{ color: 'var(--color-primary)' }}>
               Tools &amp; DevOps
             </h3>
             <div className="flex flex-wrap gap-3">
@@ -213,7 +221,7 @@ export default function Skills() {
                 <SkillChip
                   key={skill.name}
                   {...skill}
-                  color={green}
+                  colorVar="primary"
                   delay={0.4 + i * 0.06}
                   isInView={isInView}
                 />

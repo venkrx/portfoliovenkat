@@ -17,10 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
-        {/* Inline script runs before paint — prevents flash of wrong theme */}
+        {/* Inline script runs before paint — prevents flash of wrong theme/color */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){var t=localStorage.getItem('portfolio-theme')||'dark';document.documentElement.className=t;})();`,
+            __html: `(function(){var t=localStorage.getItem('portfolio-theme')||'dark';var c=localStorage.getItem('portfolio-color')||'green';var cls=t;if(c!=='green')cls+=' color-'+c;document.documentElement.className=cls;})();`,
           }}
         />
       </head>

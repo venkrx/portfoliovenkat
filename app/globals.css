@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Dark theme (default) ── */
+/* ── Dark theme (default / green) ── */
 html, html.dark {
   --bg-base: #070d1a;
   --bg-card: rgba(10, 20, 40, 0.92);
@@ -20,32 +20,106 @@ html, html.dark {
   --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255,255,255,0.02);
   --background: #070d1a;
   --foreground: #e8f4ff;
-  /* Semantic color tokens */
   --color-primary: #00ff41;
   --color-accent: #00e5ff;
+  --color-primary-rgb: 0, 255, 65;
+  --color-accent-rgb: 0, 229, 255;
 }
 
-/* ── Light theme ── */
+/* ── Light theme (base — green) ── */
 html.light {
-  --bg-base: #f6f8fa;
-  --bg-card: rgba(255, 255, 255, 0.9);
-  --bg-card-solid: #ffffff;
-  --bg-input: rgba(255, 255, 255, 0.95);
-  --text-heading: #0d1117;
-  --text-body: #24292f;
-  --text-muted: #57606a;
-  --border-primary: rgba(0, 140, 50, 0.2);
-  --border-hover: rgba(0, 140, 50, 0.7);
-  --grid-color: rgba(0, 140, 50, 0.065);
-  --scrollbar-track: #e8eceb;
-  --scrollbar-thumb: rgba(0, 140, 50, 0.28);
-  --nav-bg: rgba(246, 248, 250, 0.94);
-  --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.07);
-  --background: #f6f8fa;
-  --foreground: #0d1117;
-  /* Semantic color tokens — richer, readable on light bg */
-  --color-primary: #008f43;
+  --bg-base: #eef2f8;
+  --bg-card: rgba(255, 255, 255, 0.88);
+  --bg-card-solid: #f5f8fc;
+  --bg-input: rgba(255, 255, 255, 0.96);
+  --text-heading: #0b1929;
+  --text-body: #263d56;
+  --text-muted: #5a7a96;
+  --border-primary: rgba(0, 120, 56, 0.2);
+  --border-hover: rgba(0, 120, 56, 0.7);
+  --grid-color: rgba(0, 120, 56, 0.065);
+  --scrollbar-track: #dde4ee;
+  --scrollbar-thumb: rgba(0, 120, 56, 0.28);
+  --nav-bg: rgba(238, 242, 248, 0.96);
+  --shadow-card: 0 2px 20px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255, 255, 255, 0.9);
+  --background: #eef2f8;
+  --foreground: #0b1929;
+  --color-primary: #007838;
   --color-accent: #0077a8;
+  --color-primary-rgb: 0, 120, 56;
+  --color-accent-rgb: 0, 119, 168;
+}
+
+/* ── Color theme: Yellow (dark) ── */
+html.color-yellow {
+  --color-primary: #f5c400;
+  --color-accent: #ff8c00;
+  --color-primary-rgb: 245, 196, 0;
+  --color-accent-rgb: 255, 140, 0;
+  --border-primary: rgba(245, 196, 0, 0.18);
+  --border-hover: rgba(245, 196, 0, 0.8);
+  --grid-color: rgba(245, 196, 0, 0.04);
+  --scrollbar-thumb: rgba(245, 196, 0, 0.25);
+}
+
+/* ── Color theme: Yellow (light) ── */
+html.light.color-yellow {
+  --color-primary: #a07800;
+  --color-accent: #c05a00;
+  --color-primary-rgb: 160, 120, 0;
+  --color-accent-rgb: 192, 90, 0;
+  --border-primary: rgba(160, 120, 0, 0.2);
+  --border-hover: rgba(160, 120, 0, 0.7);
+  --grid-color: rgba(160, 120, 0, 0.065);
+  --scrollbar-thumb: rgba(160, 120, 0, 0.28);
+}
+
+/* ── Color theme: Red (dark) ── */
+html.color-red {
+  --color-primary: #ff4455;
+  --color-accent: #ff8855;
+  --color-primary-rgb: 255, 68, 85;
+  --color-accent-rgb: 255, 136, 85;
+  --border-primary: rgba(255, 68, 85, 0.18);
+  --border-hover: rgba(255, 68, 85, 0.8);
+  --grid-color: rgba(255, 68, 85, 0.04);
+  --scrollbar-thumb: rgba(255, 68, 85, 0.25);
+}
+
+/* ── Color theme: Red (light) ── */
+html.light.color-red {
+  --color-primary: #c41a1a;
+  --color-accent: #c05030;
+  --color-primary-rgb: 196, 26, 26;
+  --color-accent-rgb: 192, 80, 48;
+  --border-primary: rgba(196, 26, 26, 0.2);
+  --border-hover: rgba(196, 26, 26, 0.7);
+  --grid-color: rgba(196, 26, 26, 0.065);
+  --scrollbar-thumb: rgba(196, 26, 26, 0.28);
+}
+
+/* ── Color theme: Blue (dark) ── */
+html.color-blue {
+  --color-primary: #4499ff;
+  --color-accent: #44ddff;
+  --color-primary-rgb: 68, 153, 255;
+  --color-accent-rgb: 68, 221, 255;
+  --border-primary: rgba(68, 153, 255, 0.18);
+  --border-hover: rgba(68, 153, 255, 0.8);
+  --grid-color: rgba(68, 153, 255, 0.04);
+  --scrollbar-thumb: rgba(68, 153, 255, 0.25);
+}
+
+/* ── Color theme: Blue (light) ── */
+html.light.color-blue {
+  --color-primary: #1155cc;
+  --color-accent: #0077a8;
+  --color-primary-rgb: 17, 85, 204;
+  --color-accent-rgb: 0, 119, 168;
+  --border-primary: rgba(17, 85, 204, 0.2);
+  --border-hover: rgba(17, 85, 204, 0.7);
+  --grid-color: rgba(17, 85, 204, 0.065);
+  --scrollbar-thumb: rgba(17, 85, 204, 0.28);
 }
 
 * {
@@ -76,10 +150,7 @@ body {
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 255, 65, 0.6);
-}
-html.light ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 148, 50, 0.55);
+  background: rgba(var(--color-primary-rgb), 0.6);
 }
 body {
   -ms-overflow-style: none;
@@ -89,21 +160,14 @@ body {
 
 /* ── Glow effects ── */
 .glow-text {
-  text-shadow: 0 0 8px var(--color-primary), 0 0 20px var(--color-primary);
-}
-html.light .glow-text {
-  text-shadow: 0 0 6px rgba(0, 143, 67, 0.55), 0 0 16px rgba(0, 143, 67, 0.28);
+  text-shadow: 0 0 8px rgba(var(--color-primary-rgb), 0.65), 0 0 20px rgba(var(--color-primary-rgb), 0.3);
 }
 
 .glow-box {
-  box-shadow: 0 0 10px rgba(0, 255, 65, 0.45), 0 0 22px rgba(0, 255, 65, 0.22);
-}
-html.light .glow-box {
-  box-shadow: 0 0 8px rgba(0, 143, 67, 0.28), 0 0 18px rgba(0, 143, 67, 0.14);
+  box-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.45), 0 0 22px rgba(var(--color-primary-rgb), 0.22);
 }
 
 /* ── Theme-aware overrides for Tailwind color utilities ── */
-/* These let text-primary / bg-primary / text-accent adapt per theme */
 .text-primary                { color: var(--color-primary)            !important; }
 .hover\:text-primary:hover   { color: var(--color-primary)            !important; }
 .bg-primary                  { background-color: var(--color-primary) !important; }

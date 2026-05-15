@@ -13,7 +13,7 @@ export default function Experience() {
       title: 'Computer Vision Intern',
       company: 'CloverBridge Technologies Pvt. Limited',
       location: 'Remote',
-      period: '2025 – Present',
+      period: '2026 – Present',
       badge: 'Active',
       description: [
         'Conducting applied research on real-time object detection for hospital surveillance using YOLO-family architectures (YOLOv8/v9) on live camera feeds',
@@ -28,7 +28,7 @@ export default function Experience() {
       title: 'AI Intern',
       company: 'DigiSignals',
       location: 'Remote',
-      period: '2024',
+      period: '2025',
       badge: null,
       description: [
         'Developed an Agentic RAG Framework for Bray to improve chatbot response quality through human-in-the-loop feedback',
