@@ -4,10 +4,8 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { FaCode, FaMusic, FaBrain } from 'react-icons/fa';
 
-// Slow, stately rise — like names appearing in movie end credits
-const creditsEase = [0.16, 1, 0.3, 1] as const;
-
-function CreditLine({
+// Stately rise — used for every "credit" line
+function Rise({
   children,
   delay,
   isInView,
@@ -22,156 +20,173 @@ function CreditLine({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 90 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 90 }}
-      transition={{ duration: 1.05, delay, ease: creditsEase }}
       className={className}
       style={style}
+      initial={{ opacity: 0, y: 72 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 72 }}
+      transition={{ duration: 1.0, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </motion.div>
   );
 }
 
+const features = [
+  {
+    icon: FaBrain,
+    title: 'AI & Machine Learning',
+    description: 'Deep learning, LLMs, agentic frameworks — building systems that think.',
+  },
+  {
+    icon: FaCode,
+    title: 'Full-Stack Development',
+    description: 'React, Next.js, Node.js — scalable apps from idea to production.',
+  },
+  {
+    icon: FaMusic,
+    title: 'Beyond the Screen',
+    description: 'Tennis player & singer — creativity and competition sharpen my engineering.',
+  },
+];
+
 export default function About() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, amount: 0.1 });
-
-  const features = [
-    {
-      icon: FaBrain,
-      title: 'AI & Machine Learning',
-      description: 'Passionate about developing intelligent systems and exploring deep learning, LLMs, and agentic frameworks.',
-    },
-    {
-      icon: FaCode,
-      title: 'Full Stack Development',
-      description: 'Building scalable applications with modern frameworks — React, Next.js, Node.js, and beyond.',
-    },
-    {
-      icon: FaMusic,
-      title: 'Beyond Tech',
-      description: 'Tennis player and singer — I believe creativity and athleticism sharpen engineering thinking.',
-    },
-  ];
+  const isInView = useInView(ref, { once: false, amount: 0.08 });
 
   return (
-    <section id="about" className="relative py-20 md:py-32 overflow-hidden" ref={ref}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="about" ref={ref} className="relative py-24 md:py-36 overflow-hidden">
 
-        {/* Section title — dramatic credit reveal */}
-        <CreditLine delay={0} isInView={isInView} className="text-center mb-16">
-          <h2
-            className="text-4xl md:text-5xl font-bold mb-4"
-            style={{ color: 'var(--text-heading)' }}
-          >
-            <span className="text-primary">{'<'}</span>
-            About Me
-            <span className="text-primary">{' />'}</span>
+      {/* Subtle dot grid — terminal industry backdrop */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(circle, var(--grid-color) 1px, transparent 1px)',
+          backgroundSize: '28px 28px',
+        }}
+      />
+
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        {/* ── Label ── credit 1 */}
+        <Rise delay={0} isInView={isInView} className="mb-4">
+          <p style={{
+            fontFamily: 'ui-monospace, monospace',
+            fontSize: '0.72rem',
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+            color: 'var(--color-primary)',
+          }}>
+            // 01 — about
+          </p>
+        </Rise>
+
+        {/* ── Section title ── credit 2 */}
+        <Rise delay={0.22} isInView={isInView} className="mb-14">
+          <h2 className="text-4xl md:text-5xl font-bold" style={{ color: 'var(--text-heading)' }}>
+            About Me<span className="text-primary">.</span>
           </h2>
-          <div className="h-1 w-20 bg-primary mx-auto rounded-full" />
-        </CreditLine>
+          <div className="h-px mt-5" style={{ background: 'linear-gradient(90deg, var(--color-primary), transparent)', maxWidth: 200 }} />
+        </Rise>
 
-        {/* About Content */}
-        <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
-          {/* Text Content — each paragraph rises like a credit */}
-          <div className="space-y-6">
+        {/* ── Two-column: text + stats ── */}
+        <div className="grid md:grid-cols-2 gap-16 mb-20">
+
+          {/* Text column — each paragraph is its own credit */}
+          <div className="space-y-7">
             {[
-              <>
-                I&apos;m a{' '}
-                <span className="text-primary font-semibold">4th-year AI Engineering student</span> at{' '}
-                <span className="text-accent font-semibold">Amrita Vishwa Vidyapeetham, Coimbatore</span>,
-                driven by a passion for artificial intelligence and innovative technology solutions.
-              </>,
-              <>
-                My journey in tech has been fueled by curiosity and a desire to create impactful solutions.
-                I specialize in{' '}
-                <span className="text-primary">machine learning</span>,{' '}
-                <span className="text-primary">deep learning</span>,{' '}
-                <span className="text-primary">LLMs</span>, and{' '}
-                <span className="text-primary">full-stack development</span>, constantly pushing the
-                boundaries of what&apos;s possible with AI.
-              </>,
-              <>
-                When I&apos;m not coding, I play{' '}
-                <span className="text-primary">tennis</span> and love{' '}
-                <span className="text-primary">singing</span>.
-              </>,
+              <>I&apos;m a <span className="text-primary font-semibold">4th-year AI Engineering student</span> at <span className="text-accent font-semibold">Amrita Vishwa Vidyapeetham, Coimbatore</span> — driven by a curiosity for intelligent systems and a hunger to build things that actually matter.</>,
+              <>I don&apos;t just use LLMs — I <span className="text-primary font-semibold">build systems that use them</span>. Agentic pipelines that reason, plan, and act. RAG architectures that surface meaning. Vision models that understand the world. <span className="text-accent">LLMs are the engine; I build the vehicle.</span></>,
+              <>That same thinking carries into <span className="text-primary">full-stack development</span> — every layer from model inference to production UI has to be intentional. Whether it&apos;s a React interface or a distributed ML pipeline, I care about the craft end to end.</>,
+              <>Off the keyboard: <span className="text-primary">tennis</span> keeps me sharp and <span className="text-primary">singing</span> keeps me human.</>,
             ].map((text, i) => (
-              <CreditLine
-                key={i}
-                delay={0.28 + i * 0.32}
-                isInView={isInView}
-              >
+              <Rise key={i} delay={0.44 + i * 0.26} isInView={isInView}>
                 <p
-                  className="text-lg leading-relaxed"
-                  style={{ color: 'var(--text-body)' }}
+                  className="text-base md:text-lg leading-relaxed"
+                  style={{
+                    color: 'var(--text-body)',
+                    borderLeft: '2px solid var(--border-primary)',
+                    paddingLeft: '1rem',
+                  }}
                 >
                   {text}
                 </p>
-              </CreditLine>
+              </Rise>
             ))}
           </div>
 
-          {/* Stats — rise together, slightly later */}
-          <motion.div
-            className="grid grid-cols-2 gap-6"
-            initial={{ opacity: 0, y: 70 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 70 }}
-            transition={{ duration: 1.0, delay: 0.55, ease: creditsEase }}
-          >
+          {/* Stats — terminal industry style, each a credit */}
+          <div className="flex flex-col justify-center gap-8">
             {[
-              { label: 'Projects Completed', value: '15+' },
-              { label: 'Technologies', value: '20+' },
-              { label: 'Years of Learning', value: '4+' },
-            ].map(stat => (
-              <motion.div
-                key={stat.label}
-                whileHover={{ scale: 1.05 }}
-                className="p-6 rounded-xl backdrop-blur-sm transition-all duration-300"
-                style={{
-                  border: '1px solid var(--border-primary)',
+              { value: '15+', label: 'Projects Completed', sub: 'personal + org' },
+              { value: '20+', label: 'Technologies',        sub: 'across the stack' },
+              { value: '4',   label: 'Years of Learning',   sub: 'and counting' },
+            ].map((stat, i) => (
+              <Rise key={stat.label} delay={0.55 + i * 0.22} isInView={isInView}>
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: 20,
+                  padding: '18px 22px',
+                  borderRadius: 12,
                   backgroundColor: 'var(--bg-card)',
-                  boxShadow: 'var(--shadow-card)',
-                }}
-                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--color-primary)')}
-                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--border-primary)')}
-              >
-                <div className="text-3xl md:text-4xl font-bold text-primary mb-2">{stat.value}</div>
-                <div className="text-sm" style={{ color: 'var(--text-muted)' }}>{stat.label}</div>
-              </motion.div>
+                  border: '1px solid var(--border-primary)',
+                }}>
+                  <span style={{
+                    fontFamily: 'ui-monospace, monospace',
+                    fontSize: '2.4rem',
+                    fontWeight: 800,
+                    color: 'var(--color-primary)',
+                    lineHeight: 1,
+                    flexShrink: 0,
+                    minWidth: 72,
+                  }}>{stat.value}</span>
+                  <div>
+                    <p style={{ color: 'var(--text-heading)', fontWeight: 600, fontSize: '0.95rem' }}>{stat.label}</p>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontFamily: 'ui-monospace, monospace', marginTop: 2 }}>{stat.sub}</p>
+                  </div>
+                </div>
+              </Rise>
             ))}
-          </motion.div>
+          </div>
         </div>
 
-        {/* Features Grid — final credits wave */}
-        <div className="grid md:grid-cols-3 gap-8">
+        {/* ── Divider ── credit N */}
+        <Rise delay={1.25} isInView={isInView} className="mb-14">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-primary)' }} />
+            <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: '0.68rem', letterSpacing: '0.14em', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+              what drives me
+            </span>
+            <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-primary)' }} />
+          </div>
+        </Rise>
+
+        {/* ── Feature cards — final credits wave ── */}
+        <div className="grid md:grid-cols-3 gap-6">
           {features.map((feature, i) => (
-            <CreditLine
-              key={feature.title}
-              delay={0.7 + i * 0.28}
-              isInView={isInView}
-            >
+            <Rise key={feature.title} delay={1.42 + i * 0.22} isInView={isInView}>
               <motion.div
-                whileHover={{ y: -10 }}
-                className="p-6 rounded-xl backdrop-blur-sm transition-all duration-300 group h-full"
+                whileHover={{ y: -6 }}
+                className="group h-full"
                 style={{
-                  border: '1px solid var(--border-primary)',
+                  padding: '24px',
+                  borderRadius: 14,
                   backgroundColor: 'var(--bg-card)',
-                  boxShadow: 'var(--shadow-card)',
+                  border: '1px solid var(--border-primary)',
+                  transition: 'border-color 0.25s',
                 }}
                 onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--color-primary)')}
                 onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--border-primary)')}
               >
-                <div className="text-4xl text-primary mb-4 group-hover:scale-110 transition-transform duration-300">
+                <div className="mb-4 group-hover:scale-110 transition-transform duration-300 inline-block text-primary text-3xl">
                   <feature.icon />
                 </div>
-                <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--text-heading)' }}>
+                <h3 style={{ color: 'var(--text-heading)', fontWeight: 700, fontSize: '1rem', marginBottom: 8 }}>
                   {feature.title}
                 </h3>
-                <p style={{ color: 'var(--text-muted)' }}>{feature.description}</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', lineHeight: 1.65 }}>
+                  {feature.description}
+                </p>
               </motion.div>
-            </CreditLine>
+            </Rise>
           ))}
         </div>
 
