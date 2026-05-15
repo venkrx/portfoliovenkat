@@ -105,7 +105,7 @@ const allProjects: Project[] = [
   {
     id: 6,
     name: 'Portfolio Website',
-    description: 'This portfolio — built with Next.js, TypeScript, Framer Motion, and TailwindCSS featuring 3D project cards, custom cursor, and smooth scroll animations.',
+    description: 'This portfolio — built with Next.js, TypeScript, Framer Motion, and TailwindCSS featuring laptop desk cards, custom cursor, and smooth animations.',
     github_url: 'https://github.com/venkatramks',
     language: 'TypeScript',
     topics: ['nextjs', 'framer-motion', 'tailwindcss', 'portfolio'],
@@ -143,148 +143,170 @@ const allProjects: Project[] = [
   },
 ];
 
-const LANG_META: Record<string, { color: string; bg: string; label: string }> = {
-  'Python':           { color: '#3776ab', bg: 'rgba(55,118,171,0.12)',  label: '#79b8ff' },
-  'TypeScript':       { color: '#3178c6', bg: 'rgba(49,120,198,0.12)',  label: '#79b8ff' },
-  'JavaScript':       { color: '#a87e00', bg: 'rgba(168,126,0,0.12)',   label: '#e3c35a' },
-  'Jupyter Notebook': { color: '#e87535', bg: 'rgba(232,117,53,0.12)', label: '#f0a975' },
+const LANG_META: Record<string, { bar: string; label: string; bg: string }> = {
+  'Python':           { bar: '#3776ab', label: '#ffe873', bg: 'rgba(55,118,171,0.14)'  },
+  'TypeScript':       { bar: '#3178c6', label: '#ffffff', bg: 'rgba(49,120,198,0.14)'  },
+  'JavaScript':       { bar: '#a87e00', label: '#ffffff', bg: 'rgba(168,126,0,0.14)'   },
+  'Jupyter Notebook': { bar: '#e87535', label: '#ffffff', bg: 'rgba(232,117,53,0.14)'  },
 };
 
-function TiltCard({
+function codeLines(seed: number): number[] {
+  return [52, 38, 65, 28, 46, 60].map((base, i) =>
+    base + ((seed * (i + 1) * 13) % 24)
+  );
+}
+
+const SCREEN_POS: React.CSSProperties = {
+  position: 'absolute',
+  top:    '5.505%',
+  left:   '4.375%',
+  width:  '91.25%',
+  height: '68.807%',
+  overflow: 'hidden',
+  borderRadius: 3,
+};
+
+// ── Laptop SVG chrome ─────────────────────────────────────────────────────────
+function LaptopChrome() {
+  return (
+    <svg
+      viewBox="0 0 320 218"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
+    >
+      <rect x="1" y="1" width="318" height="170" rx="4" fill="#18253d" />
+      <rect x="1" y="1" width="318" height="170" rx="4" fill="none" stroke="#2e4264" strokeWidth="1.5" />
+      <rect x="2" y="2" width="316" height="2" rx="1" fill="rgba(255,255,255,0.07)" />
+      <line x1="1.5" y1="5" x2="1.5" y2="167" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+      <line x1="318.5" y1="5" x2="318.5" y2="167" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+      <rect x="1" y="1" width="318" height="55" rx="4" fill="rgba(255,255,255,0.025)" />
+      <rect x="14" y="12" width="292" height="150" rx="3" fill="#060c15" />
+      <rect x="14" y="12" width="292" height="150" rx="3" fill="none" stroke="#1a2840" strokeWidth="0.8" />
+      <circle cx="160" cy="7" r="3" fill="#131d2d" stroke="#2a3f5a" strokeWidth="0.8" />
+      <circle cx="160" cy="7" r="1.2" fill="#070d18" />
+      <circle cx="160.7" cy="6.3" r="0.5" fill="rgba(255,255,255,0.3)" />
+      <circle cx="153" cy="7" r="0.6" fill="#1a2840" />
+      <circle cx="167" cy="7" r="0.6" fill="#1a2840" />
+      <rect x="0" y="170" width="320" height="3" rx="0" fill="#0c1828" />
+      <line x1="0" y1="170" x2="320" y2="170" stroke="rgba(0,229,255,0.1)" strokeWidth="0.7" />
+      <path d="M 6,173 L 314,173 L 326,215 L -6,215 Z" fill="#0f1e30" />
+      <path d="M 6,173 L 314,173 L 326,215 L -6,215 Z" fill="none" stroke="#243548" strokeWidth="0.8" />
+      <line x1="6" y1="173" x2="314" y2="173" stroke="rgba(255,255,255,0.04)" strokeWidth="0.7" />
+      <circle cx="308" cy="175.5" r="2" fill="#00ff41" opacity="0.65" />
+      {Array.from({ length: 14 }, (_, k) => (
+        <rect key={`k0-${k}`} x={8 + k * 21.7} y={176} width="19.5" height="3.5" rx="0.8"
+          fill="rgba(255,255,255,0.09)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.3" />
+      ))}
+      {Array.from({ length: 13 }, (_, k) => (
+        <rect key={`k1-${k}`} x={10 + k * 23} y={181.5} width="21" height="4.5" rx="0.8"
+          fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.05)" strokeWidth="0.3" />
+      ))}
+      {Array.from({ length: 12 }, (_, k) => (
+        <rect key={`k2-${k}`} x={18 + k * 23} y={188} width="21" height="4.5" rx="0.8"
+          fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.05)" strokeWidth="0.3" />
+      ))}
+      {Array.from({ length: 11 }, (_, k) => (
+        <rect key={`k3-${k}`} x={24 + k * 24.5} y={194.5} width="21" height="4.5" rx="0.8"
+          fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.05)" strokeWidth="0.3" />
+      ))}
+      <rect x="90" y="201" width="140" height="4" rx="1.2" fill="rgba(255,255,255,0.07)" />
+      <rect x="116" y="207" width="88" height="6.5" rx="1.5"
+        fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+    </svg>
+  );
+}
+
+// ── Laptop screen preview ─────────────────────────────────────────────────────
+function CardScreen({ project }: { project: Project }) {
+  const meta = LANG_META[project.language] ?? { bar: '#1a2840', label: '#ffffff', bg: '' };
+  const lines = codeLines(project.id);
+  const title = project.name.length > 22 ? project.name.slice(0, 22) + '…' : project.name;
+
+  return (
+    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#06101e' }}>
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '3px 4px 3px 7px', backgroundColor: meta.bar, flexShrink: 0,
+      }}>
+        <span style={{
+          fontSize: 6, fontFamily: 'ui-monospace,monospace', fontWeight: 600,
+          color: meta.label, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+        }}>
+          {title}
+        </span>
+        <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0, gap: 1 }}>
+          <div style={{ width: 9, height: 7, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: 5, height: 0.8, backgroundColor: meta.label, opacity: 0.75 }} />
+          </div>
+          <div style={{
+            width: 8, height: 7, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 6.5, color: meta.label, opacity: 0.8, fontWeight: 700, lineHeight: 1,
+          }}>×</div>
+        </div>
+      </div>
+      <div style={{ flex: 1, padding: '5px 7px', display: 'flex', flexDirection: 'column', gap: 5, overflow: 'hidden' }}>
+        {lines.map((w, i) => (
+          <div key={i} style={{
+            height: 3, width: `${w}%`, borderRadius: 2, flexShrink: 0,
+            backgroundColor:
+              i === 1 || i === 4 ? meta.bar + '55' :
+              i === 3             ? 'rgba(0,255,65,0.3)' :
+                                    'rgba(255,255,255,0.1)',
+          }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Laptop card (on-desk preview) ─────────────────────────────────────────────
+function LaptopCard({
   project, onClick, delay, isInView,
 }: {
   project: Project; onClick: () => void; delay: number; isInView: boolean;
 }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const meta = LANG_META[project.language] ?? { color: '#666', bg: 'rgba(128,128,128,0.1)', label: '#aaa' };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = cardRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    el.style.transform = `perspective(700px) rotateY(${x * 14}deg) rotateX(${-y * 10}deg) translateZ(16px)`;
-    el.style.boxShadow = `0 20px 48px rgba(0,0,0,0.35), 0 0 32px ${meta.color}25`;
-    el.style.borderColor = `${meta.color}80`;
-  };
-
-  const handleMouseLeave = () => {
-    const el = cardRef.current;
-    if (!el) return;
-    el.style.transform = 'perspective(700px) rotateY(0deg) rotateX(0deg) translateZ(0px)';
-    el.style.boxShadow = 'var(--shadow-card)';
-    el.style.borderColor = 'var(--border-primary)';
-  };
-
   return (
     <motion.div
-      initial={{ opacity: 0, y: 32 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
-      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
-      style={{ height: '100%' }}
+      className="flex flex-col items-center gap-2 cursor-none group flex-shrink-0"
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ duration: 0.45, delay, type: 'spring', stiffness: 120, damping: 16 }}
+      onClick={onClick}
     >
-      <div
-        ref={cardRef}
-        onClick={onClick}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{
-          position: 'relative',
-          padding: '22px 20px 18px',
-          borderRadius: 14,
-          backgroundColor: 'var(--bg-card)',
-          border: '1px solid var(--border-primary)',
-          boxShadow: 'var(--shadow-card)',
-          cursor: 'none',
-          transition: 'transform 0.12s ease, box-shadow 0.28s ease, border-color 0.28s ease',
-          overflow: 'hidden',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
+      <motion.div
+        whileHover={{ y: -10, scale: 1.07 }}
+        whileTap={{ scale: 0.97 }}
+        transition={{ type: 'spring', stiffness: 280, damping: 22 }}
+        style={{ width: 155, filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.7))' }}
       >
-        {/* Language color top strip */}
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-          backgroundColor: meta.color,
-          borderRadius: '14px 14px 0 0',
-        }} />
-
-        {/* Header: badges + GitHub link */}
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 6,
-          marginBottom: 14, flexWrap: 'wrap',
-        }}>
-          <span style={{
-            fontSize: '0.62rem', fontWeight: 700, padding: '2px 8px', borderRadius: 100,
-            backgroundColor: meta.bg, color: meta.label,
-            border: `1px solid ${meta.color}40`,
-            fontFamily: 'ui-monospace, monospace',
-          }}>{project.language}</span>
+        <div style={{ position: 'relative', width: '100%', aspectRatio: '320 / 218' }}>
+          <LaptopChrome />
+          <div style={SCREEN_POS}>
+            <CardScreen project={project} />
+          </div>
           {project.isOrg && (
-            <span style={{
-              fontSize: '0.62rem', fontWeight: 700, padding: '2px 8px', borderRadius: 100,
-              backgroundColor: 'rgba(0,255,65,0.08)', color: 'var(--color-primary)',
-              border: '1px solid rgba(0,255,65,0.25)',
-              fontFamily: 'ui-monospace, monospace',
-            }}>ORG</span>
+            <div style={{
+              position: 'absolute', top: -4, right: -4, zIndex: 10,
+              fontSize: 7, fontWeight: 700, padding: '2px 5px', borderRadius: 100,
+              backgroundColor: '#00ff41', color: '#000',
+              boxShadow: '0 0 6px rgba(0,255,65,0.55)', lineHeight: 1.4,
+            }}>ORG</div>
           )}
-          <div style={{ flex: 1 }} />
-          <a
-            href={project.github_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={e => e.stopPropagation()}
-            style={{
-              color: 'var(--text-muted)', fontSize: '1.05rem', lineHeight: 1,
-              transition: 'color 0.2s',
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--color-primary)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)'; }}
-          >
-            <FaGithub />
-          </a>
         </div>
-
-        {/* Project name */}
-        <h3 style={{
-          color: 'var(--text-heading)', fontWeight: 700, fontSize: '0.96rem',
-          marginBottom: 9, lineHeight: 1.35,
-        }}>
-          {project.name}
-        </h3>
-
-        {/* Description — 3-line clamp via Tailwind */}
-        <p
-          className="line-clamp-3"
-          style={{
-            color: 'var(--text-muted)', fontSize: '0.8rem', lineHeight: 1.7,
-            flex: 1, marginBottom: 16,
-          }}
-        >
-          {project.description}
-        </p>
-
-        {/* Topic chips */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
-          {project.topics.slice(0, 4).map(t => (
-            <span key={t} style={{
-              fontSize: '0.6rem', padding: '2px 8px', borderRadius: 100,
-              backgroundColor: 'rgba(var(--color-primary-rgb), 0.05)',
-              color: 'var(--text-muted)',
-              border: '1px solid var(--border-primary)',
-              fontFamily: 'ui-monospace, monospace',
-            }}>{t}</span>
-          ))}
-        </div>
-      </div>
+      </motion.div>
+      <p
+        className="text-center text-[10px] font-semibold leading-snug group-hover:text-primary transition-colors duration-200"
+        style={{ color: 'var(--text-muted)', maxWidth: 145 }}
+      >
+        {project.name}
+      </p>
     </motion.div>
   );
 }
 
+// ── Clean card modal (click to open) ─────────────────────────────────────────
 function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
-  const meta = LANG_META[project.language] ?? { color: '#666', bg: 'rgba(128,128,128,0.1)', label: '#aaa' };
+  const meta = LANG_META[project.language] ?? { bar: '#555', label: '#fff', bg: 'rgba(128,128,128,0.1)' };
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
@@ -300,7 +322,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
       className="fixed inset-0 z-[200] flex items-center justify-center p-4"
-      style={{ backgroundColor: 'rgba(0,0,0,0.86)', backdropFilter: 'blur(18px)' }}
+      style={{ backgroundColor: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(18px)' }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
     >
       <motion.div
@@ -310,21 +332,17 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
         transition={{ type: 'spring', stiffness: 300, damping: 28 }}
         style={{
           width: 'min(560px, 92vw)',
-          borderRadius: 18,
-          overflow: 'hidden',
+          borderRadius: 18, overflow: 'hidden',
           backgroundColor: 'var(--bg-card)',
           border: '1px solid var(--border-primary)',
-          boxShadow: `0 36px 80px rgba(0,0,0,0.6), 0 0 50px ${meta.color}18`,
+          boxShadow: `0 36px 80px rgba(0,0,0,0.6), 0 0 50px ${meta.bar}18`,
         }}
       >
-        {/* Language color strip */}
-        <div style={{ height: 4, backgroundColor: meta.color }} />
+        {/* Language color strip at top */}
+        <div style={{ height: 4, backgroundColor: meta.bar }} />
 
-        {/* Modal header */}
-        <div style={{
-          padding: '20px 24px 0',
-          display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-        }}>
+        {/* Header */}
+        <div style={{ padding: '20px 24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
             {project.isOrg && (
               <span style={{
@@ -335,27 +353,21 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
                 fontFamily: 'ui-monospace, monospace',
               }}>ORG · Vetri-Namathey</span>
             )}
-            <h3 style={{
-              color: 'var(--text-heading)', fontSize: '1.25rem',
-              fontWeight: 700, lineHeight: 1.3,
-            }}>
+            <h3 style={{ color: 'var(--text-heading)', fontSize: '1.25rem', fontWeight: 700, lineHeight: 1.3 }}>
               {project.name}
             </h3>
           </div>
 
-          {/* Close button — turns red on hover */}
+          {/* Close — turns red on hover */}
           <button
             onClick={onClose}
             style={{
-              width: 34, height: 34, borderRadius: 9, flexShrink: 0,
+              width: 34, height: 34, borderRadius: 9, flexShrink: 0, marginTop: 2,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               border: '1px solid var(--border-primary)',
-              backgroundColor: 'transparent',
-              color: 'var(--text-muted)',
-              cursor: 'none',
-              fontSize: '0.88rem',
+              backgroundColor: 'transparent', color: 'var(--text-muted)',
+              cursor: 'none', fontSize: '0.88rem',
               transition: 'background-color 0.18s, color 0.18s, border-color 0.18s',
-              marginTop: 2,
             }}
             onMouseEnter={e => {
               const el = e.currentTarget;
@@ -369,43 +381,34 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
               el.style.color = 'var(--text-muted)';
               el.style.borderColor = 'var(--border-primary)';
             }}
-          >
-            ✕
-          </button>
+          >✕</button>
         </div>
 
-        {/* Modal body */}
+        {/* Body */}
         <div style={{ padding: '16px 24px 26px', overflowY: 'auto', maxHeight: '62vh' }}>
-          {/* Language badge */}
           <span style={{
             display: 'inline-block', marginBottom: 16,
             fontSize: '0.7rem', fontWeight: 700, padding: '3px 10px', borderRadius: 100,
             backgroundColor: meta.bg, color: meta.label,
-            border: `1px solid ${meta.color}40`,
+            border: `1px solid ${meta.bar}50`,
             fontFamily: 'ui-monospace, monospace',
           }}>{project.language}</span>
 
-          <p style={{
-            color: 'var(--text-body)', fontSize: '0.9rem', lineHeight: 1.78,
-            marginBottom: 20,
-          }}>
+          <p style={{ color: 'var(--text-body)', fontSize: '0.9rem', lineHeight: 1.78, marginBottom: 20 }}>
             {project.description}
           </p>
 
-          {/* Topics */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 26 }}>
             {project.topics.map(t => (
               <span key={t} style={{
                 fontSize: '0.7rem', padding: '3px 10px', borderRadius: 100,
-                backgroundColor: 'rgba(var(--color-primary-rgb), 0.06)',
-                color: 'var(--color-primary)',
-                border: '1px solid rgba(var(--color-primary-rgb), 0.2)',
+                backgroundColor: 'rgba(0,255,65,0.06)', color: 'var(--color-primary)',
+                border: '1px solid rgba(0,255,65,0.2)',
                 fontFamily: 'ui-monospace, monospace',
               }}>{t}</span>
             ))}
           </div>
 
-          {/* CTAs */}
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             <a
               href={project.github_url} target="_blank" rel="noopener noreferrer"
@@ -424,8 +427,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 8,
                   padding: '10px 20px', borderRadius: 9,
-                  border: '1px solid rgba(var(--color-primary-rgb), 0.4)',
-                  color: 'var(--color-primary)',
+                  border: '1px solid rgba(0,255,65,0.4)', color: 'var(--color-primary)',
                   fontSize: '0.85rem', fontWeight: 700, textDecoration: 'none',
                   backgroundColor: 'transparent',
                 }}
@@ -440,12 +442,13 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
   );
 }
 
-function SectionBlock({
-  title, Icon, accentColor, projects, isInView, onSelect, baseDelay,
+// ── PC desk housing (laptops sit on top of a desk surface) ────────────────────
+function DeskSection({
+  title, Icon, accentHex, projects, isInView, onSelect, baseDelay,
 }: {
   title: string;
   Icon: React.ElementType;
-  accentColor: string;
+  accentHex: string;
   projects: Project[];
   isInView: boolean;
   onSelect: (p: Project) => void;
@@ -453,6 +456,7 @@ function SectionBlock({
 }) {
   return (
     <div className="mb-16">
+
       {/* Section label */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
@@ -465,37 +469,112 @@ function SectionBlock({
           padding: '5px 14px', borderRadius: 100,
           fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.08em',
           textTransform: 'uppercase' as const,
-          backgroundColor: `${accentColor}14`,
-          border: `1px solid ${accentColor}40`,
-          color: accentColor,
+          backgroundColor: `${accentHex}18`,
+          border: `1px solid ${accentHex}45`,
+          color: accentHex,
           fontFamily: 'ui-monospace, monospace',
         }}>
           <Icon style={{ fontSize: '0.72rem' }} />
           {title}
         </span>
-        <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, ${accentColor}35, transparent)` }} />
-        <span style={{
-          color: 'var(--text-muted)', fontSize: '0.7rem',
-          fontFamily: 'ui-monospace, monospace',
-        }}>{projects.length} projects</span>
+        <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, ${accentHex}38, transparent)` }} />
+        <span style={{ color: 'var(--text-muted)', fontSize: '0.7rem', fontFamily: 'ui-monospace, monospace' }}>
+          {projects.length} projects
+        </span>
       </motion.div>
 
-      {/* Cards grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-        {projects.map((p, i) => (
-          <TiltCard
-            key={p.id}
-            project={p}
-            onClick={() => onSelect(p)}
-            delay={baseDelay + 0.08 + i * 0.07}
-            isInView={isInView}
-          />
-        ))}
-      </div>
+      {/* Desk housing */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+        transition={{ duration: 0.6, delay: baseDelay + 0.12 }}
+        style={{
+          position: 'relative', borderRadius: 16, overflow: 'hidden',
+          border: `1px solid ${accentHex}28`,
+          boxShadow: `0 8px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(0,0,0,0.3)`,
+        }}
+      >
+        {/* Back panel: dark gradient */}
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 38,
+          background: 'linear-gradient(160deg, rgba(8,18,36,0.7) 0%, rgba(4,10,22,0.92) 100%)',
+          pointerEvents: 'none',
+        }} />
+        {/* Back panel: dot grid */}
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 38,
+          backgroundImage: 'radial-gradient(circle, var(--grid-color) 1px, transparent 1px)',
+          backgroundSize: '22px 22px',
+          opacity: 0.6,
+          pointerEvents: 'none',
+        }} />
+
+        {/* Left accent pillar */}
+        <div style={{
+          position: 'absolute', left: 0, top: 0, bottom: 38, width: 4,
+          background: `linear-gradient(180deg, ${accentHex}70, transparent)`,
+          borderRadius: '16px 0 0 0',
+        }} />
+        {/* Right accent pillar */}
+        <div style={{
+          position: 'absolute', right: 0, top: 0, bottom: 38, width: 4,
+          background: `linear-gradient(180deg, ${accentHex}70, transparent)`,
+          borderRadius: '0 16px 0 0',
+        }} />
+
+        {/* Laptops row — horizontally scrollable */}
+        <div style={{
+          position: 'relative', zIndex: 1,
+          display: 'flex', gap: 18,
+          overflowX: 'auto',
+          paddingTop: 28, paddingLeft: 20, paddingRight: 20, paddingBottom: 6,
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none' as React.CSSProperties['msOverflowStyle'],
+        }}>
+          {projects.map((p, i) => (
+            <LaptopCard
+              key={p.id}
+              project={p}
+              onClick={() => onSelect(p)}
+              delay={baseDelay + 0.1 + i * 0.06}
+              isInView={isInView}
+            />
+          ))}
+        </div>
+
+        {/* Desk surface */}
+        <div style={{
+          position: 'relative', zIndex: 1, height: 38,
+          background: 'linear-gradient(180deg, #1a2a42 0%, #0d1b2e 55%, #060f1e 100%)',
+          borderTop: `1px solid ${accentHex}1a`,
+        }}>
+          {/* Edge highlight sheen */}
+          <div style={{
+            position: 'absolute', top: 0, left: '4%', right: '4%', height: 1,
+            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent)',
+          }} />
+          {/* LED glow strip */}
+          <div style={{
+            position: 'absolute', top: 0, left: '10%', right: '10%', height: 2,
+            background: `linear-gradient(90deg, transparent, ${accentHex}55, transparent)`,
+            filter: `blur(1px)`,
+          }} />
+          {/* Desk leg hints */}
+          <div style={{
+            position: 'absolute', bottom: 0, left: 30, width: 5, height: '72%',
+            background: 'rgba(255,255,255,0.05)', borderRadius: '0 0 3px 3px',
+          }} />
+          <div style={{
+            position: 'absolute', bottom: 0, right: 30, width: 5, height: '72%',
+            background: 'rgba(255,255,255,0.05)', borderRadius: '0 0 3px 3px',
+          }} />
+        </div>
+      </motion.div>
     </div>
   );
 }
 
+// ── Main section ───────────────────────────────────────────────────────────────
 export default function Projects() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.04 });
@@ -521,7 +600,7 @@ export default function Projects() {
       />
 
       <div className="relative z-10 py-20 md:py-28">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Section header */}
           <motion.div
@@ -532,11 +611,8 @@ export default function Projects() {
           >
             <p style={{
               fontFamily: 'ui-monospace, monospace',
-              fontSize: '0.72rem',
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: 'var(--color-primary)',
-              marginBottom: 12,
+              fontSize: '0.72rem', letterSpacing: '0.18em',
+              textTransform: 'uppercase', color: 'var(--color-primary)', marginBottom: 12,
             }}>// 03 — projects</p>
             <h2 className="text-4xl md:text-5xl font-bold" style={{ color: 'var(--text-heading)' }}>
               What I&apos;ve Built<span className="text-primary">.</span>
@@ -545,22 +621,25 @@ export default function Projects() {
               background: 'linear-gradient(90deg, var(--color-primary), transparent)',
               maxWidth: 200,
             }} />
+            <p className="mt-4 text-sm" style={{ color: 'var(--text-muted)' }}>
+              Click any laptop to see full project details
+            </p>
           </motion.div>
 
-          <SectionBlock
+          <DeskSection
             title="AI & Machine Learning"
             Icon={FaRobot}
-            accentColor="var(--color-primary)"
+            accentHex="#00ff41"
             projects={aiProjects}
             isInView={isInView}
             onSelect={setSelectedProject}
             baseDelay={0.1}
           />
 
-          <SectionBlock
+          <DeskSection
             title="Web, Tools & CS"
             Icon={FaCode}
-            accentColor="var(--color-accent)"
+            accentHex="#00e5ff"
             projects={otherProjects}
             isInView={isInView}
             onSelect={setSelectedProject}
