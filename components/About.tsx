@@ -2,7 +2,7 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { FaCode, FaMusic, FaBrain } from 'react-icons/fa';
+import { FaCode, FaEye, FaBrain } from 'react-icons/fa';
 
 // Stately rise — used for every "credit" line
 function Rise({
@@ -33,19 +33,28 @@ function Rise({
 
 const features = [
   {
+    icon: FaEye,
+    number: '01',
+    title: 'Computer Vision',
+    description: 'Training models that see — object detection, segmentation, visual grounding. Understanding the world through pixels is where I invest most of my research.',
+    color: 'var(--color-accent)',
+    rgb: '0, 229, 255',
+  },
+  {
     icon: FaBrain,
-    title: 'AI & Machine Learning',
-    description: 'Deep learning, LLMs, agentic frameworks — building systems that think.',
+    number: '02',
+    title: 'AI Agents & LLMs',
+    description: "I build the systems that use LLMs — not the other way around. Agentic pipelines, multi-step reasoning, RAG architectures that act on knowledge.",
+    color: 'var(--color-primary)',
+    rgb: '0, 255, 65',
   },
   {
     icon: FaCode,
-    title: 'Full-Stack Development',
-    description: 'React, Next.js, Node.js — scalable apps from idea to production.',
-  },
-  {
-    icon: FaMusic,
-    title: 'Beyond the Screen',
-    description: 'Tennis player & singer — creativity and competition sharpen my engineering.',
+    number: '03',
+    title: 'Full-Stack Craft',
+    description: 'React, Next.js, FastAPI, Node.js — shipping the whole product end to end. Every layer from inference to production UI has to be intentional.',
+    color: 'var(--color-primary)',
+    rgb: '0, 255, 65',
   },
 ];
 
@@ -164,25 +173,54 @@ export default function About() {
           {features.map((feature, i) => (
             <Rise key={feature.title} delay={1.42 + i * 0.22} isInView={isInView}>
               <motion.div
-                whileHover={{ y: -6 }}
-                className="group h-full"
+                whileHover={{ y: -5 }}
+                className="h-full"
                 style={{
-                  padding: '24px',
+                  padding: '22px 22px 22px 20px',
                   borderRadius: 14,
                   backgroundColor: 'var(--bg-card)',
-                  border: '1px solid var(--border-primary)',
-                  transition: 'border-color 0.25s',
+                  borderTop: '1px solid var(--border-primary)',
+                  borderRight: '1px solid var(--border-primary)',
+                  borderBottom: '1px solid var(--border-primary)',
+                  borderLeft: `3px solid rgba(${feature.rgb}, 0.65)`,
+                  transition: 'border-color 0.25s, box-shadow 0.25s',
                 }}
-                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--color-primary)')}
-                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--border-primary)')}
+                onMouseEnter={e => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.borderTopColor = `rgba(${feature.rgb}, 0.25)`;
+                  el.style.borderRightColor = `rgba(${feature.rgb}, 0.25)`;
+                  el.style.borderBottomColor = `rgba(${feature.rgb}, 0.25)`;
+                  el.style.boxShadow = `0 8px 28px rgba(${feature.rgb}, 0.1)`;
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.borderTopColor = 'var(--border-primary)';
+                  el.style.borderRightColor = 'var(--border-primary)';
+                  el.style.borderBottomColor = 'var(--border-primary)';
+                  el.style.boxShadow = 'none';
+                }}
               >
-                <div className="mb-4 group-hover:scale-110 transition-transform duration-300 inline-block text-primary text-3xl">
-                  <feature.icon />
+                {/* Number + icon row */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+                  <span style={{
+                    fontFamily: 'ui-monospace, monospace', fontSize: '0.62rem',
+                    fontWeight: 700, letterSpacing: '0.12em',
+                    color: `rgba(${feature.rgb}, 0.5)`,
+                  }}>{feature.number}</span>
+                  <div style={{
+                    width: 38, height: 38, borderRadius: 10,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    backgroundColor: `rgba(${feature.rgb}, 0.08)`,
+                    border: `1px solid rgba(${feature.rgb}, 0.2)`,
+                  }}>
+                    <feature.icon style={{ color: feature.color, fontSize: '1.1rem' }} />
+                  </div>
                 </div>
-                <h3 style={{ color: 'var(--text-heading)', fontWeight: 700, fontSize: '1rem', marginBottom: 8 }}>
+
+                <h3 style={{ color: 'var(--text-heading)', fontWeight: 700, fontSize: '1rem', marginBottom: 9 }}>
                   {feature.title}
                 </h3>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', lineHeight: 1.65 }}>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem', lineHeight: 1.7 }}>
                   {feature.description}
                 </p>
               </motion.div>

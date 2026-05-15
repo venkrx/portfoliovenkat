@@ -12,7 +12,7 @@ const chatBubbles = [
   },
   {
     id: 2,
-    text: "I work on deep learning, LLMs, agentic systems, and full-stack apps. Always open to exciting collaborations and research opportunities.",
+    text: "I specialise in computer vision and agentic AI — training models that see, building pipelines that reason. Always open to research collaborations and engineering roles.",
     delay: 0.6,
   },
   {
@@ -77,6 +77,33 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative py-20 md:py-32 overflow-hidden" ref={ref}>
+      <style>{`
+        @property --flow-a {
+          syntax: '<angle>';
+          initial-value: 0deg;
+          inherits: false;
+        }
+        @keyframes contact-flow {
+          to { --flow-a: 360deg; }
+        }
+        .flow-wrap {
+          padding: 1.5px;
+          border-radius: 15px;
+          background: conic-gradient(
+            from var(--flow-a, 0deg),
+            transparent 70%,
+            rgba(0,255,65,0.75) 78%,
+            rgba(0,229,255,0.7) 87%,
+            transparent 93%
+          );
+          animation: contact-flow 5s linear infinite;
+        }
+        .flow-inner {
+          border-radius: 13.5px;
+          height: 100%;
+          overflow: hidden;
+        }
+      `}</style>
 
       {/* Background orbs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -347,35 +374,34 @@ export default function Contact() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="md:col-span-2 flex flex-col gap-5"
           >
-            {/* Status card */}
-            <div style={{
-              padding: '20px 22px', borderRadius: 14,
-              background: 'linear-gradient(135deg, rgba(var(--color-primary-rgb),0.06) 0%, rgba(var(--color-primary-rgb),0.02) 100%)',
-              border: '1px solid rgba(var(--color-primary-rgb), 0.2)',
-              boxShadow: 'var(--shadow-card)',
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-                <motion.div
-                  style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: 'var(--color-primary)', flexShrink: 0 }}
-                  animate={{ scale: [1, 1.5, 1], opacity: [1, 0.4, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-                <span style={{ color: 'var(--color-primary)', fontWeight: 700, fontSize: '0.92rem' }}>
-                  Online · Open to Work
-                </span>
+            {/* Status card — flowing border */}
+            <div className="flow-wrap" style={{ animationDelay: '0s' }}>
+              <div className="flow-inner" style={{
+                padding: '20px 22px',
+                background: 'linear-gradient(135deg, rgba(0,255,65,0.06) 0%, rgba(0,255,65,0.02) 100%)',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+                  <motion.div
+                    style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: 'var(--color-primary)', flexShrink: 0 }}
+                    animate={{ scale: [1, 1.5, 1], opacity: [1, 0.4, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                  <span style={{ color: 'var(--color-primary)', fontWeight: 700, fontSize: '0.92rem' }}>
+                    Online · Open to Work
+                  </span>
+                </div>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', lineHeight: 1.65, paddingLeft: 20 }}>
+                  Computer Vision · AI Agents · Full-Stack
+                </p>
               </div>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', lineHeight: 1.65, paddingLeft: 20 }}>
-                AI Internships · Research Roles · Full-Stack Projects
-              </p>
             </div>
 
-            {/* Contact details */}
-            <div style={{
-              padding: '20px 22px', borderRadius: 14,
-              backgroundColor: 'var(--bg-card)',
-              border: '1px solid var(--border-primary)',
-              boxShadow: 'var(--shadow-card)',
-            }}>
+            {/* Contact details — flowing border */}
+            <div className="flow-wrap" style={{ animationDelay: '-1.7s' }}>
+              <div className="flow-inner" style={{
+                padding: '20px 22px',
+                backgroundColor: 'var(--bg-card)',
+              }}>
               <p style={{
                 color: 'var(--text-muted)', fontSize: '0.65rem',
                 textTransform: 'uppercase', letterSpacing: '0.12em',
@@ -407,15 +433,15 @@ export default function Contact() {
                   </div>
                 ))}
               </div>
+              </div>
             </div>
 
-            {/* Social links */}
-            <div style={{
-              padding: '20px 22px', borderRadius: 14,
-              backgroundColor: 'var(--bg-card)',
-              border: '1px solid var(--border-primary)',
-              boxShadow: 'var(--shadow-card)',
-            }}>
+            {/* Social links — flowing border */}
+            <div className="flow-wrap" style={{ animationDelay: '-3.4s' }}>
+              <div className="flow-inner" style={{
+                padding: '20px 22px',
+                backgroundColor: 'var(--bg-card)',
+              }}>
               <p style={{
                 color: 'var(--text-muted)', fontSize: '0.65rem',
                 textTransform: 'uppercase', letterSpacing: '0.12em',
@@ -470,6 +496,7 @@ export default function Contact() {
                     </div>
                   </motion.a>
                 ))}
+              </div>
               </div>
             </div>
           </motion.div>

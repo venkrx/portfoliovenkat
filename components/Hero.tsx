@@ -46,6 +46,12 @@ export default function Hero() {
   const name = "K S Venkatram";
   const nameLetters = name.split('');
 
+  // Always start at the top on load/reload — prevents hero animation blocking mid-page reload
+  useEffect(() => {
+    if (typeof history !== 'undefined') history.scrollRestoration = 'manual';
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+  }, []);
+
   useEffect(() => {
     let accumulatedScroll = 0;
     const scrollThreshold = 1500; // Total scroll needed to complete animations
