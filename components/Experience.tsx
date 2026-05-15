@@ -19,10 +19,10 @@ export default function Experience() {
         'Conducting applied research on real-time object detection for hospital surveillance using YOLO-family architectures (YOLOv8/v9) on live camera feeds',
         'Studied and benchmarked transformer-based detectors — DETR and RT-DETR — analyzing attention mechanisms, encoder-decoder design, and inference speed for clinical-grade deployment',
         'Developed patient-monitoring pipeline to detect critical events (falls, restricted-zone entry) from multi-camera hospital footage using custom-trained YOLO models',
-        'Compared backbone architectures (ResNet, ViT hybrids) and one-stage vs two-stage detection trade-offs for real-time hospital camera applications',
-        'Building annotated hospital-scenario dataset to fine-tune detection models on domain-specific edge cases and rare clinical events',
+        'Integrated live RTSP camera streams for real-time hospital feed ingestion; applied OSNet, InsightFace, and TransReID for person re-identification and appearance embedding extraction across multiple camera viewpoints',
+        'Designed and evaluated a GRU-based sequence model to validate temporal consistency of person embeddings, improving identity-tracking accuracy across long-duration hospital camera footage',
       ],
-      technologies: ['Python', 'YOLOv8', 'PyTorch', 'OpenCV', 'DETR', 'RT-DETR', 'Computer Vision'],
+      technologies: ['Python', 'YOLOv8', 'PyTorch', 'OpenCV', 'DETR', 'RT-DETR', 'OSNet', 'InsightFace', 'TransReID', 'GRU', 'RTSP', 'Re-ID'],
     },
     {
       title: 'AI Intern',
@@ -90,15 +90,17 @@ export default function Experience() {
                   initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
                   animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
                   transition={{ duration: 0.65, delay: index * 0.25 }}
-                  className={`relative md:flex md:items-start ${
+                  className={`relative md:flex md:items-center ${
                     index % 2 === 0 ? 'md:flex-row-reverse' : ''
                   }`}
                 >
-                  {/* Gradient timeline dot */}
+                  {/* Gradient timeline dot — centred vertically on the card */}
                   <motion.div
-                    className="hidden md:block absolute left-1/2 transform -translate-x-1/2 z-10"
+                    className="hidden md:block absolute z-10"
                     style={{
-                      width: 22, height: 22, marginLeft: -11, marginTop: 28,
+                      width: 22, height: 22,
+                      left: '50%', top: '50%',
+                      marginLeft: -11, marginTop: -11,
                       borderRadius: '50%',
                       background: 'linear-gradient(135deg, var(--color-primary), var(--color-accent))',
                       border: '3px solid var(--bg-card-solid)',
