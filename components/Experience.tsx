@@ -12,7 +12,7 @@ export default function Experience() {
     {
       title: 'Computer Vision Intern',
       company: 'CloverBridge Technologies Pvt. Limited',
-      location: 'Remote',
+      location: 'On-site',
       period: '2026 – Present',
       badge: 'Active',
       description: [
