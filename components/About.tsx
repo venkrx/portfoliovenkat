@@ -62,8 +62,29 @@ export default function About() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.08 });
 
+  const aboutParas: React.ReactNode[] = [
+    <>I&apos;m a <span className="text-primary font-semibold">4th-year AI Engineering student</span> at <span className="text-accent font-semibold">Amrita Vishwa Vidyapeetham, Coimbatore</span> — driven by a curiosity for intelligent systems and a hunger to build things that actually matter.</>,
+    <>I don&apos;t just use LLMs — I <span className="text-primary font-semibold">build systems that use them</span>. Agentic pipelines that reason, plan, and act. RAG architectures that surface meaning. Vision models that understand the world. <span className="text-accent">LLMs are the engine; I build the vehicle.</span></>,
+    <>That same thinking carries into <span className="text-primary">full-stack development</span> — every layer from model inference to production UI has to be intentional. Whether it&apos;s a React interface or a distributed ML pipeline, I care about the craft end to end.</>,
+    <>Off the keyboard: <span className="text-primary">tennis</span> keeps me sharp and <span className="text-primary">singing</span> keeps me human.</>,
+  ];
+  const creditItems = [...aboutParas, ...aboutParas];
+
   return (
     <section id="about" ref={ref} className="relative py-24 md:py-36 overflow-hidden">
+      <style>{`
+        @keyframes about-credits {
+          from { transform: translateY(0); }
+          to   { transform: translateY(-50%); }
+        }
+        .about-credits-track {
+          animation: about-credits 28s linear infinite;
+          will-change: transform;
+        }
+        .about-credits-outer:hover .about-credits-track {
+          animation-play-state: paused;
+        }
+      `}</style>
 
       {/* Subtle dot grid — terminal industry backdrop */}
       <div
@@ -100,28 +121,35 @@ export default function About() {
         {/* ── Two-column: text + stats ── */}
         <div className="grid md:grid-cols-2 gap-16 mb-20">
 
-          {/* Text column — each paragraph is its own credit */}
-          <div className="space-y-7">
-            {[
-              <>I&apos;m a <span className="text-primary font-semibold">4th-year AI Engineering student</span> at <span className="text-accent font-semibold">Amrita Vishwa Vidyapeetham, Coimbatore</span> — driven by a curiosity for intelligent systems and a hunger to build things that actually matter.</>,
-              <>I don&apos;t just use LLMs — I <span className="text-primary font-semibold">build systems that use them</span>. Agentic pipelines that reason, plan, and act. RAG architectures that surface meaning. Vision models that understand the world. <span className="text-accent">LLMs are the engine; I build the vehicle.</span></>,
-              <>That same thinking carries into <span className="text-primary">full-stack development</span> — every layer from model inference to production UI has to be intentional. Whether it&apos;s a React interface or a distributed ML pipeline, I care about the craft end to end.</>,
-              <>Off the keyboard: <span className="text-primary">tennis</span> keeps me sharp and <span className="text-primary">singing</span> keeps me human.</>,
-            ].map((text, i) => (
-              <Rise key={i} delay={0.44 + i * 0.26} isInView={isInView}>
-                <p
-                  className="text-base md:text-lg leading-relaxed"
-                  style={{
-                    color: 'var(--text-body)',
-                    borderLeft: '2px solid var(--border-primary)',
-                    paddingLeft: '1rem',
-                  }}
-                >
-                  {text}
-                </p>
-              </Rise>
-            ))}
-          </div>
+          {/* Text column — vertical credits marquee */}
+          <Rise delay={0.44} isInView={isInView}>
+            <div
+              className="about-credits-outer"
+              style={{
+                height: 300,
+                overflow: 'hidden',
+                position: 'relative',
+                maskImage: 'linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%)',
+                WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%)',
+              }}
+            >
+              <div className="about-credits-track" style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
+                {creditItems.map((text, i) => (
+                  <p
+                    key={i}
+                    className="text-base md:text-lg leading-relaxed"
+                    style={{
+                      color: 'var(--text-body)',
+                      borderLeft: '2px solid var(--border-primary)',
+                      paddingLeft: '1rem',
+                    }}
+                  >
+                    {text}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </Rise>
 
           {/* Stats — terminal industry style, each a credit */}
           <div className="flex flex-col justify-center gap-8">

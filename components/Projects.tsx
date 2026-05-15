@@ -304,9 +304,123 @@ function LaptopCard({
   );
 }
 
-// ── Clean card modal (click to open) ─────────────────────────────────────────
+// ── OS-style window rendered inside the laptop screen ────────────────────────
+function ModalScreen({
+  project, onClose, onMaximize, isMaximized,
+}: {
+  project: Project; onClose: () => void; onMaximize: () => void; isMaximized: boolean;
+}) {
+  const meta = LANG_META[project.language] ?? { bar: '#1a2840', label: '#ffffff', bg: '' };
+
+  return (
+    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#07111e' }}>
+      {/* Title bar */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        backgroundColor: meta.bar, flexShrink: 0, height: 32,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingLeft: 14, minWidth: 0 }}>
+          <span style={{
+            fontSize: 12, fontFamily: 'ui-monospace,monospace', fontWeight: 600,
+            color: meta.label, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+          }}>{project.name}</span>
+          <span style={{ fontSize: 10, color: `${meta.label}88`, fontFamily: 'ui-monospace,monospace', flexShrink: 0 }}>
+            [{project.language}]
+          </span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'stretch', height: '100%', flexShrink: 0 }}>
+          {/* Minimize — decorative */}
+          <div style={{
+            width: 32, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 11, color: `${meta.label}99`, fontFamily: 'monospace', userSelect: 'none',
+          }}>─</div>
+          {/* Maximize — functional */}
+          <button
+            onClick={onMaximize}
+            title={isMaximized ? 'Restore' : 'Maximize'}
+            style={{
+              width: 32, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: isMaximized ? 12 : 11, color: meta.label, fontFamily: 'monospace',
+              border: 'none', backgroundColor: 'transparent',
+              transition: 'background-color 0.12s', cursor: 'none',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.18)'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'; }}
+          >
+            {isMaximized ? '⊡' : '□'}
+          </button>
+          {/* Close — turns red on hover */}
+          <button
+            onClick={onClose}
+            style={{
+              width: 36, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 15, color: meta.label, fontFamily: 'monospace', fontWeight: 700,
+              border: 'none', backgroundColor: 'transparent',
+              transition: 'background-color 0.12s', cursor: 'none',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#e81123'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'; }}
+          >✕</button>
+        </div>
+      </div>
+
+      {/* Content area */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '14px 18px' }}>
+        {project.isOrg && (
+          <div style={{ marginBottom: 10 }}>
+            <span style={{
+              fontSize: 10, fontWeight: 700, padding: '3px 9px', borderRadius: 100,
+              backgroundColor: 'rgba(0,255,65,0.12)', color: '#00ff41',
+              border: '1px solid rgba(0,255,65,0.28)',
+            }}>ORG · Vetri-Namathey</span>
+          </div>
+        )}
+        <h3 style={{ color: '#e8f4ff', fontSize: 16, fontWeight: 700, marginBottom: 8, lineHeight: 1.3 }}>
+          {project.name}
+        </h3>
+        <p style={{ color: '#a8c0d8', fontSize: 12, lineHeight: 1.7, marginBottom: 14 }}>
+          {project.description}
+        </p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 16 }}>
+          {project.topics.map(t => (
+            <span key={t} style={{
+              fontSize: 9, padding: '2px 8px', borderRadius: 100,
+              backgroundColor: 'rgba(0,255,65,0.08)', color: '#00ff41',
+              border: '1px solid rgba(0,255,65,0.2)',
+            }}>{t}</span>
+          ))}
+        </div>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <a href={project.github_url} target="_blank" rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              padding: '7px 14px', borderRadius: 6,
+              backgroundColor: '#00ff41', color: '#000',
+              fontSize: 11, fontWeight: 700, textDecoration: 'none',
+            }}>
+            <FaGithub size={11} /> GitHub
+          </a>
+          {project.demo_url && (
+            <a href={project.demo_url} target="_blank" rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                padding: '7px 14px', borderRadius: 6,
+                border: '1px solid rgba(0,255,65,0.4)', color: '#00ff41',
+                fontSize: 11, fontWeight: 700, textDecoration: 'none',
+                backgroundColor: 'transparent',
+              }}>
+              <FaExternalLinkAlt size={10} /> Demo
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Laptop-shaped modal — opens when you click a laptop ───────────────────────
 function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
-  const meta = LANG_META[project.language] ?? { bar: '#555', label: '#fff', bg: 'rgba(128,128,128,0.1)' };
+  const [isMaximized, setIsMaximized] = useState(false);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
@@ -323,118 +437,28 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
       transition={{ duration: 0.2 }}
       className="fixed inset-0 z-[200] flex items-center justify-center p-4"
       style={{ backgroundColor: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(18px)' }}
-      onClick={e => { if (e.target === e.currentTarget) onClose(); }}
+      onClick={e => { if (e.target === e.currentTarget && !isMaximized) onClose(); }}
     >
       <motion.div
-        initial={{ scale: 0.82, opacity: 0, y: 24 }}
+        initial={{ scale: 0.78, opacity: 0, y: 24 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.88, opacity: 0, y: 12 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+        transition={{ type: 'spring', stiffness: 290, damping: 26 }}
         style={{
-          width: 'min(560px, 92vw)',
-          borderRadius: 18, overflow: 'hidden',
-          backgroundColor: 'var(--bg-card)',
-          border: '1px solid var(--border-primary)',
-          boxShadow: `0 36px 80px rgba(0,0,0,0.6), 0 0 50px ${meta.bar}18`,
+          width: isMaximized ? 'min(860px, 96vw)' : 'min(580px, 92vw)',
+          transition: 'width 0.3s cubic-bezier(0.22,1,0.36,1)',
+          filter: 'drop-shadow(0 24px 60px rgba(0,0,0,0.7)) drop-shadow(0 0 40px rgba(0,255,65,0.07))',
         }}
       >
-        {/* Language color strip at top */}
-        <div style={{ height: 4, backgroundColor: meta.bar }} />
-
-        {/* Header */}
-        <div style={{ padding: '20px 24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <div>
-            {project.isOrg && (
-              <span style={{
-                display: 'inline-block', marginBottom: 10,
-                fontSize: '0.65rem', fontWeight: 700, padding: '2px 9px', borderRadius: 100,
-                backgroundColor: 'rgba(0,255,65,0.08)', color: 'var(--color-primary)',
-                border: '1px solid rgba(0,255,65,0.25)',
-                fontFamily: 'ui-monospace, monospace',
-              }}>ORG · Vetri-Namathey</span>
-            )}
-            <h3 style={{ color: 'var(--text-heading)', fontSize: '1.25rem', fontWeight: 700, lineHeight: 1.3 }}>
-              {project.name}
-            </h3>
-          </div>
-
-          {/* Close — turns red on hover */}
-          <button
-            onClick={onClose}
-            style={{
-              width: 34, height: 34, borderRadius: 9, flexShrink: 0, marginTop: 2,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              border: '1px solid var(--border-primary)',
-              backgroundColor: 'transparent', color: 'var(--text-muted)',
-              cursor: 'none', fontSize: '0.88rem',
-              transition: 'background-color 0.18s, color 0.18s, border-color 0.18s',
-            }}
-            onMouseEnter={e => {
-              const el = e.currentTarget;
-              el.style.backgroundColor = 'rgba(232,17,35,0.12)';
-              el.style.color = '#e81123';
-              el.style.borderColor = 'rgba(232,17,35,0.45)';
-            }}
-            onMouseLeave={e => {
-              const el = e.currentTarget;
-              el.style.backgroundColor = 'transparent';
-              el.style.color = 'var(--text-muted)';
-              el.style.borderColor = 'var(--border-primary)';
-            }}
-          >✕</button>
-        </div>
-
-        {/* Body */}
-        <div style={{ padding: '16px 24px 26px', overflowY: 'auto', maxHeight: '62vh' }}>
-          <span style={{
-            display: 'inline-block', marginBottom: 16,
-            fontSize: '0.7rem', fontWeight: 700, padding: '3px 10px', borderRadius: 100,
-            backgroundColor: meta.bg, color: meta.label,
-            border: `1px solid ${meta.bar}50`,
-            fontFamily: 'ui-monospace, monospace',
-          }}>{project.language}</span>
-
-          <p style={{ color: 'var(--text-body)', fontSize: '0.9rem', lineHeight: 1.78, marginBottom: 20 }}>
-            {project.description}
-          </p>
-
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 26 }}>
-            {project.topics.map(t => (
-              <span key={t} style={{
-                fontSize: '0.7rem', padding: '3px 10px', borderRadius: 100,
-                backgroundColor: 'rgba(0,255,65,0.06)', color: 'var(--color-primary)',
-                border: '1px solid rgba(0,255,65,0.2)',
-                fontFamily: 'ui-monospace, monospace',
-              }}>{t}</span>
-            ))}
-          </div>
-
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            <a
-              href={project.github_url} target="_blank" rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 8,
-                padding: '10px 20px', borderRadius: 9,
-                backgroundColor: 'var(--color-primary)', color: '#000',
-                fontSize: '0.85rem', fontWeight: 700, textDecoration: 'none',
-              }}
-            >
-              <FaGithub size={14} /> View on GitHub
-            </a>
-            {project.demo_url && (
-              <a
-                href={project.demo_url} target="_blank" rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 8,
-                  padding: '10px 20px', borderRadius: 9,
-                  border: '1px solid rgba(0,255,65,0.4)', color: 'var(--color-primary)',
-                  fontSize: '0.85rem', fontWeight: 700, textDecoration: 'none',
-                  backgroundColor: 'transparent',
-                }}
-              >
-                <FaExternalLinkAlt size={12} /> Live Demo
-              </a>
-            )}
+        <div style={{ position: 'relative', width: '100%', aspectRatio: '320 / 218' }}>
+          <LaptopChrome />
+          <div style={SCREEN_POS}>
+            <ModalScreen
+              project={project}
+              onClose={onClose}
+              onMaximize={() => setIsMaximized(m => !m)}
+              isMaximized={isMaximized}
+            />
           </div>
         </div>
       </motion.div>
