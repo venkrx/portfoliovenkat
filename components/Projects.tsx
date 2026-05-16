@@ -429,8 +429,8 @@ function LaptopCard({
       </motion.div>
 
       <p
-        className="text-center text-[10px] font-semibold leading-snug group-hover:text-primary transition-colors duration-200 mt-2"
-        style={{ color: 'var(--text-muted)', maxWidth: 145 }}
+        className="text-center text-[13px] font-semibold leading-snug group-hover:text-primary transition-colors duration-200 mt-2"
+        style={{ color: 'var(--text-muted)', maxWidth: 160 }}
       >
         {project.name}
       </p>
@@ -725,51 +725,30 @@ function DeskSection({
         </span>
       </motion.div>
 
-      {/* Background panel */}
+      {/* Scrollable row of individual tables */}
       <motion.div
+        ref={rowRef}
         initial={{ opacity: 0, y: 44 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 44 }}
         transition={{ duration: 0.65, delay: baseDelay + 0.12 }}
         style={{
-          position: 'relative', borderRadius: 20, overflow: 'hidden',
-          border: `1px solid ${accentHex}28`,
-          boxShadow: `0 12px 56px rgba(0,0,0,0.52), 0 0 0 1px rgba(0,0,0,0.3)`,
+          display: 'flex', gap: 28, alignItems: 'flex-end',
+          overflowX: 'auto',
+          padding: '8px 4px 24px',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none' as React.CSSProperties['msOverflowStyle'],
         }}
       >
-        {/* Back wall */}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(165deg, rgba(10,22,44,0.86) 0%, rgba(4,10,24,0.97) 100%)', pointerEvents: 'none' }} />
-        <div style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: 'radial-gradient(circle, var(--grid-color) 1px, transparent 1px)',
-          backgroundSize: '22px 22px', opacity: 0.45, pointerEvents: 'none',
-        }} />
-        {/* Accent side pillars */}
-        <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 4, background: `linear-gradient(180deg, ${accentHex}80, transparent 60%)`, borderRadius: '20px 0 0 20px' }} />
-        <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 4, background: `linear-gradient(180deg, ${accentHex}80, transparent 60%)`, borderRadius: '0 20px 20px 0' }} />
-
-        {/* Scrollable row of individual tables */}
-        <div
-          ref={rowRef}
-          style={{
-            position: 'relative', zIndex: 1,
-            display: 'flex', gap: 28, alignItems: 'flex-end',
-            overflowX: 'auto',
-            padding: '30px 28px 24px',
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none' as React.CSSProperties['msOverflowStyle'],
-          }}
-        >
-          {projects.map((p, i) => (
-            <LaptopTable
-              key={p.id}
-              project={p}
-              onClick={() => onSelect(p)}
-              delay={baseDelay + 0.1 + i * 0.06}
-              isInView={isInView}
-              accentHex={accentHex}
-            />
-          ))}
-        </div>
+        {projects.map((p, i) => (
+          <LaptopTable
+            key={p.id}
+            project={p}
+            onClick={() => onSelect(p)}
+            delay={baseDelay + 0.1 + i * 0.06}
+            isInView={isInView}
+            accentHex={accentHex}
+          />
+        ))}
       </motion.div>
     </div>
   );
