@@ -346,8 +346,8 @@ function LaptopCard({
   const handleClick = () => {
     if (phase !== 'idle') return;
     setPhase('sliding');
-    setTimeout(() => setPhase('flipping'), 500);
-    setTimeout(() => { onClick(); setPhase('idle'); }, 1150);
+    setTimeout(() => setPhase('flipping'), 680);   // wait for slide to fully settle
+    setTimeout(() => { onClick(); setPhase('idle'); }, 1600);
   };
 
   const isAnimating = phase !== 'idle';
@@ -366,7 +366,7 @@ function LaptopCard({
           ? { y: -32, scale: 1.2, filter: 'drop-shadow(0 24px 52px rgba(0,0,0,0.9)) drop-shadow(0 0 28px rgba(0,255,65,0.28))' }
           : { y: 0,   scale: 1,   filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.7))' }
         }
-        transition={{ duration: 0.52, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         whileHover={!isAnimating ? { y: -10, scale: 1.07 } : {}}
         whileTap={!isAnimating ? { scale: 0.97 } : {}}
         style={{ width: 155 }}
@@ -394,7 +394,7 @@ function LaptopCard({
             }}
             initial={{ rotateX: 0 }}
             animate={phase === 'flipping' ? { rotateX: -92 } : { rotateX: 0 }}
-            transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.85, ease: [0.37, 0, 0.63, 1] }}
           >
             {/* Subtle reflection/logo on lid */}
             <div style={{
