@@ -14,6 +14,7 @@ interface Project {
   topics: string[];
   isOrg?: boolean;
   shelf: 'ai' | 'other';
+  bullets: string[];
 }
 
 const allProjects: Project[] = [
@@ -25,6 +26,13 @@ const allProjects: Project[] = [
     language: 'Python',
     topics: ['ai', 'legal-tech', 'nlp', 'backend'],
     shelf: 'ai',
+    bullets: [
+      'NLP pipeline that parses and semantically structures complex legal document formats',
+      'LLM-powered clause extraction, risk flagging, and obligation identification engine',
+      'FastAPI backend with async processing for concurrent multi-document analysis',
+      'Semantic search over legal corpora using dense vector embeddings (pgvector)',
+      'Production-ready API with auth, rate limiting, logging, and structured error handling',
+    ],
   },
   {
     id: 4,
@@ -34,6 +42,13 @@ const allProjects: Project[] = [
     language: 'Python',
     topics: ['rag', 'llm', 'ai', 'nlp', 'pgvector'],
     shelf: 'ai',
+    bullets: [
+      'Semantic chunking strategy that preserves context across document boundaries',
+      'Dense retrieval with pgvector using cosine similarity and HNSW indexing',
+      'Cross-encoder re-ranking layer for precision before final LLM generation',
+      'Multi-source knowledge base support with namespace-level metadata filtering',
+      'Source attribution and citations in every grounded response for traceability',
+    ],
   },
   {
     id: 5,
@@ -43,6 +58,13 @@ const allProjects: Project[] = [
     language: 'Jupyter Notebook',
     topics: ['bioinformatics', 'machine-learning', 'genetics', 'healthcare'],
     shelf: 'ai',
+    bullets: [
+      'ML model trained on genomic variant datasets to predict pathogenicity scores',
+      'VCF parsing and annotation pipeline bridging bioinformatics tools with AI',
+      'Feature engineering from protein structure, conservation, and evolutionary data',
+      'Prioritization scoring surfaces the most clinically actionable variants first',
+      'Validated against ClinVar and OMIM reference databases for accuracy benchmarking',
+    ],
   },
   {
     id: 101,
@@ -53,6 +75,13 @@ const allProjects: Project[] = [
     topics: ['deep-learning', 'cnn', 'transformer', 'pytorch'],
     isOrg: true,
     shelf: 'ai',
+    bullets: [
+      'CNN architectures from scratch: ResNet, VGG, EfficientNet in pure PyTorch',
+      'RNN/LSTM sequential models for time-series classification and NLP tasks',
+      'Transformer with multi-head self-attention implemented without external libraries',
+      'End-to-end training pipelines with augmentation, mixed precision, and checkpointing',
+      'Benchmarked on MNIST, CIFAR-10, IMDB, and custom domain-specific datasets',
+    ],
   },
   {
     id: 102,
@@ -63,6 +92,13 @@ const allProjects: Project[] = [
     topics: ['bayesian-ml', 'materials-science', 'ai', 'prediction'],
     isOrg: true,
     shelf: 'ai',
+    bullets: [
+      'Gaussian Process Regression with domain-informed priors for sparse materials data',
+      'Predicts band gap, formation energy, and thermodynamic stability simultaneously',
+      'Uncertainty quantification enables confident decisions even with limited samples',
+      'Accelerates discovery vs. traditional DFT by orders of magnitude in compute cost',
+      'Applied to clean energy: identifies optimal perovskite compositions for solar cells',
+    ],
   },
   {
     id: 103,
@@ -73,6 +109,13 @@ const allProjects: Project[] = [
     topics: ['big-data', 'time-series', 'forecasting', 'anomaly-detection'],
     isOrg: true,
     shelf: 'ai',
+    bullets: [
+      'Spark-based distributed preprocessing pipeline handling GB-scale sensor streams',
+      'ARIMA, Prophet, and LSTM ensemble model for multi-horizon forecasting',
+      'Real-time anomaly detection with configurable sensitivity and alert thresholds',
+      'Reduces processing time by ~80% over pandas for equivalent workloads',
+      'Interactive dashboards for visualising detected trends, anomalies, and forecasts',
+    ],
   },
   {
     id: 104,
@@ -83,6 +126,13 @@ const allProjects: Project[] = [
     topics: ['bayesian-networks', 'pgm', 'inference', 'ai'],
     isOrg: true,
     shelf: 'ai',
+    bullets: [
+      'Bayesian Network construction with variable elimination and junction tree inference',
+      'MCMC sampling (Gibbs & Metropolis-Hastings) for posterior estimation',
+      'Factor graph representation enabling loopy belief propagation',
+      'Applied to medical diagnosis and fault-tree analysis use cases',
+      'Step-by-step visualisations of belief propagation across nodes in the network',
+    ],
   },
   {
     id: 2,
@@ -92,6 +142,13 @@ const allProjects: Project[] = [
     language: 'TypeScript',
     topics: ['react', 'typescript', 'legal-tech', 'ai'],
     shelf: 'other',
+    bullets: [
+      'React + TypeScript SPA with typed component architecture and clean document UX',
+      'Real-time streaming responses from the AI backend via Server-Sent Events (SSE)',
+      'Interactive clause highlighting and inline annotation interface for legal review',
+      'Responsive dark/light design with full accessibility and keyboard navigation',
+      'Typed REST API client auto-generated from OpenAPI spec of the Legal AI Backend',
+    ],
   },
   {
     id: 3,
@@ -101,6 +158,13 @@ const allProjects: Project[] = [
     language: 'Jupyter Notebook',
     topics: ['iot', 'food-monitoring', 'computer-vision', 'arduino'],
     shelf: 'other',
+    bullets: [
+      'Computer vision pipeline detects food items and estimates freshness scores from image',
+      'Arduino-based sensor network for temperature, humidity, and weight telemetry',
+      'ML classifier distinguishing fresh / stale / spoiled states at 89% accuracy',
+      'MQTT messaging layer for mobile push alerts and real-time expiry notifications',
+      'Power-efficient edge deployment on ESP32 for standalone refrigerator operation',
+    ],
   },
   {
     id: 6,
@@ -110,6 +174,13 @@ const allProjects: Project[] = [
     language: 'TypeScript',
     topics: ['nextjs', 'framer-motion', 'tailwindcss', 'portfolio'],
     shelf: 'other',
+    bullets: [
+      'Next.js 16 App Router with TypeScript for fully type-safe component architecture',
+      'Framer Motion scroll-triggered animations: name glow, vertical credits marquee',
+      'Spring comet-trail cursor, flowing conic-gradient laser border on contact panel',
+      'Laptop desk cards with lid-opening animation, OS-style modal window on screen',
+      '100% static export — zero runtime API calls — near-perfect Lighthouse score',
+    ],
   },
   {
     id: 105,
@@ -120,6 +191,13 @@ const allProjects: Project[] = [
     topics: ['dbms', 'sql', 'query-optimization', 'indexing'],
     isOrg: true,
     shelf: 'other',
+    bullets: [
+      'Relational schema designer with normalization wizard up to Boyce-Codd Normal Form',
+      'SQL subset parser with expression evaluation and multi-table join support',
+      'B-Tree indexing structure delivering O(log n) lookups on indexed columns',
+      'ACID transaction manager with write-ahead logging and rollback on failure',
+      'Cost-based query optimizer choosing between full-scan and index access paths',
+    ],
   },
   {
     id: 106,
@@ -130,6 +208,13 @@ const allProjects: Project[] = [
     topics: ['cryptography', 'network-security', 'encryption', 'hashing'],
     isOrg: true,
     shelf: 'other',
+    bullets: [
+      'AES-256 and RSA encryption / decryption implemented from mathematical first principles',
+      'SHA-256 hashing with avalanche effect and collision resistance demonstrations',
+      'Network sniffing and packet analysis labs using Scapy and Wireshark',
+      'Buffer overflow and SQL injection sandboxed vulnerability exercises with analysis',
+      'PKI simulation: certificate issuance, chain validation, and CRL-based revocation',
+    ],
   },
   {
     id: 107,
@@ -140,6 +225,13 @@ const allProjects: Project[] = [
     topics: ['automata', 'formal-languages', 'turing-machine', 'theory'],
     isOrg: true,
     shelf: 'other',
+    bullets: [
+      'NFA/DFA construction and subset-construction minimisation with live visualisation',
+      'Thompson\'s algorithm for regex-to-NFA conversion with step-by-step trace',
+      'Pushdown automaton simulator for context-free grammar recognition and parsing',
+      'Turing machine emulator with configurable tape alphabet and transition functions',
+      'Pumping lemma proofs and closure property interactive demonstrations',
+    ],
   },
 ];
 
@@ -216,9 +308,9 @@ function LaptopChrome() {
   );
 }
 
-// ── Laptop screen preview ─────────────────────────────────────────────────────
+// ── Laptop screen preview (card thumbnail) ────────────────────────────────────
 function CardScreen({ project }: { project: Project }) {
-  const meta = LANG_META[project.language] ?? { bar: '#1a2840', label: '#ffffff', bg: '' };
+  const meta  = LANG_META[project.language] ?? { bar: '#1a2840', label: '#ffffff', bg: '' };
   const lines = codeLines(project.id);
   const title = project.name.length > 22 ? project.name.slice(0, 22) + '…' : project.name;
 
@@ -259,41 +351,59 @@ function CardScreen({ project }: { project: Project }) {
   );
 }
 
-// ── Laptop card (on-desk preview) ─────────────────────────────────────────────
+// ── Laptop card (on-desk preview) — with lid-opening animation on click ───────
 function LaptopCard({
   project, onClick, delay, isInView,
 }: {
   project: Project; onClick: () => void; delay: number; isInView: boolean;
 }) {
+  const [opening, setOpening] = useState(false);
+
+  const handleClick = () => {
+    if (opening) return;
+    setOpening(true);
+    setTimeout(() => {
+      setOpening(false);
+      onClick();
+    }, 360);
+  };
+
   return (
     <motion.div
       className="flex flex-col items-center gap-2 cursor-none group flex-shrink-0"
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{ duration: 0.45, delay, type: 'spring', stiffness: 120, damping: 16 }}
-      onClick={onClick}
+      onClick={handleClick}
     >
-      <motion.div
-        whileHover={{ y: -10, scale: 1.07 }}
-        whileTap={{ scale: 0.97 }}
-        transition={{ type: 'spring', stiffness: 280, damping: 22 }}
-        style={{ width: 155, filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.7))' }}
-      >
-        <div style={{ position: 'relative', width: '100%', aspectRatio: '320 / 218' }}>
-          <LaptopChrome />
-          <div style={SCREEN_POS}>
-            <CardScreen project={project} />
+      {/* perspective wrapper — required for 3-D rotateX */}
+      <div style={{ perspective: 700 }}>
+        <motion.div
+          animate={opening
+            ? { rotateX: -22, y: -22, scale: 1.12, filter: 'brightness(1.35)' }
+            : { rotateX: 0,   y: 0,   scale: 1,    filter: 'brightness(1)'    }
+          }
+          transition={{ duration: 0.36, ease: [0.22, 1, 0.36, 1] }}
+          whileHover={opening ? {} : { y: -10, scale: 1.07 }}
+          whileTap={opening ? {} : { scale: 0.97 }}
+          style={{ width: 155, filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.7))', transformStyle: 'preserve-3d' }}
+        >
+          <div style={{ position: 'relative', width: '100%', aspectRatio: '320 / 218' }}>
+            <LaptopChrome />
+            <div style={SCREEN_POS}>
+              <CardScreen project={project} />
+            </div>
+            {project.isOrg && (
+              <div style={{
+                position: 'absolute', top: -4, right: -4, zIndex: 10,
+                fontSize: 7, fontWeight: 700, padding: '2px 5px', borderRadius: 100,
+                backgroundColor: '#00ff41', color: '#000',
+                boxShadow: '0 0 6px rgba(0,255,65,0.55)', lineHeight: 1.4,
+              }}>ORG</div>
+            )}
           </div>
-          {project.isOrg && (
-            <div style={{
-              position: 'absolute', top: -4, right: -4, zIndex: 10,
-              fontSize: 7, fontWeight: 700, padding: '2px 5px', borderRadius: 100,
-              backgroundColor: '#00ff41', color: '#000',
-              boxShadow: '0 0 6px rgba(0,255,65,0.55)', lineHeight: 1.4,
-            }}>ORG</div>
-          )}
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
       <p
         className="text-center text-[10px] font-semibold leading-snug group-hover:text-primary transition-colors duration-200"
         style={{ color: 'var(--text-muted)', maxWidth: 145 }}
@@ -317,30 +427,28 @@ function ModalScreen({
       {/* Title bar */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        backgroundColor: meta.bar, flexShrink: 0, height: 32,
+        backgroundColor: meta.bar, flexShrink: 0, height: 34,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingLeft: 14, minWidth: 0 }}>
           <span style={{
-            fontSize: 12, fontFamily: 'ui-monospace,monospace', fontWeight: 600,
+            fontSize: 13, fontFamily: 'ui-monospace,monospace', fontWeight: 600,
             color: meta.label, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
           }}>{project.name}</span>
-          <span style={{ fontSize: 10, color: `${meta.label}88`, fontFamily: 'ui-monospace,monospace', flexShrink: 0 }}>
+          <span style={{ fontSize: 11, color: `${meta.label}88`, fontFamily: 'ui-monospace,monospace', flexShrink: 0 }}>
             [{project.language}]
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'stretch', height: '100%', flexShrink: 0 }}>
-          {/* Minimize — decorative */}
           <div style={{
-            width: 32, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 11, color: `${meta.label}99`, fontFamily: 'monospace', userSelect: 'none',
+            width: 34, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 12, color: `${meta.label}99`, fontFamily: 'monospace', userSelect: 'none',
           }}>─</div>
-          {/* Maximize — functional */}
           <button
             onClick={onMaximize}
             title={isMaximized ? 'Restore' : 'Maximize'}
             style={{
-              width: 32, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: isMaximized ? 12 : 11, color: meta.label, fontFamily: 'monospace',
+              width: 34, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: isMaximized ? 13 : 12, color: meta.label, fontFamily: 'monospace',
               border: 'none', backgroundColor: 'transparent',
               transition: 'background-color 0.12s', cursor: 'none',
             }}
@@ -349,12 +457,11 @@ function ModalScreen({
           >
             {isMaximized ? '⊡' : '□'}
           </button>
-          {/* Close — turns red on hover */}
           <button
             onClick={onClose}
             style={{
-              width: 36, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 15, color: meta.label, fontFamily: 'monospace', fontWeight: 700,
+              width: 38, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 16, color: meta.label, fontFamily: 'monospace', fontWeight: 700,
               border: 'none', backgroundColor: 'transparent',
               transition: 'background-color 0.12s', cursor: 'none',
             }}
@@ -365,51 +472,69 @@ function ModalScreen({
       </div>
 
       {/* Content area */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '14px 18px' }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: '18px 22px 20px' }}>
         {project.isOrg && (
-          <div style={{ marginBottom: 10 }}>
+          <div style={{ marginBottom: 12 }}>
             <span style={{
-              fontSize: 10, fontWeight: 700, padding: '3px 9px', borderRadius: 100,
+              fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 100,
               backgroundColor: 'rgba(0,255,65,0.12)', color: '#00ff41',
               border: '1px solid rgba(0,255,65,0.28)',
             }}>ORG · Vetri-Namathey</span>
           </div>
         )}
-        <h3 style={{ color: '#e8f4ff', fontSize: 16, fontWeight: 700, marginBottom: 8, lineHeight: 1.3 }}>
+
+        <h3 style={{ color: '#e8f4ff', fontSize: 20, fontWeight: 700, marginBottom: 10, lineHeight: 1.3 }}>
           {project.name}
         </h3>
-        <p style={{ color: '#a8c0d8', fontSize: 12, lineHeight: 1.7, marginBottom: 14 }}>
+        <p style={{ color: '#a8c0d8', fontSize: 14, lineHeight: 1.75, marginBottom: 16 }}>
           {project.description}
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 16 }}>
+
+        {/* 5 punching-point bullets */}
+        <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 18px', display: 'flex', flexDirection: 'column', gap: 9 }}>
+          {project.bullets.map((b, i) => (
+            <li key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+              <span style={{
+                color: '#00ff41', fontSize: 13, fontWeight: 700, flexShrink: 0, marginTop: 2,
+                fontFamily: 'ui-monospace, monospace',
+              }}>▸</span>
+              <span style={{ color: '#c4d8ef', fontSize: 13, lineHeight: 1.65 }}>{b}</span>
+            </li>
+          ))}
+        </ul>
+
+        {/* Topic chips */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 18 }}>
           {project.topics.map(t => (
             <span key={t} style={{
-              fontSize: 9, padding: '2px 8px', borderRadius: 100,
+              fontSize: 11, padding: '3px 10px', borderRadius: 100,
               backgroundColor: 'rgba(0,255,65,0.08)', color: '#00ff41',
               border: '1px solid rgba(0,255,65,0.2)',
             }}>{t}</span>
           ))}
         </div>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+
+        {/* Action buttons */}
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           <a href={project.github_url} target="_blank" rel="noopener noreferrer"
             style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6,
-              padding: '7px 14px', borderRadius: 6,
+              display: 'inline-flex', alignItems: 'center', gap: 7,
+              padding: '8px 16px', borderRadius: 7,
               backgroundColor: '#00ff41', color: '#000',
-              fontSize: 11, fontWeight: 700, textDecoration: 'none',
+              fontSize: 13, fontWeight: 700, textDecoration: 'none',
             }}>
-            <FaGithub size={11} /> GitHub
+            <FaGithub size={13} /> GitHub
           </a>
           {project.demo_url && (
             <a href={project.demo_url} target="_blank" rel="noopener noreferrer"
               style={{
-                display: 'inline-flex', alignItems: 'center', gap: 6,
-                padding: '7px 14px', borderRadius: 6,
+                display: 'inline-flex', alignItems: 'center', gap: 7,
+                padding: '8px 16px', borderRadius: 7,
                 border: '1px solid rgba(0,255,65,0.4)', color: '#00ff41',
-                fontSize: 11, fontWeight: 700, textDecoration: 'none',
+                fontSize: 13, fontWeight: 700, textDecoration: 'none',
                 backgroundColor: 'transparent',
               }}>
-              <FaExternalLinkAlt size={10} /> Demo
+              <FaExternalLinkAlt size={11} /> Demo
             </a>
           )}
         </div>
@@ -434,20 +559,20 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
+      transition={{ duration: 0.22 }}
       className="fixed inset-0 z-[200] flex items-center justify-center p-4"
-      style={{ backgroundColor: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(18px)' }}
+      style={{ backgroundColor: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(20px)' }}
       onClick={e => { if (e.target === e.currentTarget && !isMaximized) onClose(); }}
     >
       <motion.div
-        initial={{ scale: 0.78, opacity: 0, y: 24 }}
+        initial={{ scale: 0.72, opacity: 0, y: 28 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.88, opacity: 0, y: 12 }}
-        transition={{ type: 'spring', stiffness: 290, damping: 26 }}
+        exit={{ scale: 0.86, opacity: 0, y: 14 }}
+        transition={{ type: 'spring', stiffness: 310, damping: 28 }}
         style={{
-          width: isMaximized ? 'min(860px, 96vw)' : 'min(580px, 92vw)',
-          transition: 'width 0.3s cubic-bezier(0.22,1,0.36,1)',
-          filter: 'drop-shadow(0 24px 60px rgba(0,0,0,0.7)) drop-shadow(0 0 40px rgba(0,255,65,0.07))',
+          width: isMaximized ? 'min(920px, 96vw)' : 'min(640px, 92vw)',
+          transition: 'width 0.32s cubic-bezier(0.22,1,0.36,1)',
+          filter: 'drop-shadow(0 28px 70px rgba(0,0,0,0.75)) drop-shadow(0 0 50px rgba(0,255,65,0.08))',
         }}
       >
         <div style={{ position: 'relative', width: '100%', aspectRatio: '320 / 218' }}>
@@ -466,7 +591,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
   );
 }
 
-// ── PC desk housing (laptops sit on top of a desk surface) ────────────────────
+// ── PC table housing — laptops sit on a solid desk surface ────────────────────
 function DeskSection({
   title, Icon, accentHex, projects, isInView, onSelect, baseDelay,
 }: {
@@ -478,15 +603,31 @@ function DeskSection({
   onSelect: (p: Project) => void;
   baseDelay: number;
 }) {
+  const rowRef = useRef<HTMLDivElement>(null);
+
+  // Mouse wheel → horizontal scroll (mouse users can scroll laptops)
+  useEffect(() => {
+    const el = rowRef.current;
+    if (!el) return;
+    const handler = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        el.scrollLeft += e.deltaY * 0.8;
+      }
+    };
+    el.addEventListener('wheel', handler, { passive: false });
+    return () => el.removeEventListener('wheel', handler);
+  }, []);
+
   return (
-    <div className="mb-16">
+    <div className="mb-20">
 
       {/* Section label */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
         transition={{ duration: 0.5, delay: baseDelay }}
-        style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 22 }}
+        style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}
       >
         <span style={{
           display: 'inline-flex', alignItems: 'center', gap: 7,
@@ -503,58 +644,57 @@ function DeskSection({
         </span>
         <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, ${accentHex}38, transparent)` }} />
         <span style={{ color: 'var(--text-muted)', fontSize: '0.7rem', fontFamily: 'ui-monospace, monospace' }}>
-          {projects.length} projects
+          {projects.length} projects · scroll ↔
         </span>
       </motion.div>
 
       {/* Desk housing */}
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-        transition={{ duration: 0.6, delay: baseDelay + 0.12 }}
+        initial={{ opacity: 0, y: 44 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 44 }}
+        transition={{ duration: 0.65, delay: baseDelay + 0.12 }}
         style={{
-          position: 'relative', borderRadius: 16, overflow: 'hidden',
-          border: `1px solid ${accentHex}28`,
-          boxShadow: `0 8px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(0,0,0,0.3)`,
+          position: 'relative', borderRadius: 18, overflow: 'hidden',
+          border: `1px solid ${accentHex}30`,
+          boxShadow: `0 10px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04)`,
         }}
       >
-        {/* Back panel: dark gradient */}
+        {/* Back wall — dark gradient + dot grid */}
         <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, bottom: 38,
-          background: 'linear-gradient(160deg, rgba(8,18,36,0.7) 0%, rgba(4,10,22,0.92) 100%)',
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 65,
+          background: 'linear-gradient(165deg, rgba(10,22,44,0.82) 0%, rgba(4,10,24,0.96) 100%)',
           pointerEvents: 'none',
         }} />
-        {/* Back panel: dot grid */}
         <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, bottom: 38,
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 65,
           backgroundImage: 'radial-gradient(circle, var(--grid-color) 1px, transparent 1px)',
-          backgroundSize: '22px 22px',
-          opacity: 0.6,
-          pointerEvents: 'none',
+          backgroundSize: '22px 22px', opacity: 0.55, pointerEvents: 'none',
         }} />
 
-        {/* Left accent pillar */}
+        {/* Accent pillars */}
         <div style={{
-          position: 'absolute', left: 0, top: 0, bottom: 38, width: 4,
-          background: `linear-gradient(180deg, ${accentHex}70, transparent)`,
-          borderRadius: '16px 0 0 0',
+          position: 'absolute', left: 0, top: 0, bottom: 65, width: 5,
+          background: `linear-gradient(180deg, ${accentHex}80, transparent)`,
+          borderRadius: '18px 0 0 0',
         }} />
-        {/* Right accent pillar */}
         <div style={{
-          position: 'absolute', right: 0, top: 0, bottom: 38, width: 4,
-          background: `linear-gradient(180deg, ${accentHex}70, transparent)`,
-          borderRadius: '0 16px 0 0',
+          position: 'absolute', right: 0, top: 0, bottom: 65, width: 5,
+          background: `linear-gradient(180deg, ${accentHex}80, transparent)`,
+          borderRadius: '0 18px 0 0',
         }} />
 
-        {/* Laptops row — horizontally scrollable */}
-        <div style={{
-          position: 'relative', zIndex: 1,
-          display: 'flex', gap: 18,
-          overflowX: 'auto',
-          paddingTop: 28, paddingLeft: 20, paddingRight: 20, paddingBottom: 6,
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none' as React.CSSProperties['msOverflowStyle'],
-        }}>
+        {/* Laptops row — horizontally scrollable, wheel-enabled */}
+        <div
+          ref={rowRef}
+          style={{
+            position: 'relative', zIndex: 1,
+            display: 'flex', gap: 22,
+            overflowX: 'auto',
+            paddingTop: 32, paddingLeft: 24, paddingRight: 24, paddingBottom: 10,
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none' as React.CSSProperties['msOverflowStyle'],
+          }}
+        >
           {projects.map((p, i) => (
             <LaptopCard
               key={p.id}
@@ -566,31 +706,51 @@ function DeskSection({
           ))}
         </div>
 
-        {/* Desk surface */}
+        {/* ── Table surface ── */}
         <div style={{
-          position: 'relative', zIndex: 1, height: 38,
-          background: 'linear-gradient(180deg, #1a2a42 0%, #0d1b2e 55%, #060f1e 100%)',
-          borderTop: `1px solid ${accentHex}1a`,
+          position: 'relative', zIndex: 2, height: 65,
+          background: 'linear-gradient(180deg, #1e3050 0%, #14253d 30%, #0a1928 65%, #060f1c 100%)',
+          borderTop: `1px solid ${accentHex}22`,
         }}>
-          {/* Edge highlight sheen */}
+          {/* Top-edge sheen — looks like the front lip of the table */}
           <div style={{
-            position: 'absolute', top: 0, left: '4%', right: '4%', height: 1,
-            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent)',
+            position: 'absolute', top: 0, left: '3%', right: '3%', height: 2,
+            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.18), rgba(255,255,255,0.22), rgba(255,255,255,0.18), transparent)',
           }} />
           {/* LED glow strip */}
           <div style={{
-            position: 'absolute', top: 0, left: '10%', right: '10%', height: 2,
-            background: `linear-gradient(90deg, transparent, ${accentHex}55, transparent)`,
-            filter: `blur(1px)`,
+            position: 'absolute', top: 2, left: '8%', right: '8%', height: 3,
+            background: `linear-gradient(90deg, transparent, ${accentHex}60, ${accentHex}80, ${accentHex}60, transparent)`,
+            filter: 'blur(2px)',
           }} />
-          {/* Desk leg hints */}
+          {/* Surface texture lines */}
           <div style={{
-            position: 'absolute', bottom: 0, left: 30, width: 5, height: '72%',
-            background: 'rgba(255,255,255,0.05)', borderRadius: '0 0 3px 3px',
+            position: 'absolute', top: 14, left: '5%', right: '5%', height: 1,
+            background: 'rgba(255,255,255,0.03)',
           }} />
           <div style={{
-            position: 'absolute', bottom: 0, right: 30, width: 5, height: '72%',
-            background: 'rgba(255,255,255,0.05)', borderRadius: '0 0 3px 3px',
+            position: 'absolute', top: 28, left: '5%', right: '5%', height: 1,
+            background: 'rgba(255,255,255,0.02)',
+          }} />
+          {/* Table legs — left */}
+          <div style={{
+            position: 'absolute', bottom: 0, left: 36, width: 10, height: '82%',
+            background: 'linear-gradient(180deg, #1a2e48, #0c1c2e)',
+            borderRadius: '0 0 4px 4px',
+            boxShadow: '2px 0 6px rgba(0,0,0,0.4)',
+          }} />
+          {/* Table legs — right */}
+          <div style={{
+            position: 'absolute', bottom: 0, right: 36, width: 10, height: '82%',
+            background: 'linear-gradient(180deg, #1a2e48, #0c1c2e)',
+            borderRadius: '0 0 4px 4px',
+            boxShadow: '-2px 0 6px rgba(0,0,0,0.4)',
+          }} />
+          {/* Drop shadow beneath the table */}
+          <div style={{
+            position: 'absolute', bottom: -14, left: '8%', right: '8%', height: 14,
+            background: 'radial-gradient(ellipse at 50% 0%, rgba(0,0,0,0.5) 0%, transparent 70%)',
+            pointerEvents: 'none',
           }} />
         </div>
       </motion.div>
@@ -646,7 +806,7 @@ export default function Projects() {
               maxWidth: 200,
             }} />
             <p className="mt-4 text-sm" style={{ color: 'var(--text-muted)' }}>
-              Click any laptop to see full project details
+              Click any laptop to open · scroll the desk with mouse wheel or trackpad
             </p>
           </motion.div>
 

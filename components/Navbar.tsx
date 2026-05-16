@@ -6,16 +6,32 @@ import Link from 'next/link';
 import { useTheme } from './ThemeProvider';
 import { FaSun, FaMoon, FaBars, FaTimes } from 'react-icons/fa';
 
+const sectionIds = ['home', 'about', 'interests', 'skills', 'projects', 'experience', 'contact'];
+
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const { theme, toggle } = useTheme();
-  const { scrollYProgress } = useScroll();
+  const [scrolled, setScrolled]           = useState(false);
+  const [mobileOpen, setMobileOpen]       = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  const { theme, toggle }                 = useTheme();
+  const { scrollYProgress }               = useScroll();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 50);
+
+      // Find which section is currently dominant in the viewport
+      const trigger = window.scrollY + window.innerHeight * 0.38;
+      let current = 'home';
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= trigger) current = id;
+      }
+      setActiveSection(current);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const navItems = [
@@ -61,25 +77,37 @@ export default function Navbar() {
 
             {/* Desktop nav */}
             <div className="hidden md:flex items-center space-x-7">
-              {navItems.map((item, index) => (
-                <motion.div
-                  key={item.name}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.07 }}
-                >
-                  <Link
-                    href={item.href}
-                    className="relative text-sm font-medium transition-colors duration-200 group"
-                    style={{ color: 'var(--text-muted)' }}
-                    onMouseEnter={e => ((e.target as HTMLElement).style.color = 'var(--color-primary)')}
-                    onMouseLeave={e => ((e.target as HTMLElement).style.color = 'var(--text-muted)')}
+              {navItems.map((item, index) => {
+                const isActive = '#' + activeSection === item.href;
+                return (
+                  <motion.div
+                    key={item.name}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.07 }}
                   >
-                    {item.name}
-                    <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-300" />
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      href={item.href}
+                      className="relative text-sm font-medium transition-colors duration-200 group"
+                      style={{ color: isActive ? 'var(--color-primary)' : 'var(--text-muted)' }}
+                      onMouseEnter={e => {
+                        if (!isActive) (e.target as HTMLElement).style.color = 'var(--color-primary)';
+                      }}
+                      onMouseLeave={e => {
+                        if (!isActive) (e.target as HTMLElement).style.color = 'var(--text-muted)';
+                      }}
+                    >
+                      {item.name}
+                      {/* Underline — full width when active, hover-expands otherwise */}
+                      <motion.span
+                        className="absolute -bottom-0.5 left-0 h-px bg-primary"
+                        animate={{ width: isActive ? '100%' : '0%' }}
+                        transition={{ duration: 0.3, ease: 'easeOut' }}
+                      />
+                    </Link>
+                  </motion.div>
+                );
+              })}
 
               {/* Theme toggle */}
               <motion.button
@@ -137,17 +165,23 @@ export default function Navbar() {
             className="md:hidden px-4 pb-4"
             style={{ backgroundColor: 'var(--nav-bg)', backdropFilter: 'blur(16px)' }}
           >
-            {navItems.map(item => (
-              <Link
-                key={item.name}
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
-                className="block py-2.5 text-sm font-medium border-b transition-colors duration-200 hover:text-primary"
-                style={{ color: 'var(--text-muted)', borderColor: 'var(--border-primary)' }}
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navItems.map(item => {
+              const isActive = '#' + activeSection === item.href;
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="block py-2.5 text-sm font-medium border-b transition-colors duration-200"
+                  style={{
+                    color: isActive ? 'var(--color-primary)' : 'var(--text-muted)',
+                    borderColor: 'var(--border-primary)',
+                  }}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
           </motion.div>
         )}
       </motion.nav>

@@ -95,10 +95,13 @@ export default function Interests() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
+            <p style={{
+              fontFamily: 'ui-monospace, monospace',
+              fontSize: '0.78rem', letterSpacing: '0.16em',
+              color: 'var(--color-primary)', marginBottom: 10, opacity: 0.85,
+            }}>{'> explore.interests() ↵'}</p>
             <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--text-heading)' }}>
-              <span className="text-primary">{'<'}</span>
               Interests
-              <span className="text-primary">{' />'}</span>
             </h2>
             <div className="h-1 w-20 bg-primary mx-auto mb-5 rounded-full" />
             <p className="text-base md:text-lg max-w-2xl mx-auto" style={{ color: 'var(--text-muted)' }}>

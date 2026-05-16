@@ -201,10 +201,11 @@ export default function About() {
           {features.map((feature, i) => (
             <Rise key={feature.title} delay={1.42 + i * 0.22} isInView={isInView}>
               <motion.div
-                whileHover={{ y: -5 }}
+                whileHover={{ y: -8, scale: 1.025 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 24 }}
                 className="h-full"
                 style={{
-                  padding: '22px 22px 22px 20px',
+                  padding: '26px 24px 26px 22px',
                   borderRadius: 14,
                   backgroundColor: 'var(--bg-card)',
                   borderTop: '1px solid var(--border-primary)',
@@ -212,13 +213,14 @@ export default function About() {
                   borderBottom: '1px solid var(--border-primary)',
                   borderLeft: `3px solid rgba(${feature.rgb}, 0.65)`,
                   transition: 'border-color 0.25s, box-shadow 0.25s',
+                  cursor: 'default',
                 }}
                 onMouseEnter={e => {
                   const el = e.currentTarget as HTMLElement;
-                  el.style.borderTopColor = `rgba(${feature.rgb}, 0.25)`;
-                  el.style.borderRightColor = `rgba(${feature.rgb}, 0.25)`;
-                  el.style.borderBottomColor = `rgba(${feature.rgb}, 0.25)`;
-                  el.style.boxShadow = `0 8px 28px rgba(${feature.rgb}, 0.1)`;
+                  el.style.borderTopColor = `rgba(${feature.rgb}, 0.3)`;
+                  el.style.borderRightColor = `rgba(${feature.rgb}, 0.3)`;
+                  el.style.borderBottomColor = `rgba(${feature.rgb}, 0.3)`;
+                  el.style.boxShadow = `0 12px 36px rgba(${feature.rgb}, 0.15), 0 0 0 1px rgba(${feature.rgb}, 0.08)`;
                 }}
                 onMouseLeave={e => {
                   const el = e.currentTarget as HTMLElement;
@@ -229,26 +231,35 @@ export default function About() {
                 }}
               >
                 {/* Number + icon row */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-                  <span style={{
-                    fontFamily: 'ui-monospace, monospace', fontSize: '0.62rem',
-                    fontWeight: 700, letterSpacing: '0.12em',
-                    color: `rgba(${feature.rgb}, 0.5)`,
-                  }}>{feature.number}</span>
-                  <div style={{
-                    width: 38, height: 38, borderRadius: 10,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    backgroundColor: `rgba(${feature.rgb}, 0.08)`,
-                    border: `1px solid rgba(${feature.rgb}, 0.2)`,
-                  }}>
-                    <feature.icon style={{ color: feature.color, fontSize: '1.1rem' }} />
-                  </div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
+                  <motion.span
+                    animate={isInView ? {
+                      color: [`rgba(${feature.rgb}, 0.3)`, `rgba(${feature.rgb}, 0.8)`, `rgba(${feature.rgb}, 0.4)`],
+                    } : {}}
+                    transition={{ duration: 2.4, delay: 1.5 + i * 0.3, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+                    style={{
+                      fontFamily: 'ui-monospace, monospace', fontSize: '0.72rem',
+                      fontWeight: 700, letterSpacing: '0.14em',
+                    }}
+                  >{feature.number}</motion.span>
+                  <motion.div
+                    whileHover={{ rotate: [0, -12, 12, 0], scale: 1.15 }}
+                    transition={{ duration: 0.4 }}
+                    style={{
+                      width: 44, height: 44, borderRadius: 12,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      backgroundColor: `rgba(${feature.rgb}, 0.09)`,
+                      border: `1px solid rgba(${feature.rgb}, 0.25)`,
+                    }}
+                  >
+                    <feature.icon style={{ color: feature.color, fontSize: '1.25rem' }} />
+                  </motion.div>
                 </div>
 
-                <h3 style={{ color: 'var(--text-heading)', fontWeight: 700, fontSize: '1rem', marginBottom: 9 }}>
+                <h3 style={{ color: 'var(--text-heading)', fontWeight: 700, fontSize: '1.15rem', marginBottom: 11 }}>
                   {feature.title}
                 </h3>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem', lineHeight: 1.7 }}>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.97rem', lineHeight: 1.75 }}>
                   {feature.description}
                 </p>
               </motion.div>
