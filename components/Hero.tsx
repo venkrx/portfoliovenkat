@@ -232,7 +232,7 @@ export default function Hero() {
                 {/* Image container */}
                 <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-primary/30 shadow-2xl">
                   <img
-                    src="/my pic.jpg"
+                    src="/venkat.jpg"
                     alt="K S Venkatram"
                     className="w-full h-full object-cover"
                   />
