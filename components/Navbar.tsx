@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useTheme } from './ThemeProvider';
 import { FaSun, FaMoon, FaBars, FaTimes } from 'react-icons/fa';
 
-const sectionIds = ['home', 'about', 'interests', 'skills', 'projects', 'experience', 'contact'];
+const sectionIds = ['home', 'about', 'interests', 'skills', 'projects', 'experience', 'publications', 'contact'];
 
 export default function Navbar() {
   const [scrolled, setScrolled]           = useState(false);
@@ -41,6 +41,7 @@ export default function Navbar() {
     { name: 'Skills',     href: '#skills'     },
     { name: 'Projects',   href: '#projects'   },
     { name: 'Experience', href: '#experience' },
+    { name: 'Publications', href: '#publications' },
     { name: 'Contact',    href: '#contact'    },
   ];
 

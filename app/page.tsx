@@ -7,6 +7,7 @@ import Interests from "@/components/Interests";
 import Skills from "@/components/Skills";
 import Projects from "@/components/Projects";
 import Experience from "@/components/Experience";
+import Publications from "@/components/Publications";
 import Contact from "@/components/Contact";
 import Navbar from "@/components/Navbar";
 
@@ -45,6 +46,10 @@ export default function Home() {
       </motion.div>
 
       <motion.div {...rise} style={{ backgroundColor: 'var(--bg-base)' }} className="relative z-10">
+        <Publications />
+      </motion.div>
+
+      <motion.div {...rise} style={{ backgroundColor: 'var(--bg-card-solid)' }} className="relative z-10">
         <Contact />
       </motion.div>
     </main>
